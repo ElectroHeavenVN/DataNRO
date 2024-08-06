@@ -1,8 +1,8 @@
-const skippedProperties = ['isUpToUp', 'dartType', 'menu', 'skills', 'damInfo'];
-
 const escapeHtml = (unsafe) => {
     return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 }
+
+const skippedProperties = ['isUpToUp', 'dartType', 'menu', 'skills', 'damInfo'];
 
 document.addEventListener('DOMContentLoaded', function () {
     const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
@@ -27,12 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let searchContainer = '';
         switch (page) {
             case 'itemTemplates':
-                url = 'Server8910/ItemTemplates.json';
+                url = 'HSNR/ItemTemplates.json';
                 title = 'Item Templates';
                 breadcrumb = 'Item Templates';
                 break;
             case 'npcTemplates':
-                url = 'Server8910/NpcTemplates.json';
+                url = 'HSNR/NpcTemplates.json';
                 title = 'NPC Templates';
                 breadcrumb = 'NPC Templates';
                 searchContainer = `
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>`;
                 break;
             case 'nClasses':
-                url = 'Server8910/NClasses.json';
+                url = 'HSNR/NClasses.json';
                 title = 'Class Skills';
                 breadcrumb = 'Class Skills';
                 searchContainer = `
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>`;
                 break;
             case 'itemOptions':
-                url = 'Server8910/ItemOptionTemplates.json';
+                url = 'HSNR/ItemOptionTemplates.json';
                 title = 'Item Options';
                 breadcrumb = 'Item Options';
                 searchContainer = `
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>`;
                 break;
             case 'maps':
-                url = 'Server8910/Maps.json';
+                url = 'HSNR/Maps.json';
                 title = 'Maps';
                 breadcrumb = 'Maps';
                 searchContainer = `

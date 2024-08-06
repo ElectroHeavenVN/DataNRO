@@ -1,0 +1,731 @@
+[
+  {
+    "mobTemplateId": 0,
+    "rangeMove": 0,
+    "speed": 1,
+    "type": 0,
+    "dartType": 25,
+    "hp": 100,
+    "name": "Mộc nhân"
+  },
+  {
+    "mobTemplateId": 1,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 1,
+    "dartType": 25,
+    "hp": 200,
+    "name": "Khủng long"
+  },
+  {
+    "mobTemplateId": 2,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 1,
+    "dartType": 9,
+    "hp": 200,
+    "name": "Lợn lòi"
+  },
+  {
+    "mobTemplateId": 3,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 1,
+    "dartType": 5,
+    "hp": 200,
+    "name": "Quỷ đất"
+  },
+  {
+    "mobTemplateId": 4,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 26,
+    "hp": 500,
+    "name": "Khủng long mẹ"
+  },
+  {
+    "mobTemplateId": 5,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 1,
+    "dartType": 12,
+    "hp": 500,
+    "name": "Lợn lòi mẹ"
+  },
+  {
+    "mobTemplateId": 6,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 27,
+    "hp": 500,
+    "name": "Quỷ đất mẹ"
+  },
+  {
+    "mobTemplateId": 7,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 4,
+    "dartType": 26,
+    "hp": 600,
+    "name": "Thằn lằn bay"
+  },
+  {
+    "mobTemplateId": 8,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 12,
+    "hp": 600,
+    "name": "Phi long"
+  },
+  {
+    "mobTemplateId": 9,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 4,
+    "dartType": 27,
+    "hp": 600,
+    "name": "Quỷ bay"
+  },
+  {
+    "mobTemplateId": 10,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 28,
+    "hp": 1000,
+    "name": "Thằn lằn mẹ"
+  },
+  {
+    "mobTemplateId": 11,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 4,
+    "dartType": 28,
+    "hp": 1000,
+    "name": "Phi long mẹ"
+  },
+  {
+    "mobTemplateId": 12,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 28,
+    "hp": 1000,
+    "name": "Quỷ bay mẹ"
+  },
+  {
+    "mobTemplateId": 13,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 22,
+    "hp": 3000,
+    "name": "Ốc mượn hồn"
+  },
+  {
+    "mobTemplateId": 14,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 22,
+    "hp": 3000,
+    "name": "Ốc sên"
+  },
+  {
+    "mobTemplateId": 15,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 22,
+    "hp": 3000,
+    "name": "Heo Xayda mẹ"
+  },
+  {
+    "mobTemplateId": 16,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 1,
+    "dartType": 13,
+    "hp": 1500,
+    "name": "Heo rừng"
+  },
+  {
+    "mobTemplateId": 17,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 1,
+    "dartType": 13,
+    "hp": 1500,
+    "name": "Heo da xanh"
+  },
+  {
+    "mobTemplateId": 18,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 1,
+    "dartType": 13,
+    "hp": 1500,
+    "name": "Heo Xayda"
+  },
+  {
+    "mobTemplateId": 19,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 16,
+    "hp": 12000,
+    "name": "Heo rừng mẹ"
+  },
+  {
+    "mobTemplateId": 20,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 16,
+    "hp": 12000,
+    "name": "Heo xanh mẹ"
+  },
+  {
+    "mobTemplateId": 21,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 41,
+    "hp": 12000,
+    "name": "Alien"
+  },
+  {
+    "mobTemplateId": 22,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 30,
+    "hp": 6000,
+    "name": "Bulon"
+  },
+  {
+    "mobTemplateId": 23,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 23,
+    "hp": 6000,
+    "name": "Ukulele"
+  },
+  {
+    "mobTemplateId": 24,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 17,
+    "hp": 6000,
+    "name": "Quỷ mập"
+  },
+  {
+    "mobTemplateId": 25,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 34,
+    "hp": 20000,
+    "name": "Tambourine"
+  },
+  {
+    "mobTemplateId": 26,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 24,
+    "hp": 20000,
+    "name": "Drum"
+  },
+  {
+    "mobTemplateId": 27,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 29,
+    "hp": 20000,
+    "name": "Akkuman"
+  },
+  {
+    "mobTemplateId": 28,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 19,
+    "hp": 1500,
+    "name": "Thằn lằn bay 2"
+  },
+  {
+    "mobTemplateId": 29,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 7,
+    "hp": 1500,
+    "name": "Phi long 2"
+  },
+  {
+    "mobTemplateId": 30,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 20,
+    "hp": 1500,
+    "name": "Quỷ bay 2"
+  },
+  {
+    "mobTemplateId": 31,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 40,
+    "hp": 3000,
+    "name": "Không tặc"
+  },
+  {
+    "mobTemplateId": 32,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 15,
+    "hp": 3000,
+    "name": "Quỷ đầu to"
+  },
+  {
+    "mobTemplateId": 33,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 17,
+    "hp": 3000,
+    "name": "Quỷ địa ngục"
+  },
+  {
+    "mobTemplateId": 34,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 13,
+    "hp": 30000,
+    "name": "Lính độc nhãn"
+  },
+  {
+    "mobTemplateId": 35,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 13,
+    "hp": 30000,
+    "name": "Lính độc nhãn"
+  },
+  {
+    "mobTemplateId": 36,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 13,
+    "hp": 30000,
+    "name": "Sói xám"
+  },
+  {
+    "mobTemplateId": 37,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 13,
+    "hp": 30000,
+    "name": "Robot bay"
+  },
+  {
+    "mobTemplateId": 38,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 13,
+    "hp": 30000,
+    "name": "Robot thép"
+  },
+  {
+    "mobTemplateId": 39,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 10,
+    "hp": 40000,
+    "name": "Nappa"
+  },
+  {
+    "mobTemplateId": 40,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 10,
+    "hp": 50000,
+    "name": "Soldier"
+  },
+  {
+    "mobTemplateId": 41,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 42,
+    "hp": 60000,
+    "name": "Appule"
+  },
+  {
+    "mobTemplateId": 42,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 42,
+    "hp": 70000,
+    "name": "Raspberry"
+  },
+  {
+    "mobTemplateId": 43,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 43,
+    "hp": 80000,
+    "name": "Thằn lằn xanh"
+  },
+  {
+    "mobTemplateId": 44,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 43,
+    "hp": 90000,
+    "name": "Quỷ đầu nhọn"
+  },
+  {
+    "mobTemplateId": 45,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 44,
+    "hp": 100000,
+    "name": "Quỷ đầu vàng"
+  },
+  {
+    "mobTemplateId": 46,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 44,
+    "hp": 110000,
+    "name": "Quỷ da tím"
+  },
+  {
+    "mobTemplateId": 47,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 45,
+    "hp": 120000,
+    "name": "Quỷ già"
+  },
+  {
+    "mobTemplateId": 48,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 45,
+    "hp": 130000,
+    "name": "Cá sấu"
+  },
+  {
+    "mobTemplateId": 49,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 46,
+    "hp": 140000,
+    "name": "Dơi da xanh"
+  },
+  {
+    "mobTemplateId": 50,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 48,
+    "hp": 180000,
+    "name": "Quỷ chim"
+  },
+  {
+    "mobTemplateId": 51,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 1,
+    "dartType": 46,
+    "hp": 150000,
+    "name": "Lính đầu trọc"
+  },
+  {
+    "mobTemplateId": 52,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 47,
+    "hp": 160000,
+    "name": "Lính tai dài"
+  },
+  {
+    "mobTemplateId": 53,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 47,
+    "hp": 170000,
+    "name": "Lính vũ trụ"
+  },
+  {
+    "mobTemplateId": 54,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 47,
+    "hp": 300000,
+    "name": "Khỉ lông đen"
+  },
+  {
+    "mobTemplateId": 55,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 47,
+    "hp": 350000,
+    "name": "Khỉ giáp sắt"
+  },
+  {
+    "mobTemplateId": 56,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 47,
+    "hp": 400000,
+    "name": "Khỉ lông đỏ"
+  },
+  {
+    "mobTemplateId": 57,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 47,
+    "hp": 450000,
+    "name": "Khỉ lông vàng"
+  },
+  {
+    "mobTemplateId": 58,
+    "rangeMove": 33,
+    "speed": 3,
+    "type": 1,
+    "dartType": 47,
+    "hp": 200000,
+    "name": "Xên con cấp 1"
+  },
+  {
+    "mobTemplateId": 59,
+    "rangeMove": 33,
+    "speed": 3,
+    "type": 1,
+    "dartType": 47,
+    "hp": 250000,
+    "name": "Xên con cấp 2"
+  },
+  {
+    "mobTemplateId": 60,
+    "rangeMove": 33,
+    "speed": 3,
+    "type": 1,
+    "dartType": 47,
+    "hp": 300000,
+    "name": "Xên con cấp 3"
+  },
+  {
+    "mobTemplateId": 61,
+    "rangeMove": 33,
+    "speed": 3,
+    "type": 1,
+    "dartType": 47,
+    "hp": 350000,
+    "name": "Xên con cấp  4"
+  },
+  {
+    "mobTemplateId": 62,
+    "rangeMove": 33,
+    "speed": 3,
+    "type": 1,
+    "dartType": 47,
+    "hp": 400000,
+    "name": "Xên con cấp  5"
+  },
+  {
+    "mobTemplateId": 63,
+    "rangeMove": 33,
+    "speed": 3,
+    "type": 1,
+    "dartType": 47,
+    "hp": 450000,
+    "name": "Xên con cấp  6"
+  },
+  {
+    "mobTemplateId": 64,
+    "rangeMove": 33,
+    "speed": 3,
+    "type": 1,
+    "dartType": 47,
+    "hp": 500000,
+    "name": "Xên con cấp  7"
+  },
+  {
+    "mobTemplateId": 65,
+    "rangeMove": 33,
+    "speed": 3,
+    "type": 1,
+    "dartType": 47,
+    "hp": 550000,
+    "name": "Xên con cấp  8"
+  },
+  {
+    "mobTemplateId": 66,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 45,
+    "hp": 350000,
+    "name": "Tai tím"
+  },
+  {
+    "mobTemplateId": 67,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 10,
+    "hp": 400000,
+    "name": "Abo"
+  },
+  {
+    "mobTemplateId": 68,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 46,
+    "hp": 450000,
+    "name": "Kado"
+  },
+  {
+    "mobTemplateId": 69,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 43,
+    "hp": 500000,
+    "name": "Da xanh"
+  },
+  {
+    "mobTemplateId": 70,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 1,
+    "dartType": 43,
+    "hp": 40000000,
+    "name": "Hirudegarn"
+  },
+  {
+    "mobTemplateId": 71,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 1,
+    "dartType": 43,
+    "hp": 1500000,
+    "name": "Vua Bạch Tuộc"
+  },
+  {
+    "mobTemplateId": 72,
+    "rangeMove": 33,
+    "speed": 1,
+    "type": 1,
+    "dartType": 43,
+    "hp": 1000000,
+    "name": "Rôbốt bảo vệ"
+  },
+  {
+    "mobTemplateId": 73,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 30,
+    "hp": 50000,
+    "name": "Kawazu"
+  },
+  {
+    "mobTemplateId": 74,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 30,
+    "hp": 55000,
+    "name": "Kinkarn"
+  },
+  {
+    "mobTemplateId": 75,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 4,
+    "dartType": 30,
+    "hp": 60000,
+    "name": "Arbee"
+  },
+  {
+    "mobTemplateId": 76,
+    "rangeMove": 0,
+    "speed": 1,
+    "type": 0,
+    "dartType": 25,
+    "hp": 80000,
+    "name": "Cỗ máy hủy diệt"
+  },
+  {
+    "mobTemplateId": 77,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 43,
+    "hp": 2000000000,
+    "name": "Gấu tướng cướp"
+  },
+  {
+    "mobTemplateId": 78,
+    "rangeMove": 33,
+    "speed": 2,
+    "type": 1,
+    "dartType": 47,
+    "hp": 2000000,
+    "name": "Khỉ lông xanh"
+  },
+  {
+    "mobTemplateId": 79,
+    "rangeMove": 33,
+    "speed": 3,
+    "type": 4,
+    "dartType": 34,
+    "hp": 3000000,
+    "name": "Taburine Đỏ"
+  },
+  {
+    "mobTemplateId": 80,
+    "rangeMove": 0,
+    "speed": 1,
+    "type": 0,
+    "dartType": 25,
+    "hp": 2000000000,
+    "name": "Mộc Nhân Super"
+  }
+]

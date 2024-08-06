@@ -1,0 +1,1177 @@
+[
+  {
+    "id": 0,
+    "type": 0,
+    "name": "Tấn công+#"
+  },
+  {
+    "id": 1,
+    "type": 0,
+    "name": "Thời gian sử dụng # phút"
+  },
+  {
+    "id": 2,
+    "type": 0,
+    "name": "HP, KI+#000"
+  },
+  {
+    "id": 3,
+    "type": 0,
+    "name": "Vô hiệu và biến #% sát thương chưởng thành KI"
+  },
+  {
+    "id": 4,
+    "type": 0,
+    "name": "Hồi phục #% KI khi bị đánh"
+  },
+  {
+    "id": 5,
+    "type": 0,
+    "name": "+#% sức đánh chí mạng"
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "name": "HP+#"
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "name": "KI+#"
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "name": "Hút #% HP, KI xung quanh mỗi 5 giây"
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "name": "Hiệu lực trong # phút"
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "name": "Chính xác: +#"
+  },
+  {
+    "id": 11,
+    "type": 2,
+    "name": "Công đức +#"
+  },
+  {
+    "id": 12,
+    "type": 2,
+    "name": "Số lần sử dụng còn lại +#"
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "name": "Số yêu quái đã hạ +#"
+  },
+  {
+    "id": 14,
+    "type": 2,
+    "name": "Chí mạng+#%"
+  },
+  {
+    "id": 15,
+    "type": 2,
+    "name": "Phản đòn cận chiến+#"
+  },
+  {
+    "id": 16,
+    "type": 2,
+    "name": "Tốc độ di chuyển+#%"
+  },
+  {
+    "id": 17,
+    "type": 2,
+    "name": "Né đòn: +#"
+  },
+  {
+    "id": 18,
+    "type": 2,
+    "name": "Chính xác: +#%"
+  },
+  {
+    "id": 19,
+    "type": 2,
+    "name": "Tấn công+#% khi đánh quái"
+  },
+  {
+    "id": 20,
+    "type": 2,
+    "name": "PIN #"
+  },
+  {
+    "id": 21,
+    "type": 2,
+    "name": "Yêu cầu sức mạnh # tỉ"
+  },
+  {
+    "id": 22,
+    "type": 2,
+    "name": "HP+#K"
+  },
+  {
+    "id": 23,
+    "type": 2,
+    "name": "KI+#K"
+  },
+  {
+    "id": 24,
+    "type": 2,
+    "name": "Làm tăng trọng lực, gây chậm mọi người xung quanh"
+  },
+  {
+    "id": 25,
+    "type": 2,
+    "name": "Tàng hình mỗi 5 giây"
+  },
+  {
+    "id": 26,
+    "type": 2,
+    "name": "Hóa đá mọi người xung quanh mỗi 30 giây"
+  },
+  {
+    "id": 27,
+    "type": 2,
+    "name": "+# HP/30s"
+  },
+  {
+    "id": 28,
+    "type": 2,
+    "name": "+# KI/30s"
+  },
+  {
+    "id": 29,
+    "type": 5,
+    "name": "Biến Sôcôla mọi người xung quanh mỗi 30 giây"
+  },
+  {
+    "id": 30,
+    "type": 0,
+    "name": "Không thể giao dịch"
+  },
+  {
+    "id": 31,
+    "type": 0,
+    "name": "Số lượng #"
+  },
+  {
+    "id": 32,
+    "type": 0,
+    "name": "Không bị hóa Xương"
+  },
+  {
+    "id": 33,
+    "type": 6,
+    "name": "Dịch chuyển tức thời"
+  },
+  {
+    "id": 34,
+    "type": 6,
+    "name": "Tinh ấn cấp #"
+  },
+  {
+    "id": 35,
+    "type": 6,
+    "name": "Nguyệt ấn cấp #"
+  },
+  {
+    "id": 36,
+    "type": 6,
+    "name": "Nhật ấn cấp #"
+  },
+  {
+    "id": 37,
+    "type": 4,
+    "name": "Số lần đã ký gửi #"
+  },
+  {
+    "id": 38,
+    "type": 5,
+    "name": "Chỉ có tác dụng khi hợp thể"
+  },
+  {
+    "id": 39,
+    "type": 6,
+    "name": "<Cập nhật bản mới để xem>"
+  },
+  {
+    "id": 40,
+    "type": 7,
+    "name": "Siêu cải trang # đá ngũ sắc"
+  },
+  {
+    "id": 41,
+    "type": 7,
+    "name": "(+16)"
+  },
+  {
+    "id": 42,
+    "type": 7,
+    "name": "(+16)"
+  },
+  {
+    "id": 43,
+    "type": 7,
+    "name": "(+16)"
+  },
+  {
+    "id": 44,
+    "type": 7,
+    "name": "(+16)"
+  },
+  {
+    "id": 45,
+    "type": 7,
+    "name": "(+16)"
+  },
+  {
+    "id": 46,
+    "type": 7,
+    "name": "(+16)"
+  },
+  {
+    "id": 47,
+    "type": 0,
+    "name": "Giáp+#"
+  },
+  {
+    "id": 48,
+    "type": 2,
+    "name": "HP, KI+#"
+  },
+  {
+    "id": 49,
+    "type": 1,
+    "name": "Tấn công+#%"
+  },
+  {
+    "id": 50,
+    "type": 1,
+    "name": "Sức đánh+#%"
+  },
+  {
+    "id": 51,
+    "type": 0,
+    "name": "Sôn Gô Ku ss#"
+  },
+  {
+    "id": 52,
+    "type": 0,
+    "name": "Ca Đic siêu ss#"
+  },
+  {
+    "id": 53,
+    "type": 0,
+    "name": "Broly"
+  },
+  {
+    "id": 54,
+    "type": 0,
+    "name": "Mr. Santa"
+  },
+  {
+    "id": 55,
+    "type": 0,
+    "name": "Broly ss#"
+  },
+  {
+    "id": 56,
+    "type": 0,
+    "name": "Ca Lích"
+  },
+  {
+    "id": 57,
+    "type": 0,
+    "name": "Thên Xin Hăng"
+  },
+  {
+    "id": 58,
+    "type": 0,
+    "name": "Pic"
+  },
+  {
+    "id": 59,
+    "type": 0,
+    "name": "Siêu na mếc #"
+  },
+  {
+    "id": 60,
+    "type": 0,
+    "name": "Sôn Gô Tên"
+  },
+  {
+    "id": 61,
+    "type": 0,
+    "name": "Sôn Gô Ku"
+  },
+  {
+    "id": 62,
+    "type": 2,
+    "name": "Phục hồi thể lực #%"
+  },
+  {
+    "id": 63,
+    "type": 0,
+    "name": "Còn lại # ngày"
+  },
+  {
+    "id": 64,
+    "type": 0,
+    "name": "Còn lại # giờ"
+  },
+  {
+    "id": 65,
+    "type": 0,
+    "name": "Còn lại # phút"
+  },
+  {
+    "id": 66,
+    "type": 0,
+    "name": "Chưa có"
+  },
+  {
+    "id": 67,
+    "type": 0,
+    "name": "Dùng nâng cấp găng tay"
+  },
+  {
+    "id": 68,
+    "type": 0,
+    "name": "Dùng để nâng cấp áo"
+  },
+  {
+    "id": 69,
+    "type": 0,
+    "name": "Dùng để nâng cấp quần"
+  },
+  {
+    "id": 70,
+    "type": 0,
+    "name": "Dùng để nâng cấp giày"
+  },
+  {
+    "id": 71,
+    "type": 0,
+    "name": "Dùng để nâng cấp rađa"
+  },
+  {
+    "id": 72,
+    "type": 0,
+    "name": "Cấp #"
+  },
+  {
+    "id": 73,
+    "type": 0,
+    "name": ""
+  },
+  {
+    "id": 74,
+    "type": 0,
+    "name": "Dùng để ép thành đá"
+  },
+  {
+    "id": 75,
+    "type": 0,
+    "name": "Dùng để làm phép"
+  },
+  {
+    "id": 76,
+    "type": 0,
+    "name": "Vip"
+  },
+  {
+    "id": 77,
+    "type": 0,
+    "name": "HP+#%"
+  },
+  {
+    "id": 78,
+    "type": 0,
+    "name": "Sức hủy diệt+#%"
+  },
+  {
+    "id": 79,
+    "type": 0,
+    "name": "Đệ tử #% sức đánh"
+  },
+  {
+    "id": 80,
+    "type": 0,
+    "name": "HP+#%/30s"
+  },
+  {
+    "id": 81,
+    "type": 0,
+    "name": "KI+#%/30s"
+  },
+  {
+    "id": 82,
+    "type": 0,
+    "name": "Không bị quái chủ động đánh và giảm 20% sát thương khi bị đánh"
+  },
+  {
+    "id": 83,
+    "type": 0,
+    "name": "Tăng 20% sức mạnh và tiềm năng nhận được khi đánh quái"
+  },
+  {
+    "id": 84,
+    "type": 0,
+    "name": "Dùng để bay không tốn KI"
+  },
+  {
+    "id": 85,
+    "type": 0,
+    "name": "Dùng để bay và phục hồi KI"
+  },
+  {
+    "id": 86,
+    "type": 0,
+    "name": "Ký gửi vàng"
+  },
+  {
+    "id": 87,
+    "type": 0,
+    "name": "Ký gửi ngọc"
+  },
+  {
+    "id": 88,
+    "type": 0,
+    "name": "Cộng #% exp khi đánh quái"
+  },
+  {
+    "id": 89,
+    "type": 0,
+    "name": "Dùng để bay và phục hồi HP, KI"
+  },
+  {
+    "id": 90,
+    "type": 0,
+    "name": "Tặng cho người khác (bỏ ra đất) sẽ được nhận may mắn"
+  },
+  {
+    "id": 91,
+    "type": 0,
+    "name": "Mở ra để nhận may mắn"
+  },
+  {
+    "id": 92,
+    "type": 0,
+    "name": "Chúc tết bang hội và mọi người kèm theo pháo hoa"
+  },
+  {
+    "id": 93,
+    "type": 0,
+    "name": "HSD # ngày"
+  },
+  {
+    "id": 94,
+    "type": 0,
+    "name": "Giáp #%"
+  },
+  {
+    "id": 95,
+    "type": 0,
+    "name": "Biến #% tấn công thành HP"
+  },
+  {
+    "id": 96,
+    "type": 0,
+    "name": "Biến #% tấn công thành KI"
+  },
+  {
+    "id": 97,
+    "type": 0,
+    "name": "Phản #% sát thương"
+  },
+  {
+    "id": 98,
+    "type": 0,
+    "name": "Xuyên giáp #% chưởng"
+  },
+  {
+    "id": 99,
+    "type": 0,
+    "name": "Xuyên giáp #% cận chiến"
+  },
+  {
+    "id": 100,
+    "type": 0,
+    "name": "+#% vàng từ quái"
+  },
+  {
+    "id": 101,
+    "type": 0,
+    "name": "+#% TN,SM"
+  },
+  {
+    "id": 102,
+    "type": 0,
+    "name": "# Sao Pha Lê"
+  },
+  {
+    "id": 103,
+    "type": 0,
+    "name": "KI +#%"
+  },
+  {
+    "id": 104,
+    "type": 0,
+    "name": "Biến #% tấn công quái thành HP"
+  },
+  {
+    "id": 105,
+    "type": 0,
+    "name": "Vô hình khi không đánh quái và boss"
+  },
+  {
+    "id": 106,
+    "type": 0,
+    "name": "Chống lạnh"
+  },
+  {
+    "id": 107,
+    "type": 0,
+    "name": "# Sao Pha Lê"
+  },
+  {
+    "id": 108,
+    "type": 0,
+    "name": "#% Né đòn"
+  },
+  {
+    "id": 109,
+    "type": 0,
+    "name": "Hôi, giảm #% HP"
+  },
+  {
+    "id": 110,
+    "type": 0,
+    "name": "Dò pha lê"
+  },
+  {
+    "id": 111,
+    "type": 0,
+    "name": "Phân tâm"
+  },
+  {
+    "id": 112,
+    "type": 0,
+    "name": "Giảm #% khi mua Avatar hoặc Cải trang"
+  },
+  {
+    "id": 113,
+    "type": 0,
+    "name": "Ném cho Sói Hẹc Quyn"
+  },
+  {
+    "id": 114,
+    "type": 0,
+    "name": "+#% TĐ chạy"
+  },
+  {
+    "id": 115,
+    "type": 0,
+    "name": "Biến cà rốt"
+  },
+  {
+    "id": 116,
+    "type": 0,
+    "name": "Kháng TDHS"
+  },
+  {
+    "id": 117,
+    "type": 0,
+    "name": "Đẹp +#% SĐ cho bản thân"
+  },
+  {
+    "id": 118,
+    "type": 0,
+    "name": "Tới ngay mục tiêu và gây choáng trong # mili giây"
+  },
+  {
+    "id": 119,
+    "type": 0,
+    "name": "Gây mù xung quanh trong # giây"
+  },
+  {
+    "id": 120,
+    "type": 0,
+    "name": "Ra đòn sau # giây"
+  },
+  {
+    "id": 121,
+    "type": 0,
+    "name": "Ru ngủ trong # giây"
+  },
+  {
+    "id": 122,
+    "type": 0,
+    "name": "Bảo vệ trong # giây"
+  },
+  {
+    "id": 123,
+    "type": 0,
+    "name": "Trói gô mục tiêu trong # giây"
+  },
+  {
+    "id": 124,
+    "type": 0,
+    "name": "Tỉnh giấc bị yếu đi -#% sức đánh trong 10 giây"
+  },
+  {
+    "id": 125,
+    "type": 0,
+    "name": "Tăng và hồi phục #% HP tạm thời cho mình và xung quanh trong 30 giây"
+  },
+  {
+    "id": 126,
+    "type": 0,
+    "name": "Biến sôcôla làm yếu đi -#% sức đánh trong 30 giây"
+  },
+  {
+    "id": 127,
+    "type": 9,
+    "name": "Set Thên Xin Hăng"
+  },
+  {
+    "id": 128,
+    "type": 9,
+    "name": "Set Kirin"
+  },
+  {
+    "id": 129,
+    "type": 9,
+    "name": "Set Sôngôku"
+  },
+  {
+    "id": 130,
+    "type": 9,
+    "name": "Set Picolo"
+  },
+  {
+    "id": 131,
+    "type": 9,
+    "name": "Set Ốc tiêu"
+  },
+  {
+    "id": 132,
+    "type": 9,
+    "name": "Set Pikkoro Daimao"
+  },
+  {
+    "id": 133,
+    "type": 9,
+    "name": "Set Kakarot"
+  },
+  {
+    "id": 134,
+    "type": 9,
+    "name": "Set Ca Đíc"
+  },
+  {
+    "id": 135,
+    "type": 9,
+    "name": "Set Nappa"
+  },
+  {
+    "id": 136,
+    "type": 9,
+    "name": "$(5 món +100% sát thương đấm Galick)"
+  },
+  {
+    "id": 137,
+    "type": 9,
+    "name": "$(5 món x5 thời gian hóa khỉ)"
+  },
+  {
+    "id": 138,
+    "type": 9,
+    "name": "$(5 món +80% HP)"
+  },
+  {
+    "id": 139,
+    "type": 9,
+    "name": "$(5 món x2 thời gian chói mắt)"
+  },
+  {
+    "id": 140,
+    "type": 9,
+    "name": "$(5 món +100% sát thương Quả Cầu Kênh Khi)"
+  },
+  {
+    "id": 141,
+    "type": 9,
+    "name": "$(5 món +100% sát thương Kamejoko)"
+  },
+  {
+    "id": 142,
+    "type": 9,
+    "name": "$(5 món +50% sát thương Masenkosappo)"
+  },
+  {
+    "id": 143,
+    "type": 9,
+    "name": "$(5 món +100% sát thương Liên hoàn)"
+  },
+  {
+    "id": 144,
+    "type": 9,
+    "name": "$(5 món +100% sát thương và bất tử đệ từ Đẻ Trứng)"
+  },
+  {
+    "id": 145,
+    "type": 0,
+    "name": "$(Ở gần 1 CT Dr Slum khác loại +20% sức đánh +66% tốc độ chạy)"
+  },
+  {
+    "id": 146,
+    "type": 0,
+    "name": "$(Ở gần 2 CT Dr Slum khác loại +30% sức đánh +100% tốc độ chạy)"
+  },
+  {
+    "id": 147,
+    "type": 0,
+    "name": "+#% sức đánh"
+  },
+  {
+    "id": 148,
+    "type": 0,
+    "name": "+#% tốc độ chạy"
+  },
+  {
+    "id": 149,
+    "type": 0,
+    "name": "(Chỉ số tăng khi ở gần CT Hải Tặc khác loại)"
+  },
+  {
+    "id": 150,
+    "type": 0,
+    "name": "(Chỉ số tăng khi ở gần Android Sát Thủ khác loại)"
+  },
+  {
+    "id": 151,
+    "type": 0,
+    "name": "$(Ở gần 1 CT nhóm Piláp khác loại +20% sức đánh +66% tốc độ chạy)"
+  },
+  {
+    "id": 152,
+    "type": 0,
+    "name": "$(Ở gần 2 CT nhóm Piláp khác loại +30% sức đánh +100% tốc độ chạy)"
+  },
+  {
+    "id": 153,
+    "type": 0,
+    "name": "#% tỉ lệ phát nổ sau khi chết"
+  },
+  {
+    "id": 154,
+    "type": 0,
+    "name": "Không thể bán lại"
+  },
+  {
+    "id": 155,
+    "type": 0,
+    "name": "Giảm 50% sức đánh, HP, KI và +#% SM, TN, vàng từ quái"
+  },
+  {
+    "id": 156,
+    "type": 0,
+    "name": "Cộng dồn 1% sức đánh khi chỉ dùng chiêu đấm, tối đa #%"
+  },
+  {
+    "id": 157,
+    "type": 0,
+    "name": "Giảm #% mọi sát thương khi KI dưới 20%"
+  },
+  {
+    "id": 158,
+    "type": 0,
+    "name": "Khi ở trần và không đeo cải trang sẽ có cơ hội tìm thấy vật phẩm sự kiện"
+  },
+  {
+    "id": 159,
+    "type": 0,
+    "name": "x# sức đánh đòn chưởng cơ bản mỗi phút"
+  },
+  {
+    "id": 160,
+    "type": 0,
+    "name": "+#% TN, SM cho đệ tử khi sư phụ mặc cải trang này"
+  },
+  {
+    "id": 161,
+    "type": 0,
+    "name": "Thêm # ngọc mỗi ngày khi đánh quái."
+  },
+  {
+    "id": 162,
+    "type": 0,
+    "name": "Cute hồi #% KI/s bản thân và xung quanh"
+  },
+  {
+    "id": 163,
+    "type": 0,
+    "name": "Biến người xung quanh thành Bí Ngô"
+  },
+  {
+    "id": 164,
+    "type": 0,
+    "name": "Đổi bằng # điểm sự kiện"
+  },
+  {
+    "id": 165,
+    "type": 0,
+    "name": "Cơ hội ra đòn +#% sát thương lửa khi cận chiến quái"
+  },
+  {
+    "id": 166,
+    "type": 0,
+    "name": "Ngầu +#% sức đánh lên quái khi bay với Cải Trang Tàu Pảy Pảy"
+  },
+  {
+    "id": 167,
+    "type": 0,
+    "name": "Tạo không khí lạnh"
+  },
+  {
+    "id": 168,
+    "type": 0,
+    "name": "Hấp thụ sức mạnh rồi bộc phá"
+  },
+  {
+    "id": 169,
+    "type": 0,
+    "name": "Cơ hội hạ độc đối thủ"
+  },
+  {
+    "id": 170,
+    "type": 0,
+    "name": "Ngầu +#% sức đánh lên quái khi bay với Cải Trang nhà Fide"
+  },
+  {
+    "id": 171,
+    "type": 0,
+    "name": "Số lượng #K"
+  },
+  {
+    "id": 172,
+    "type": 0,
+    "name": "#"
+  },
+  {
+    "id": 173,
+    "type": 0,
+    "name": "Phục hồi #% HP và KI cho đồng đội"
+  },
+  {
+    "id": 174,
+    "type": 0,
+    "name": "Sự kiện năm #"
+  },
+  {
+    "id": 175,
+    "type": 0,
+    "name": "Giảm #% thời gian bị mù"
+  },
+  {
+    "id": 176,
+    "type": 0,
+    "name": "$(Ở gần đủ 5 loại +20% sức đánh +50% tốc độ chạy)"
+  },
+  {
+    "id": 177,
+    "type": 0,
+    "name": "$(Tối đa +2% tất cả khi ở gần Mabư mập)"
+  },
+  {
+    "id": 178,
+    "type": 0,
+    "name": "KI+#%/10s"
+  },
+  {
+    "id": 179,
+    "type": 0,
+    "name": "+2% sức đánh, tối đa 10% khi ở gần Cải Trang tộc Demons Frost"
+  },
+  {
+    "id": 180,
+    "type": 0,
+    "name": "+#% sức đánh khi ở gần Cải Trang Black Gohan Rose"
+  },
+  {
+    "id": 181,
+    "type": 0,
+    "name": "Dịch chuyển tức thời +#% sát thương"
+  },
+  {
+    "id": 182,
+    "type": 0,
+    "name": "+#% sát thương đệ từ trứng"
+  },
+  {
+    "id": 183,
+    "type": 0,
+    "name": "Giảm #% thời gian hồi Khiên"
+  },
+  {
+    "id": 184,
+    "type": 0,
+    "name": "+#% sức đánh, tối đa 10% khi ở gần Gohan xanh, Poc đỏ, Arale búp bê"
+  },
+  {
+    "id": 185,
+    "type": 0,
+    "name": "+# giờ sử dụng"
+  },
+  {
+    "id": 186,
+    "type": 0,
+    "name": "Biến kẹo 30 giây"
+  },
+  {
+    "id": 187,
+    "type": 0,
+    "name": "Giảm # giây thời gian bị mù"
+  },
+  {
+    "id": 188,
+    "type": 0,
+    "name": "Đệ tử chưởng kamejoko +#% sát thương"
+  },
+  {
+    "id": 189,
+    "type": 0,
+    "name": "Đệ tử chưởng antomic +#% sát thương"
+  },
+  {
+    "id": 190,
+    "type": 0,
+    "name": "Đệ tử chưởng masenko +#% sát thương"
+  },
+  {
+    "id": 191,
+    "type": 0,
+    "name": "Né chí mạng+#%"
+  },
+  {
+    "id": 192,
+    "type": 0,
+    "name": "+#% Chí mạng"
+  },
+  {
+    "id": 193,
+    "type": 0,
+    "name": "+#% sức đánh, tối đa 11% khi ở gần Cải trang cầu thủ khác"
+  },
+  {
+    "id": 194,
+    "type": 0,
+    "name": "+#% sức đánh, tối đa 10% khi ở gần Cải trang hè khác"
+  },
+  {
+    "id": 195,
+    "type": 9,
+    "name": "$(5 món +100% KI)"
+  },
+  {
+    "id": 196,
+    "type": 9,
+    "name": "+ #% sát thương tự sát"
+  },
+  {
+    "id": 197,
+    "type": 9,
+    "name": "+ #% sát thương Masenkosappo"
+  },
+  {
+    "id": 198,
+    "type": 9,
+    "name": "Set Thên Xin Hăng 2"
+  },
+  {
+    "id": 199,
+    "type": 9,
+    "name": "$(5 món x3 thời gian chói mắt)"
+  },
+  {
+    "id": 200,
+    "type": 9,
+    "name": "Set Kirin 2"
+  },
+  {
+    "id": 201,
+    "type": 9,
+    "name": "$(5 món +200% sát thương Quả Cầu Kênh Khi)"
+  },
+  {
+    "id": 202,
+    "type": 9,
+    "name": "Set Sôngôku 2"
+  },
+  {
+    "id": 203,
+    "type": 9,
+    "name": "$(5 món +200% sát thương Kamejoko)"
+  },
+  {
+    "id": 204,
+    "type": 9,
+    "name": "Set Picolo 2"
+  },
+  {
+    "id": 205,
+    "type": 9,
+    "name": "$(5 món +150% KI)"
+  },
+  {
+    "id": 206,
+    "type": 9,
+    "name": "Set Ốc tiêu 2"
+  },
+  {
+    "id": 207,
+    "type": 9,
+    "name": "$(5 món +200% sát thương Liên hoàn)"
+  },
+  {
+    "id": 208,
+    "type": 9,
+    "name": "Set Pikkoro Daimao 2"
+  },
+  {
+    "id": 209,
+    "type": 9,
+    "name": "$(5 món +200% sát thương và bất tử đệ từ Đẻ Trứng)"
+  },
+  {
+    "id": 210,
+    "type": 9,
+    "name": "Set Kakarot 2"
+  },
+  {
+    "id": 211,
+    "type": 9,
+    "name": "$(5 món +200% sát thương đấm Galick)"
+  },
+  {
+    "id": 212,
+    "type": 9,
+    "name": "Set Ca Đíc 2"
+  },
+  {
+    "id": 213,
+    "type": 9,
+    "name": "$(5 món x 7 thời gian hóa khỉ)"
+  },
+  {
+    "id": 214,
+    "type": 9,
+    "name": "Set Nappa 2"
+  },
+  {
+    "id": 215,
+    "type": 9,
+    "name": "$(5 món +150% HP)"
+  },
+  {
+    "id": 216,
+    "type": 9,
+    "name": "Set Broly"
+  },
+  {
+    "id": 217,
+    "type": 9,
+    "name": "$(5 món +150% Sức đánh)"
+  },
+  {
+    "id": 218,
+    "type": 1,
+    "name": "Sắc đẹp +#% Sức đánh cho bản thân"
+  },
+  {
+    "id": 219,
+    "type": 0,
+    "name": "Giảm sát thương #%"
+  },
+  {
+    "id": 220,
+    "type": 0,
+    "name": "Xuyên set giáp #%"
+  },
+  {
+    "id": 221,
+    "type": 0,
+    "name": "Thuộc tính ẩn ngẫu nhiên"
+  },
+  {
+    "id": 222,
+    "type": 1,
+    "name": "HP, KI, SĐ +#%"
+  },
+  {
+    "id": 1000,
+    "type": 10,
+    "name": "+#% Sức đánh"
+  },
+  {
+    "id": 1001,
+    "type": 10,
+    "name": "+#% HP"
+  },
+  {
+    "id": 1002,
+    "type": 10,
+    "name": "+#% KI"
+  },
+  {
+    "id": 1003,
+    "type": 10,
+    "name": "+#% Chí mạng"
+  },
+  {
+    "id": 1004,
+    "type": 10,
+    "name": "+#% Sức đánh chí mạng"
+  },
+  {
+    "id": 1005,
+    "type": 10,
+    "name": "+#% Hút HP"
+  },
+  {
+    "id": 1006,
+    "type": 10,
+    "name": "+#% Hút KI"
+  },
+  {
+    "id": 1007,
+    "type": 10,
+    "name": "+#% Giáp"
+  },
+  {
+    "id": 1008,
+    "type": 10,
+    "name": "+# Tấn công"
+  },
+  {
+    "id": 1009,
+    "type": 10,
+    "name": "+#% Né đòn"
+  },
+  {
+    "id": 1010,
+    "type": 10,
+    "name": "+#% Phản sát thương"
+  },
+  {
+    "id": 1011,
+    "type": 11,
+    "name": "Đã ghép #"
+  }
+]

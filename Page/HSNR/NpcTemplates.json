@@ -1,0 +1,866 @@
+[
+  {
+    "npcTemplateId": 0,
+    "headId": 18,
+    "bodyId": 19,
+    "legId": 20,
+    "name": "Ông Gôhan",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 1,
+    "headId": 24,
+    "bodyId": 25,
+    "legId": 26,
+    "name": "Ông Paragus",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 2,
+    "headId": 21,
+    "bodyId": 22,
+    "legId": 23,
+    "name": "Ông Moori",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 3,
+    "headId": 74,
+    "bodyId": 75,
+    "legId": 265,
+    "name": "Rương đồ",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 4,
+    "headId": 84,
+    "bodyId": 51,
+    "legId": 84,
+    "name": "Đậu thần",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 5,
+    "headId": 75,
+    "bodyId": -1,
+    "legId": -1,
+    "name": "Con mèo",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 6,
+    "headId": -1,
+    "bodyId": -1,
+    "legId": -1,
+    "name": "Khu vực",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 7,
+    "headId": 42,
+    "bodyId": 43,
+    "legId": 44,
+    "name": "Bunma",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 8,
+    "headId": 45,
+    "bodyId": 46,
+    "legId": 47,
+    "name": "Dende",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 9,
+    "headId": 3,
+    "bodyId": 4,
+    "legId": 5,
+    "name": "Appule",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 10,
+    "headId": 784,
+    "bodyId": 785,
+    "legId": 786,
+    "name": "Dr. Brief",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 11,
+    "headId": 54,
+    "bodyId": 55,
+    "legId": 56,
+    "name": "Cargo",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 12,
+    "headId": 48,
+    "bodyId": 49,
+    "legId": 50,
+    "name": "Cui",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 13,
+    "headId": 33,
+    "bodyId": 34,
+    "legId": 35,
+    "name": "Quy Lão Kame",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 14,
+    "headId": 39,
+    "bodyId": 40,
+    "legId": 41,
+    "name": "Trưởng lão Guru",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 15,
+    "headId": 36,
+    "bodyId": 37,
+    "legId": 38,
+    "name": "Vua Vegeta",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 16,
+    "headId": 61,
+    "bodyId": 62,
+    "legId": 63,
+    "name": "Uron",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 17,
+    "headId": 80,
+    "bodyId": 81,
+    "legId": 82,
+    "name": "Bò Mộng",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 18,
+    "headId": 89,
+    "bodyId": 90,
+    "legId": 91,
+    "name": "Thần mèo Karin",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 19,
+    "headId": 86,
+    "bodyId": 87,
+    "legId": 88,
+    "name": "Thượng Đế",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 20,
+    "headId": 98,
+    "bodyId": 99,
+    "legId": 100,
+    "name": "Thần Vũ Trụ",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 21,
+    "headId": 117,
+    "bodyId": 118,
+    "legId": 119,
+    "name": "Bà Hạt Mít",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 22,
+    "headId": 114,
+    "bodyId": 115,
+    "legId": 116,
+    "name": "Trọng tài",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 23,
+    "headId": 120,
+    "bodyId": 121,
+    "legId": 122,
+    "name": "Ghi danh",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 24,
+    "headId": 103,
+    "bodyId": 104,
+    "legId": 105,
+    "name": "Rồng Thiêng",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 25,
+    "headId": 132,
+    "bodyId": 133,
+    "legId": 134,
+    "name": "Lính canh",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 26,
+    "headId": 144,
+    "bodyId": 145,
+    "legId": 146,
+    "name": "Độc Nhãn",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 27,
+    "headId": 0,
+    "bodyId": 0,
+    "legId": 0,
+    "name": "Rồng Thiêng Namếc",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 28,
+    "headId": 120,
+    "bodyId": 121,
+    "legId": 122,
+    "name": "Cửa hàng ký gửi",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 29,
+    "headId": 204,
+    "bodyId": 205,
+    "legId": 206,
+    "name": "Rồng Omega",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 30,
+    "headId": 207,
+    "bodyId": 208,
+    "legId": 209,
+    "name": "Rồng 2 sao",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 31,
+    "headId": 210,
+    "bodyId": 211,
+    "legId": 212,
+    "name": "Rồng 3 sao",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 32,
+    "headId": 213,
+    "bodyId": 214,
+    "legId": 215,
+    "name": "Rồng 4 sao",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 33,
+    "headId": 216,
+    "bodyId": 217,
+    "legId": 218,
+    "name": "Rồng 5 sao",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 34,
+    "headId": 219,
+    "bodyId": 220,
+    "legId": 221,
+    "name": "Rồng 6 sao",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 35,
+    "headId": 222,
+    "bodyId": 223,
+    "legId": 224,
+    "name": "Rồng 7 sao",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 36,
+    "headId": 225,
+    "bodyId": 226,
+    "legId": 227,
+    "name": "Rồng 1 sao",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 37,
+    "headId": 267,
+    "bodyId": 268,
+    "legId": 269,
+    "name": "Bunma",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 38,
+    "headId": 270,
+    "bodyId": 271,
+    "legId": 272,
+    "name": "Ca Lích",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 39,
+    "headId": 300,
+    "bodyId": 301,
+    "legId": 302,
+    "name": "Santa",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 40,
+    "headId": 297,
+    "bodyId": 298,
+    "legId": 299,
+    "name": "Mabư mập",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 41,
+    "headId": 120,
+    "bodyId": 121,
+    "legId": 122,
+    "name": "Trung thu",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 42,
+    "headId": 442,
+    "bodyId": 443,
+    "legId": 444,
+    "name": "Quốc Vương",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 43,
+    "headId": 448,
+    "bodyId": 449,
+    "legId": 450,
+    "name": "Tổ Sư Kaio",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 44,
+    "headId": 433,
+    "bodyId": 434,
+    "legId": 435,
+    "name": "Ôsin",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 45,
+    "headId": 436,
+    "bodyId": 437,
+    "legId": 438,
+    "name": "Kibit",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 46,
+    "headId": 430,
+    "bodyId": 431,
+    "legId": 432,
+    "name": "Babiđây",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 47,
+    "headId": 445,
+    "bodyId": 446,
+    "legId": 447,
+    "name": "Giu-ma Đầu Bò",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 48,
+    "headId": 462,
+    "bodyId": 470,
+    "legId": 471,
+    "name": "Ngộ Không",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 49,
+    "headId": 467,
+    "bodyId": 468,
+    "legId": 469,
+    "name": "Đường Tăng",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 50,
+    "headId": -1,
+    "bodyId": -1,
+    "legId": -1,
+    "name": "Quả trứng",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 51,
+    "headId": -1,
+    "bodyId": -1,
+    "legId": -1,
+    "name": "Dưa hấu",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 52,
+    "headId": 484,
+    "bodyId": 485,
+    "legId": 486,
+    "name": "Hùng Vương",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 53,
+    "headId": 481,
+    "bodyId": 482,
+    "legId": 483,
+    "name": "Tapion",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 54,
+    "headId": 487,
+    "bodyId": 488,
+    "legId": 489,
+    "name": "Lý Tiểu Nương",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 55,
+    "headId": 508,
+    "bodyId": 509,
+    "legId": 510,
+    "name": "Bill",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 56,
+    "headId": 505,
+    "bodyId": 506,
+    "legId": 507,
+    "name": "Whis",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 57,
+    "headId": 511,
+    "bodyId": 512,
+    "legId": 513,
+    "name": "Champa",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 58,
+    "headId": 530,
+    "bodyId": 531,
+    "legId": 532,
+    "name": "Vados",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 59,
+    "headId": 533,
+    "bodyId": 534,
+    "legId": 535,
+    "name": "Trọng tài",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 60,
+    "headId": 101,
+    "bodyId": 57,
+    "legId": 66,
+    "name": "Goku SSJ",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 61,
+    "headId": 0,
+    "bodyId": 523,
+    "legId": 524,
+    "name": "Goku SSJ",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 62,
+    "headId": 621,
+    "bodyId": 622,
+    "legId": 623,
+    "name": "Potage",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 63,
+    "headId": 624,
+    "bodyId": 625,
+    "legId": 626,
+    "name": "Jaco",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 64,
+    "headId": 703,
+    "bodyId": 704,
+    "legId": 705,
+    "name": "",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 65,
+    "headId": 77,
+    "bodyId": 78,
+    "legId": 79,
+    "name": "Yarirobe",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 66,
+    "headId": 766,
+    "bodyId": 767,
+    "legId": 768,
+    "name": "Nồi bánh",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 67,
+    "headId": 83,
+    "bodyId": 84,
+    "legId": 85,
+    "name": "Mr Popo",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 68,
+    "headId": 787,
+    "bodyId": 788,
+    "legId": 789,
+    "name": "Panchy",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 69,
+    "headId": 403,
+    "bodyId": 404,
+    "legId": 405,
+    "name": "Thỏ Đại Ca",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 70,
+    "headId": 1968,
+    "bodyId": 1969,
+    "legId": 1970,
+    "name": "Mafia Internet <D2F>",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  },
+  {
+    "npcTemplateId": 71,
+    "headId": 879,
+    "bodyId": 880,
+    "legId": 881,
+    "name": "Gác Kiếm <LYNK>",
+    "menu": [
+      [
+        "Nói chuyện"
+      ]
+    ]
+  }
+]
