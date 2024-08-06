@@ -21,9 +21,10 @@ namespace DataNRO
             if (!Directory.Exists("Data"))
                 Directory.CreateDirectory("Data");
             proxyData = Environment.GetEnvironmentVariable("PROXY");
-            string[] datas = Environment.GetEnvironmentVariable("DATA").Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            foreach (string data in datas)
-                LoginAndGetData(data);
+            string data = Environment.GetEnvironmentVariable("DATA");
+            string[] datas = data.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            foreach (string d in datas)
+                LoginAndGetData(d);
         }
 
         static void LoginAndGetData(string data)
@@ -44,10 +45,10 @@ namespace DataNRO
                 Console.WriteLine($"Creating session type \"{type}\" from assembly \"DataNRO.{type}.dll\"...");
                 Assembly assembly = Assembly.LoadFrom($"DataNRO.{type}.dll");
                 Console.WriteLine($"Loaded assembly: {assembly.FullName}");
-                Console.WriteLine($"Assembly name: {assembly.ManifestModule.GetCustomAttribute<AssemblyTitleAttribute>().Title}");
-                Console.WriteLine($"Assembly description: {assembly.ManifestModule.GetCustomAttribute<AssemblyDescriptionAttribute>().Description}");
-                Console.WriteLine($"Assembly company: {assembly.ManifestModule.GetCustomAttribute<AssemblyCompanyAttribute>().Company}");
-                Console.WriteLine($"Assembly copyright: {assembly.ManifestModule.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright}");
+                Console.WriteLine($"Assembly name: {assembly.GetCustomAttribute<AssemblyTitleAttribute>().Title}");
+                Console.WriteLine($"Assembly description: {assembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description}");
+                Console.WriteLine($"Assembly company: {assembly.GetCustomAttribute<AssemblyCompanyAttribute>().Company}");
+                Console.WriteLine($"Assembly copyright: {assembly.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright}");
                 string sessionTypeName = $"DataNRO.{type}.{type}Session";
                 Console.WriteLine($"Creating session type: \"{sessionTypeName}\"...");
                 session = (ISession)Activator.CreateInstance(assembly.GetType(sessionTypeName), new object[] { host, port });
@@ -55,7 +56,7 @@ namespace DataNRO
             }
             catch
             {
-                Console.WriteLine($"The main assembly for server type \"{type}\" (DataNRO.\"{type}\".dll) does not exist!");
+                Console.WriteLine($"The main assembly for server type \"{type}\" (DataNRO.{type}.dll) does not exist!");
                 return;
             }
             Console.WriteLine($"Connecting to {session.Host}:{session.Port}...");
