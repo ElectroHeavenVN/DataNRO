@@ -28,6 +28,7 @@ jobs:
     env:
       CLISolutionPath: CLI/DataNRO.sln
       HSNRSolutionPath: HSNR/DataNRO.HSNR.sln
+      HSNR_TOKEN: ${{ secrets.DataNRO_HSNR_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -54,6 +55,7 @@ jobs:
           path: Output\Data
 
       - name: Checkout DataNRO.HSNR
+        if: ${{ env.HSNR_TOKEN }} != ''
         uses: actions/checkout@v4
         with:
           repository: 'ElectroHeavenVN/DataNRO.HSNR'
@@ -61,10 +63,13 @@ jobs:
           token: ${{ secrets.DataNRO_HSNR_TOKEN }}
           path: HSNR
       - name: Restore DataNRO.HSNR
+        if: ${{ env.HSNR_TOKEN }} != ''
         run: msbuild $env:HSNRSolutionPath /t:restore /p:Configuration=Release
       - name: Build DataNRO.HSNR
+        if: ${{ env.HSNR_TOKEN }} != ''
         run: msbuild $env:HSNRSolutionPath /t:rebuild /p:Configuration=Release
       - name: Move DataNRO.HSNR to Output
+        if: ${{ env.HSNR_TOKEN }} != ''
         run: Move-Item -Path HSNR/Output/DataNRO.HSNR.dll -Destination Output/DataNRO.HSNR.dll -Force
 
       - name: Run headless client
