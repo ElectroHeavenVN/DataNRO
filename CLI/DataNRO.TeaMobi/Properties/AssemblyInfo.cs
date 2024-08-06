@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("DataNRO.TeaMobi")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Module DataNRO cho server Ngọc Rồng Online")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ElectroHeavenVN")]
+[assembly: AssemblyCompany("ElectroHeavenVN (EHVN)")]
 [assembly: AssemblyProduct("DataNRO.TeaMobi")]
 [assembly: AssemblyCopyright("Copyright © ElectroHeavenVN 2024")]
 [assembly: AssemblyTrademark("")]
