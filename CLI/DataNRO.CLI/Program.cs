@@ -41,13 +41,21 @@ namespace DataNRO
             ISession session;
             try
             {
+                Console.WriteLine($"Creating session type \"{type}\" from assembly \"DataNRO.{type}.dll\"...");
                 Assembly assembly = Assembly.LoadFrom($"DataNRO.{type}.dll");
-                session = (ISession)Activator.CreateInstance(assembly.GetType($"DataNRO.{type}.{type}Session"), new object[] { host, port });
-                Console.WriteLine($"Server type \"{type}\" has been loaded!");
+                Console.WriteLine($"Loaded assembly: {assembly.FullName}");
+                Console.WriteLine($"Assembly name: {assembly.ManifestModule.GetCustomAttribute<AssemblyTitleAttribute>().Title}");
+                Console.WriteLine($"Assembly description: {assembly.ManifestModule.GetCustomAttribute<AssemblyDescriptionAttribute>().Description}");
+                Console.WriteLine($"Assembly company: {assembly.ManifestModule.GetCustomAttribute<AssemblyCompanyAttribute>().Company}");
+                Console.WriteLine($"Assembly copyright: {assembly.ManifestModule.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright}");
+                string sessionTypeName = $"DataNRO.{type}.{type}Session";
+                Console.WriteLine($"Creating session type: \"{sessionTypeName}\"...");
+                session = (ISession)Activator.CreateInstance(assembly.GetType(sessionTypeName), new object[] { host, port });
+                Console.WriteLine($"Session type \"{type}\" has been created successfully!");
             }
             catch
             {
-                Console.WriteLine($"Server type \"{type}\" not found!");
+                Console.WriteLine($"The main assembly for server type \"{type}\" (DataNRO.\"{type}\".dll) does not exist!");
                 return;
             }
             Console.WriteLine($"Connecting to {session.Host}:{session.Port}...");
@@ -61,7 +69,7 @@ namespace DataNRO
             Thread.Sleep(1000);
             if (!string.IsNullOrEmpty(unregisteredUser))
             {
-                Console.WriteLine($"[{session.Host}:{session.Port}] Login as User{new string('*', unregisteredUser.Length - 4)}");
+                Console.WriteLine($"[{session.Host}:{session.Port}] Login as {unregisteredUser.Substring(0, 4)}{new string('*', unregisteredUser.Length - 4)}");
                 writer.Login(unregisteredUser, "", 1);
             }
             else
@@ -112,7 +120,7 @@ namespace DataNRO
             Location location = session.Player.location;
             while (location.mapId <= 23 && location.mapId >= 21)
             {
-                Console.WriteLine("Go outside");
+                Console.WriteLine("The player is at home, trying to go outside...");
                 int x = 0, y = 336;
                 switch (location.mapId)
                 {
@@ -180,7 +188,7 @@ namespace DataNRO
                         if (arrP.Length > 4)
                             proxyPassword = arrP[4];
                         retryTimes = 0;
-                        Console.WriteLine($"Failed to connect! Retry with proxy {Regex.Replace(proxyHost, "[0-9]", "*")}:{proxyPort}...");
+                        Console.WriteLine($"Failed to connect to the server! Retry with proxy {Regex.Replace(proxyHost, "[0-9]", "*")}:{proxyPort}...");
                         try
                         {
                             session.Connect(proxyHost, proxyPort, proxyUsername, proxyPassword, proxyType);
@@ -204,14 +212,14 @@ namespace DataNRO
                             }
                             if (!session.IsConnected)
                             {
-                                Console.WriteLine($"Failed to connect!");
+                                Console.WriteLine("Failed to connect to the server through the provided proxy!");
                                 return false;
                             }
                         }
                     }
                     else
                     {
-                        Console.WriteLine($"Failed to connect!");
+                        Console.WriteLine("Failed to connect to the server!");
                         return false;
                     }
                 }
