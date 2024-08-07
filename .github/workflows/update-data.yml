@@ -52,8 +52,8 @@ jobs:
           allow_forks: false
           workflow: update-data.yml
           name: DataNRO
-          path: Output\Data
-
+          path: Output\Data\TeaMobi
+      - run: rmdir /s /q Output\Data\TeaMobi\HSNR
       - name: Checkout DataNRO.HSNR
         if: ${{ env.HSNR_TOKEN }} != ''
         uses: actions/checkout@v4
