@@ -398,7 +398,5 @@ FodyWeavers.xsd
 *.sln.iml
 
 Output/*
-Page/Server[0-9]*/*
-Page/Super[0-9]*/*
-Page/Universe[0-9]*/*
-Page/Naga/*
+Page/TeaMobi/*
+Page/HSNR/*
