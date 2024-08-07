@@ -67,5 +67,11 @@
         /// Gửi lệnh chuyển map khi map hiện tại hoặc map tiếp theo là map offline
         /// </summary>
         void GetMapOffline();
+
+        /// <summary>
+        /// Gửi lệnh yêu cầu ảnh của 1 icon
+        /// </summary>
+        /// <param name="id">ID của icon</param>
+        void RequestIcon(int id);
     }
 }

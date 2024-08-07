@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using DataNRO.Interfaces;
 using static DataNRO.GameData;
 
@@ -39,6 +40,53 @@ namespace DataNRO.TeaMobi
                 case -24:
                     ReadCurrentMapInfo(message);
                     break;
+                case -67:
+                    ReadIconInfo(message);
+                    break;
+            }
+        }
+
+        void ReadMapData(MessageReceive message)
+        {
+            message.ReadByte();
+            int mapLength = message.ReadByte();
+            for (int i = 0; i < mapLength; i++)
+            {
+                Map map = new Map();
+                map.id = i;
+                map.name = message.ReadString();
+                session.Data.Maps.Add(map);
+            }
+            session.Data.NpcTemplates = new NpcTemplate[message.ReadByte()];
+            for (int i = 0; i < session.Data.NpcTemplates.Length; i++)
+            {
+                NpcTemplate npcTemplate = new NpcTemplate();
+                npcTemplate.npcTemplateId = i;
+                npcTemplate.name = message.ReadString();
+                npcTemplate.headId = message.ReadShort();
+                npcTemplate.bodyId = message.ReadShort();
+                npcTemplate.legId = message.ReadShort();
+                npcTemplate.menu = new string[message.ReadByte()][];
+                for (int j = 0; j < npcTemplate.menu.Length; j++)
+                {
+                    npcTemplate.menu[j] = new string[message.ReadByte()];
+                    for (int k = 0; k < npcTemplate.menu[j].Length; k++)
+                        npcTemplate.menu[j][k] = message.ReadString();
+                }
+                session.Data.NpcTemplates[i] = npcTemplate;
+            }
+            session.Data.MobTemplates = new MobTemplate[message.ReadByte()];
+            for (sbyte i = 0; i < session.Data.MobTemplates.Length; i++)
+            {
+                MobTemplate mobTemplate = new MobTemplate();
+                mobTemplate.mobTemplateId = i;
+                mobTemplate.type = message.ReadSByte();
+                mobTemplate.name = message.ReadString();
+                mobTemplate.hp = message.ReadInt();
+                mobTemplate.rangeMove = message.ReadSByte();
+                mobTemplate.speed = message.ReadSByte();
+                mobTemplate.dartType = message.ReadSByte();
+                session.Data.MobTemplates[i] = mobTemplate;
             }
         }
 
@@ -139,50 +187,6 @@ namespace DataNRO.TeaMobi
             }
         }
 
-        void ReadMapData(MessageReceive message)
-        {
-            message.ReadByte();
-            int mapLength = message.ReadByte();
-            for (int i = 0; i < mapLength; i++)
-            {
-                Map map = new Map();
-                map.id = i;
-                map.name = message.ReadString();
-                session.Data.Maps.Add(map);
-            }
-            session.Data.NpcTemplates = new NpcTemplate[message.ReadByte()];
-            for (int i = 0; i < session.Data.NpcTemplates.Length; i++)
-            {
-                NpcTemplate npcTemplate = new NpcTemplate();
-                npcTemplate.npcTemplateId = i;
-                npcTemplate.name = message.ReadString();
-                npcTemplate.headId = message.ReadShort();
-                npcTemplate.bodyId = message.ReadShort();
-                npcTemplate.legId = message.ReadShort();
-                npcTemplate.menu = new string[message.ReadByte()][];
-                for (int j = 0; j < npcTemplate.menu.Length; j++)
-                {
-                    npcTemplate.menu[j] = new string[message.ReadByte()];
-                    for (int k = 0; k < npcTemplate.menu[j].Length; k++)
-                        npcTemplate.menu[j][k] = message.ReadString();
-                }
-                session.Data.NpcTemplates[i] = npcTemplate;
-            }
-            session.Data.MobTemplates = new MobTemplate[message.ReadByte()];
-            for (sbyte i = 0; i < session.Data.MobTemplates.Length; i++)
-            {
-                MobTemplate mobTemplate = new MobTemplate();
-                mobTemplate.mobTemplateId = i;
-                mobTemplate.type = message.ReadSByte();
-                mobTemplate.name = message.ReadString();
-                mobTemplate.hp = message.ReadInt();
-                mobTemplate.rangeMove = message.ReadSByte();
-                mobTemplate.speed = message.ReadSByte();
-                mobTemplate.dartType = message.ReadSByte();
-                session.Data.MobTemplates[i] = mobTemplate;
-            }
-        }
-
         void ReadCurrentMapInfo(MessageReceive message)
         {
             Player player = session.Player;
@@ -195,6 +199,14 @@ namespace DataNRO.TeaMobi
             location.mapName = message.ReadString();
             location.zoneId = message.ReadSByte();
             //Who cares what the rest of the data is?
+        }
+
+        void ReadIconInfo(MessageReceive message)
+        {
+            int iconId = message.ReadInt();
+            int dataLength = message.ReadInt();
+            byte[] data = message.ReadBytes(dataLength);
+            File.WriteAllBytes($"{session.Data.Path}\\x{Config.zoomLevel}\\{iconId}.png", data);
         }
     }
 }

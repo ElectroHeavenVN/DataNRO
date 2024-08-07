@@ -19,7 +19,6 @@ namespace DataNRO.TeaMobi
         public GameData Data { get; } = new GameData();
         public Player Player { get; } = new Player();
 
-        IMessageWriter messageWriter;
         Thread receiveThread;
         Thread sendThread;
         TcpClient tcpClient;
@@ -110,7 +109,6 @@ namespace DataNRO.TeaMobi
                     MessageReceive message = ReadMessageFromStream();
                     if (message == null)
                         break;
-                    Console.WriteLine($"[{Host}:{Port}] Message received: {message.Command}, {message.DataLength} bytes");
                     if (message.Command == -27)
                         GetKey(message);
                     else

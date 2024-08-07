@@ -37,8 +37,9 @@ namespace DataNRO
             string account = arr[4];
             string password = arr[5];
             string folderName = arr[6];
-            if (!Directory.Exists("Data\\" + folderName))
-                Directory.CreateDirectory("Data\\" + folderName);
+            string dataPath = $"Data\\{type}\\{folderName}";
+            if (!Directory.Exists(dataPath))
+                Directory.CreateDirectory(dataPath);
             ISession session;
             try
             {
@@ -50,7 +51,7 @@ namespace DataNRO
                 Console.WriteLine($"Assembly company: {assembly.GetCustomAttribute<AssemblyCompanyAttribute>().Company}");
                 Console.WriteLine($"Assembly copyright: {assembly.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright}");
                 string sessionTypeName = $"DataNRO.{type}.{type}Session";
-                Console.WriteLine($"Creating session type: \"{sessionTypeName}\"...");
+                Console.WriteLine($"Creating session type: {sessionTypeName}...");
                 session = (ISession)Activator.CreateInstance(assembly.GetType(sessionTypeName), new object[] { host, port });
                 Console.WriteLine($"Session type \"{type}\" has been created successfully!");
             }
@@ -59,6 +60,7 @@ namespace DataNRO
                 Console.WriteLine($"The main assembly for server type \"{type}\" (DataNRO.{type}.dll) does not exist!");
                 return;
             }
+            session.Data.Path = dataPath;
             Console.WriteLine($"Connecting to {session.Host}:{session.Port}...");
             if (!TryConnect(session))
                 return;
@@ -98,19 +100,21 @@ namespace DataNRO
             Console.WriteLine($"Current map: {location.mapName} [{location.mapId}], zone {location.zoneId}");
             Thread.Sleep(1000);
             TryGoOutsideIfAtHome(session);
-            writer.Chat("DataNRO by ElectroHeavenVN");
             Console.WriteLine($"[{session.Host}:{session.Port}] Disconnect from {session.Host}:{session.Port} in 10s...");
-            Thread.Sleep(10000);
+            writer.Chat("DataNRO by ElectroHeavenVN");
+            Thread.Sleep(5000);
+            writer.Chat("GitHub dot com slash ElectroHeavenVN slash DataNRO");
+            Thread.Sleep(5000);
             session.Disconnect();
-            Console.WriteLine($"[{session.Host}:{session.Port}] Writing data to {folderName}\\...");
+            Console.WriteLine($"[{session.Host}:{session.Port}] Writing data to {session.Data.Path}\\...");
             Formatting formatting = Formatting.Indented;
-            File.WriteAllText($"Data\\{folderName}\\{nameof(GameData.Maps)}.json", JsonConvert.SerializeObject(session.Data.Maps, formatting));
-            File.WriteAllText($"Data\\{folderName}\\{nameof(GameData.NpcTemplates)}.json", JsonConvert.SerializeObject(session.Data.NpcTemplates, formatting));
-            File.WriteAllText($"Data\\{folderName}\\{nameof(GameData.MobTemplates)}.json", JsonConvert.SerializeObject(session.Data.MobTemplates, formatting));
-            File.WriteAllText($"Data\\{folderName}\\{nameof(GameData.ItemOptionTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemOptionTemplates, formatting));
-            File.WriteAllText($"Data\\{folderName}\\{nameof(GameData.NClasses)}.json", JsonConvert.SerializeObject(session.Data.NClasses, formatting));
-            File.WriteAllText($"Data\\{folderName}\\{nameof(GameData.ItemTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemTemplates, formatting));
-            File.WriteAllText($"Data\\{folderName}\\LastUpdated", DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Maps)}.json", JsonConvert.SerializeObject(session.Data.Maps, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NpcTemplates)}.json", JsonConvert.SerializeObject(session.Data.NpcTemplates, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.MobTemplates)}.json", JsonConvert.SerializeObject(session.Data.MobTemplates, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemOptionTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemOptionTemplates, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NClasses)}.json", JsonConvert.SerializeObject(session.Data.NClasses, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemTemplates, formatting));
+            File.WriteAllText($"{session.Data.Path}\\LastUpdated", DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
             Thread.Sleep(3000);
             session.Dispose();
         }

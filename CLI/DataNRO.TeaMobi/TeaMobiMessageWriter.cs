@@ -5,8 +5,6 @@ namespace DataNRO.TeaMobi
 {
     public class TeaMobiMessageWriter : IMessageWriter
     {
-        static readonly string VERSION = "2.4.0";
-
         TeaMobiSession session;
 
         public TeaMobiMessageWriter(TeaMobiSession session)
@@ -54,14 +52,14 @@ namespace DataNRO.TeaMobi
         public void SetClientType()
         {
             MessageSend message = MessageNotLogin(2);
-            message.WriteByte(4);
-            message.WriteByte(2);
+            message.WriteByte(Config.clientType);
+            message.WriteByte(Config.zoomLevel);
             message.WriteBool(false);
-            message.WriteInt(512);
-            message.WriteInt(300);
+            message.WriteInt(Config.screenWidth / Config.zoomLevel);
+            message.WriteInt(Config.screenHeight / Config.zoomLevel);
             message.WriteBool(true);
             message.WriteBool(true);
-            message.WriteStringUTF("Pc platform xxx|" + VERSION);
+            message.WriteStringUTF("Pc platform xxx|" + Config.gameVersion);
             Stream stream = typeof(TeaMobiMessageWriter).Assembly.GetManifestResourceStream("DataNRO.TeaMobi.Resources.info");
             byte[] array = new byte[stream.Length];
             stream.Read(array, 0, array.Length);
@@ -83,7 +81,7 @@ namespace DataNRO.TeaMobi
             MessageSend message = MessageNotLogin(0);
             message.WriteStringUTF(username);
             message.WriteStringUTF(pass);
-            message.WriteStringUTF(VERSION);
+            message.WriteStringUTF(Config.gameVersion);
             message.WriteSByte(type);
             session.SendMessage(message);
         }
@@ -118,6 +116,13 @@ namespace DataNRO.TeaMobi
         public void GetMapOffline()
         {
             MessageSend message = new MessageSend(-33);
+            session.SendMessage(message);
+        }
+
+        public void RequestIcon(int id)
+        {
+            MessageSend message = new MessageSend(-67);
+            message.WriteInt(id);
             session.SendMessage(message);
         }
 
