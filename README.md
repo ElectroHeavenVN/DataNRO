@@ -16,9 +16,9 @@ Xem dữ liệu vật phẩm, quái, NPC, map,... của game <ins>**Ngọc Rồn
 - `ItemOptionTemplates.json`: Dữ liệu loại thuộc tính vật phẩm
 ```json
   {
-    "id": 28,
-    "type": 2,
-    "name": "+# KI/30s"
+    "id": 93,
+    "type": 0,
+    "name": "HSD # ngày"
   }
 ```
 - `ItemTemplates.json`: Dữ liệu vật phẩm, chứa tên, mô tả, hành tinh, sức mạnh yêu cầu,...
