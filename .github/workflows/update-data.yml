@@ -53,7 +53,7 @@ jobs:
           workflow: update-data.yml
           name: DataNRO
           path: Output\Data\TeaMobi
-      - run: Remove-Item -Path Output\Data\TeaMobi -Recurse -Force
+      - run: Remove-Item -Path Output\Data\TeaMobi\HSNR -Recurse -Force
       - name: Checkout DataNRO.HSNR
         if: ${{ env.HSNR_TOKEN }} != ''
         uses: actions/checkout@v4
