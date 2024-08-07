@@ -65,6 +65,12 @@ namespace DataNRO
         /// Đường dẫn lưu dữ liệu game
         /// </summary>
         public string Path { get; set; }
+
+        /// <summary>
+        /// Trạng thái lưu icon
+        /// </summary>
+        public bool SaveIcon { get; set; }
+
         public NpcTemplate[] NpcTemplates { get; set; }
         public MobTemplate[] MobTemplates { get; set; }
         public ItemOptionTemplate[] ItemOptionTemplates { get; set; }

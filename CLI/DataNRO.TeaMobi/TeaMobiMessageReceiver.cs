@@ -203,6 +203,8 @@ namespace DataNRO.TeaMobi
 
         void ReadIconInfo(MessageReceive message)
         {
+            if (!session.Data.SaveIcon)
+                return;
             int iconId = message.ReadInt();
             int dataLength = message.ReadInt();
             byte[] data = message.ReadBytes(dataLength);

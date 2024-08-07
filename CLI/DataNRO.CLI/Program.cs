@@ -36,7 +36,8 @@ namespace DataNRO
             string unregisteredUser = arr[3];
             string account = arr[4];
             string password = arr[5];
-            string folderName = arr[6];
+            bool requestAndSaveIcon = bool.Parse(arr[6]);
+            string folderName = arr[7];
             string dataPath = $"Data\\{type}\\{folderName}";
             if (!Directory.Exists(dataPath))
                 Directory.CreateDirectory(dataPath);
@@ -61,6 +62,7 @@ namespace DataNRO
                 return;
             }
             session.Data.Path = dataPath;
+            session.Data.SaveIcon = requestAndSaveIcon;
             Console.WriteLine($"Connecting to {session.Host}:{session.Port}...");
             if (!TryConnect(session))
                 return;
@@ -105,6 +107,7 @@ namespace DataNRO
             Thread.Sleep(5000);
             writer.Chat("GitHub dot com slash ElectroHeavenVN slash DataNRO");
             Thread.Sleep(5000);
+            //request icon here
             session.Disconnect();
             Console.WriteLine($"[{session.Host}:{session.Port}] Writing data to {session.Data.Path}\\...");
             Formatting formatting = Formatting.Indented;
