@@ -27,12 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let searchContainer = '';
         switch (page) {
             case 'itemTemplates':
-                url = 'HSNR/ItemTemplates.json';
+                url = 'HSNR/Server1/ItemTemplates.json';
                 title = 'Item Templates';
                 breadcrumb = 'Item Templates';
                 break;
             case 'npcTemplates':
-                url = 'HSNR/NpcTemplates.json';
+                url = 'HSNR/Server1/NpcTemplates.json';
                 title = 'NPC Templates';
                 breadcrumb = 'NPC Templates';
                 searchContainer = `
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>`;
                 break;
             case 'nClasses':
-                url = 'HSNR/NClasses.json';
+                url = 'HSNR/Server1/NClasses.json';
                 title = 'Class Skills';
                 breadcrumb = 'Class Skills';
                 searchContainer = `
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>`;
                 break;
             case 'itemOptions':
-                url = 'HSNR/ItemOptionTemplates.json';
+                url = 'HSNR/Server1/ItemOptionTemplates.json';
                 title = 'Item Options';
                 breadcrumb = 'Item Options';
                 searchContainer = `
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>`;
                 break;
             case 'maps':
-                url = 'HSNR/Maps.json';
+                url = 'HSNR/Server1/Maps.json';
                 title = 'Maps';
                 breadcrumb = 'Maps';
                 searchContainer = `

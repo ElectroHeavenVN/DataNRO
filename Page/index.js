@@ -27,12 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let searchContainer = '';
         switch (page) {
             case 'itemTemplates':
-                url = 'Server8910/ItemTemplates.json';
+                url = 'TeaMobi/Server8910/ItemTemplates.json';
                 title = 'Item Templates';
                 breadcrumb = 'Item Templates';
                 break;
             case 'npcTemplates':
-                url = 'Server8910/NpcTemplates.json';
+                url = 'TeaMobi/Server8910/NpcTemplates.json';
                 title = 'NPC Templates';
                 breadcrumb = 'NPC Templates';
                 searchContainer = `
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>`;
                 break;
             case 'nClasses':
-                url = 'Server8910/NClasses.json';
+                url = 'TeaMobi/Server8910/NClasses.json';
                 title = 'Class Skills';
                 breadcrumb = 'Class Skills';
                 searchContainer = `
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>`;
                 break;
             case 'itemOptions':
-                url = 'Server8910/ItemOptionTemplates.json';
+                url = 'TeaMobi/Server8910/ItemOptionTemplates.json';
                 title = 'Item Options';
                 breadcrumb = 'Item Options';
                 searchContainer = `
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>`;
                 break;
             case 'maps':
-                url = 'Server8910/Maps.json';
+                url = 'TeaMobi/Server8910/Maps.json';
                 title = 'Maps';
                 breadcrumb = 'Maps';
                 searchContainer = `
