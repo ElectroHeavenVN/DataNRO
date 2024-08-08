@@ -79,11 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 title = 'Maps';
                 breadcrumb = 'Maps';
                 searchContainer = `
-                    <div class="search-container">
-                    <div class="search-container">
-                        <input type="text" id="search-id" placeholder="Tìm kiếm theo số thứ tự...">
                 <div class="search-container">
-                        <input type="text" id="search-id" placeholder="Tìm kiếm theo số thứ tự...">
                     <input type="text" id="search-name" placeholder="Tìm kiếm theo tên...">
                     <button>Tìm kiếm</button>
                 </div>`;
