@@ -480,12 +480,13 @@ nav {
 	margin: 20px 0;
 }
 
-.pagination-container{
+.pagination-container {
 	display: flex;
 	justify-content: center;
 }
 
-.pagination button, .pagination span {
+.pagination button,
+.pagination span {
 	padding: 10px;
 	border: 1px solid #ddd;
 	margin: 0 5px;
@@ -521,4 +522,20 @@ footer {
 	width: 100%;
 	bottom: 0;
 	border-top: 1px solid #ddd;
+}
+
+footer .straight {
+	display: inline;
+}
+
+footer .gay {
+	display: none;
+}
+
+footer:hover .straight {
+	display: none;
+}
+
+footer:hover .gay {
+	display: inline;
 }
