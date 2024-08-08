@@ -97,7 +97,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentPage = 1;
         displayPageData(filteredData);
-    }
+    }  
+    document.querySelector('footer').innerHTML += decodeURIComponent(atob('ICAgICAgICA8cCBjbGFzcz0iZ2F5Ij4mY29weTsgMjAyNCBUcsaw4budbmcgR2lhbmcgKFZOR0FZKS4gQWxsIHJpZ2h0cyByZXNlcnZlZC48L3A+').split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
 
     function fetchData(url, page, searchContainer) {
         fetch(url)
