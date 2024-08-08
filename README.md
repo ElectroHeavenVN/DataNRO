@@ -1,16 +1,16 @@
 # DataNRO
 Xem dữ liệu vật phẩm, quái, NPC, map,... của game [**Ngọc Rồng Online**](http://ngocrongonline.com/) và [**Hồi sinh Ngọc Rồng**](https://hoisinhngocrong.com/). Dữ liệu được tự động cập nhật mỗi ngày.
-<br>*Mã nguồn của phần lấy dữ liệu từ máy chủ **Hồi sinh Ngọc Rồng** là **độc quyền** và **không có trong kho mã nguồn này**.*
+<br>*Mã nguồn của phần lấy dữ liệu từ game **Hồi sinh Ngọc Rồng** là **độc quyền** và **không có trong kho mã nguồn này**.*
 ## API
-Định dạng: `Máy chủ`/`Server`/`Loại dữ liệu`
-### Máy chủ / Server
-- `/TeaMobi`: Data máy chủ Ngọc Rồng Online
+Định dạng: `Loại Game`/`Server`/`Loại dữ liệu`
+### Loại Game / Server
+- `/TeaMobi`: Data game Ngọc Rồng Online
   + `/Server`*: Server 1-7 và 11-13
   + `/Server8910`: Server gộp (server 8, 9, 10)
   + `/Super`*: Server Super 1 và Super 2
   + `/Universe1`: Server Quốc tế (Universe 1)
   + `/Naga`: Server Indonesia (Naga)
-- `/HSNR`: Data máy chủ Hồi sinh Ngọc Rồng
+- `/HSNR`: Data game Hồi sinh Ngọc Rồng
   + `/Server`*: Server 1-3
 ### Loại dữ liệu
 - `ItemOptionTemplates.json`: Dữ liệu loại thuộc tính vật phẩm
