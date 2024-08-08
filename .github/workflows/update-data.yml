@@ -30,27 +30,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2
-      - name: Restore DataNRO
-        run: msbuild $env:CLISolutionPath /t:restore /p:Configuration=Release
-      - name: Restore NuGet packages
-        run: nuget restore $env:CLISolutionPath
-      - name: Build DataNRO.CLI
-        run: msbuild $env:CLISolutionPath /t:rebuild /p:Configuration=Release
-      - name: Download artifact DataNRO-TeaMobi
-        uses: dawidd6/action-download-artifact@v5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow_search: true
-          workflow_conclusion: success
-          if_no_artifact_found: warn
-          allow_forks: false
-          workflow: update-data.yml
-          name: DataNRO-TeaMobi
-          path: Output\Data
+      # - name: Setup MSBuild
+      #   uses: microsoft/setup-msbuild@v2
+      # - name: Setup NuGet
+      #   uses: NuGet/setup-nuget@v2
+      # - name: Restore DataNRO
+      #   run: msbuild $env:CLISolutionPath /t:restore /p:Configuration=Release
+      # - name: Restore NuGet packages
+      #   run: nuget restore $env:CLISolutionPath
+      # - name: Build DataNRO.CLI
+      #   run: msbuild $env:CLISolutionPath /t:rebuild /p:Configuration=Release
+      # - name: Download artifact DataNRO-TeaMobi
+      #   uses: dawidd6/action-download-artifact@v5
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     workflow_search: true
+      #     workflow_conclusion: success
+      #     if_no_artifact_found: warn
+      #     allow_forks: false
+      #     workflow: update-data.yml
+      #     name: DataNRO-TeaMobi
+      #     path: Output\Data
 
       # remove this later
       - run:  Expand-Archive -Path TeaMobi.zip -Destination Output\Data\
@@ -62,11 +62,11 @@ jobs:
       #   env:
       #     DATA: ${{ secrets.DATA_TEAMOBI }}
       #     PROXY: ${{ secrets.PROXY }}
-      # - name: Upload artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: DataNRO-TeaMobi
-      #     path: Output\Data
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataNRO-TeaMobi
+          path: Output\Data
 
   update-data-HSNR:
     name: Update data (HSNR)
@@ -79,38 +79,38 @@ jobs:
       - name: Checkout
         if: ${{ env.HSNR_TOKEN }} != ''
         uses: actions/checkout@v4
-      - name: Setup MSBuild
-        if: ${{ env.HSNR_TOKEN }} != ''
-        uses: microsoft/setup-msbuild@v2
-      - name: Setup NuGet
-        if: ${{ env.HSNR_TOKEN }} != ''
-        uses: NuGet/setup-nuget@v2
-      - name: Restore DataNRO
-        if: ${{ env.HSNR_TOKEN }} != ''
-        run: msbuild $env:CLISolutionPath /t:restore /p:Configuration=Release
-      - name: Restore NuGet packages
-        if: ${{ env.HSNR_TOKEN }} != ''
-        run: nuget restore $env:CLISolutionPath
-      - name: Build DataNRO.CLI
-        if: ${{ env.HSNR_TOKEN }} != ''
-        run: msbuild $env:CLISolutionPath /t:rebuild /p:Configuration=Release
-      - name: Checkout DataNRO.HSNR
-        if: ${{ env.HSNR_TOKEN }} != ''
-        uses: actions/checkout@v4
-        with:
-          repository: 'ElectroHeavenVN/DataNRO.HSNR'
-          submodules: 'true'
-          token: ${{ secrets.DataNRO_HSNR_TOKEN }}
-          path: HSNR
-      - name: Restore DataNRO.HSNR
-        if: ${{ env.HSNR_TOKEN }} != ''
-        run: msbuild $env:HSNRSolutionPath /t:restore /p:Configuration=Release
-      - name: Build DataNRO.HSNR
-        if: ${{ env.HSNR_TOKEN }} != ''
-        run: msbuild $env:HSNRSolutionPath /t:rebuild /p:Configuration=Release
-      - name: Move DataNRO.HSNR to Output
-        if: ${{ env.HSNR_TOKEN }} != ''
-        run: Move-Item -Path HSNR/Output/DataNRO.HSNR.dll -Destination Output/DataNRO.HSNR.dll -Force
+      # - name: Setup MSBuild
+      #   if: ${{ env.HSNR_TOKEN }} != ''
+      #   uses: microsoft/setup-msbuild@v2
+      # - name: Setup NuGet
+      #   if: ${{ env.HSNR_TOKEN }} != ''
+      #   uses: NuGet/setup-nuget@v2
+      # - name: Restore DataNRO
+      #   if: ${{ env.HSNR_TOKEN }} != ''
+      #   run: msbuild $env:CLISolutionPath /t:restore /p:Configuration=Release
+      # - name: Restore NuGet packages
+      #   if: ${{ env.HSNR_TOKEN }} != ''
+      #   run: nuget restore $env:CLISolutionPath
+      # - name: Build DataNRO.CLI
+      #   if: ${{ env.HSNR_TOKEN }} != ''
+      #   run: msbuild $env:CLISolutionPath /t:rebuild /p:Configuration=Release
+      # - name: Checkout DataNRO.HSNR
+      #   if: ${{ env.HSNR_TOKEN }} != ''
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: 'ElectroHeavenVN/DataNRO.HSNR'
+      #     submodules: 'true'
+      #     token: ${{ secrets.DataNRO_HSNR_TOKEN }}
+      #     path: HSNR
+      # - name: Restore DataNRO.HSNR
+      #   if: ${{ env.HSNR_TOKEN }} != ''
+      #   run: msbuild $env:HSNRSolutionPath /t:restore /p:Configuration=Release
+      # - name: Build DataNRO.HSNR
+      #   if: ${{ env.HSNR_TOKEN }} != ''
+      #   run: msbuild $env:HSNRSolutionPath /t:rebuild /p:Configuration=Release
+      # - name: Move DataNRO.HSNR to Output
+      #   if: ${{ env.HSNR_TOKEN }} != ''
+      #   run: Move-Item -Path HSNR/Output/DataNRO.HSNR.dll -Destination Output/DataNRO.HSNR.dll -Force
       - name: Download artifact DataNRO-HSNR
         if: ${{ env.HSNR_TOKEN }} != ''
         uses: dawidd6/action-download-artifact@v5
