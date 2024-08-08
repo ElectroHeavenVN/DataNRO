@@ -22,6 +22,7 @@ namespace DataNRO
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
+            new Thread(FailoverThread) { IsBackground = true }.Start();
             if (!Directory.Exists("Data"))
                 Directory.CreateDirectory("Data");
             proxyData = Environment.GetEnvironmentVariable("PROXY");
@@ -37,6 +38,13 @@ namespace DataNRO
             string[] datas = data.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             foreach (string d in datas)
                 LoginAndGetData(d);
+        }
+
+        static void FailoverThread()
+        {
+            Thread.Sleep(1000 * 60 * 60);
+            Console.WriteLine("DataNRO has been running for 1 hour, exiting...");
+            Environment.Exit(0);
         }
 
         static void LoginAndGetData(string data)
