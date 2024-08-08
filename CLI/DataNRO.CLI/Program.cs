@@ -37,6 +37,9 @@ namespace DataNRO
             string[] datas = data.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             foreach (string d in datas)
                 LoginAndGetData(d);
+#if DEBUG
+            Console.ReadLine();
+#endif
         }
 
         static void LoginAndGetData(string data)
@@ -122,7 +125,7 @@ namespace DataNRO
             while (location == null || string.IsNullOrEmpty(location.mapName));
             Console.WriteLine($"[{session.Host}:{session.Port}] Current map: {location.mapName} [{location.mapId}], zone {location.zoneId}");
             Thread.Sleep(1000);
-            if (requestAndSaveIcons)
+            if (session.Data.SaveIcon)
             {
                 if (!RequestIcons(session))
                     return;
@@ -165,8 +168,18 @@ namespace DataNRO
             }
             List<int> requestedIcons = new List<int>();
             //item
-            List<ItemTemplate> items = session.Data.ItemTemplates;
             count = 0;
+            while (session.Data.ItemTemplates == null)
+            {
+                Thread.Sleep(1000 + random.Next(-200, 201));
+                count++;
+                if (count >= 10)
+                {
+                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    count = 0;
+                }
+            }
+            List<ItemTemplate> items = session.Data.ItemTemplates;
             while (items.Count > 0)
             {
                 ItemTemplate item = items[random.Next(0, items.Count)];
@@ -187,15 +200,27 @@ namespace DataNRO
                 }
             }
             //npc
+            while (session.Data.NpcTemplates == null)
+            {
+                Thread.Sleep(1000 + random.Next(-200, 201));
+                count++;
+                if (count >= 10)
+                {
+                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    count = 0;
+                }
+            }
             foreach (NpcTemplate npc in session.Data.NpcTemplates)
             {
-                Part partHead = session.Data.Parts[npc.headId];
-                Part partBody = session.Data.Parts[npc.bodyId];
-                Part partLeg = session.Data.Parts[npc.legId];
+                Part partHead = npc.headId == -1 ? null : session.Data.Parts[npc.headId];
+                Part partBody = npc.bodyId == -1 ? null : session.Data.Parts[npc.bodyId];
+                Part partLeg = npc.legId == -1 ? null : session.Data.Parts[npc.legId];
                 void RequestPartIcon(Part part, int index)
                 {
+                    if (part == null)
+                        return;
                     int id = part.pi[index].id;
-                    if (!requestedIcons.Contains(id))
+                    if (requestedIcons.Contains(id))
                         return;
                     if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
                         return;
@@ -216,6 +241,16 @@ namespace DataNRO
 
             }
             //skills
+            while (session.Data.NClasses == null)
+            {
+                Thread.Sleep(1000 + random.Next(-200, 201));
+                count++;
+                if (count >= 10)
+                {
+                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    count = 0;
+                }
+            }
             foreach (NClass nClass in session.Data.NClasses)
             {
                 foreach (SkillTemplate skillTemplate in nClass.skillTemplates)
