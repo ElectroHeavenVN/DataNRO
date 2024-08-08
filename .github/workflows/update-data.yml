@@ -53,20 +53,20 @@ jobs:
           path: Output\Data
 
       # remove this later
-      - run:  Expand-Archive -Path Page\Icons.zip -Destination Output\Data\TeaMobi\
+      - run:  Expand-Archive -Path TeaMobi.zip -Destination Output\Data\
 
-      - name: Run headless client
-        run: |
-          cd Output
-          .\DataNRO.CLI.exe
-        env:
-          DATA: ${{ secrets.DATA_TEAMOBI }}
-          PROXY: ${{ secrets.PROXY }}
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: DataNRO-TeaMobi
-          path: Output\Data
+      # - name: Run headless client
+      #   run: |
+      #     cd Output
+      #     .\DataNRO.CLI.exe
+      #   env:
+      #     DATA: ${{ secrets.DATA_TEAMOBI }}
+      #     PROXY: ${{ secrets.PROXY }}
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: DataNRO-TeaMobi
+      #     path: Output\Data
 
   update-data-HSNR:
     name: Update data (HSNR)
@@ -117,20 +117,21 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
-          workflow_conclusion: success
+          # workflow_conclusion: success
+          workflow_conclusion: ""
           if_no_artifact_found: warn
           allow_forks: false
           workflow: update-data.yml
           name: DataNRO-HSNR
           path: Output\Data
-      - name: Run headless client
-        if: ${{ env.HSNR_TOKEN }} != ''
-        run: |
-          cd Output
-          .\DataNRO.CLI.exe
-        env:
-          DATA: ${{ secrets.DATA_HSNR }}
-          PROXY: ${{ secrets.PROXY }}
+      # - name: Run headless client
+      #   if: ${{ env.HSNR_TOKEN }} != ''
+      #   run: |
+      #     cd Output
+      #     .\DataNRO.CLI.exe
+      #   env:
+      #     DATA: ${{ secrets.DATA_HSNR }}
+      #     PROXY: ${{ secrets.PROXY }}
       - name: Upload artifact
         if: ${{ env.HSNR_TOKEN }} != ''
         uses: actions/upload-artifact@v4
@@ -151,6 +152,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           name: DataNRO-TeaMobi
           workflow_search: false
+          workflow_conclusion: ""
           if_no_artifact_found: fail
           allow_forks: false
           path: Page
@@ -160,6 +162,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           name: DataNRO-HSNR
           workflow_search: false
+          workflow_conclusion: ""
           if_no_artifact_found: fail
           allow_forks: false
           path: Page
