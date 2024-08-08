@@ -126,6 +126,19 @@ namespace DataNRO.TeaMobi
             session.SendMessage(message);
         }
 
+        public void OpenUIZone()
+        {
+            MessageSend message = new MessageSend(29);
+            session.SendMessage(message);
+        }
+
+        public void RequestChangeZone(int zoneId)
+        {
+            MessageSend message = new MessageSend(21);
+            message.WriteByte((byte)zoneId);
+            session.SendMessage(message);
+        }
+
         MessageSend MessageNotMap(sbyte command)
         {
             MessageSend message = new MessageSend(-28);

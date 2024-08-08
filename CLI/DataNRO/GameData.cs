@@ -61,6 +61,30 @@ namespace DataNRO
             public string name;
         }
 
+        public class PartImage
+        {
+            public int id, dx, dy;
+        }
+
+        public class Part
+        {
+            public int type;
+            public PartImage[] pi;
+
+            public Part(int type)
+            {
+                this.type = type;
+                if (type == 0)
+                    pi = new PartImage[3];
+                if (type == 1)
+                    pi = new PartImage[17];
+                if (type == 2)
+                    pi = new PartImage[14];
+                if (type == 3)
+                    pi = new PartImage[2];
+            }
+        }
+
         /// <summary>
         /// Đường dẫn lưu dữ liệu game
         /// </summary>
@@ -71,12 +95,18 @@ namespace DataNRO
         /// </summary>
         public bool SaveIcon { get; set; }
 
+        /// <summary>
+        /// Trạng thái ghi đè icon hay không
+        /// </summary>
+        public bool OverwriteIcons { get; set; }
+
         public NpcTemplate[] NpcTemplates { get; set; }
         public MobTemplate[] MobTemplates { get; set; }
         public ItemOptionTemplate[] ItemOptionTemplates { get; set; }
         public NClass[] NClasses { get; set; }
         public List<Map> Maps { get; set; } = new List<Map>();
         public List<ItemTemplate> ItemTemplates { get; set; } = new List<ItemTemplate>();
+        public Part[] Parts { get; set; }
 
         /// <summary>
         /// Đặt lại dữ liệu của game
@@ -89,6 +119,7 @@ namespace DataNRO
             NClasses = null;
             Maps = new List<Map>();
             ItemTemplates = new List<ItemTemplate>();
+            Parts = null;
         }
     }
 }

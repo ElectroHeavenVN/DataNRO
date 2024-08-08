@@ -73,5 +73,16 @@
         /// </summary>
         /// <param name="id">ID của icon</param>
         void RequestIcon(int id);
+
+        /// <summary>
+        /// Gửi yêu cầu thông tin khu vực của map hiện tại
+        /// </summary>
+        void OpenUIZone();
+
+        /// <summary>
+        /// Gửi yêu cầu thay đổi khu vực
+        /// </summary>
+        /// <param name="zoneId">ID khu vực</param>
+        void RequestChangeZone(int zoneId);
     }
 }

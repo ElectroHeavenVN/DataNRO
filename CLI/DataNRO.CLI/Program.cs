@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -8,12 +9,15 @@ using System.Threading;
 using DataNRO.Interfaces;
 using Newtonsoft.Json;
 using Starksoft.Net.Proxy;
+using static DataNRO.GameData;
 
 namespace DataNRO
 {
     internal class Program
     {
+        static Random random = new Random();
         static string proxyData = "";
+        static bool overwriteIcons;
 
         static void Main(string[] args)
         {
@@ -21,7 +25,15 @@ namespace DataNRO
             if (!Directory.Exists("Data"))
                 Directory.CreateDirectory("Data");
             proxyData = Environment.GetEnvironmentVariable("PROXY");
+            string overwriteIconsStr = Environment.GetEnvironmentVariable("OVERWRITE_ICONS");
+            if (!string.IsNullOrEmpty(overwriteIconsStr))
+                overwriteIcons = bool.Parse(overwriteIconsStr);
+#if DEBUG
+            Console.Write("DATA: ");
+            string data = Console.ReadLine();
+#else
             string data = Environment.GetEnvironmentVariable("DATA");
+#endif
             string[] datas = data.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             foreach (string d in datas)
                 LoginAndGetData(d);
@@ -36,7 +48,7 @@ namespace DataNRO
             string unregisteredUser = arr[3];
             string account = arr[4];
             string password = arr[5];
-            bool requestAndSaveIcon = bool.Parse(arr[6]);
+            bool requestAndSaveIcons = bool.Parse(arr[6]);
             string folderName = arr[7];
             string dataPath = $"Data\\{type}\\{folderName}";
             if (!Directory.Exists(dataPath))
@@ -62,7 +74,8 @@ namespace DataNRO
                 return;
             }
             session.Data.Path = dataPath;
-            session.Data.SaveIcon = requestAndSaveIcon;
+            session.Data.SaveIcon = requestAndSaveIcons;
+            session.Data.OverwriteIcons = overwriteIcons;
             Console.WriteLine($"Connecting to {session.Host}:{session.Port}...");
             if (!TryConnect(session))
                 return;
@@ -93,21 +106,33 @@ namespace DataNRO
             Thread.Sleep(500);
             writer.FinishLoadMap();
             Thread.Sleep(3000);
+            int count = 0;
             Location location;
             do
             {
                 location = session.Player.location;
+                count++;
+                if (count >= 10)
+                {
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Failed to get the player's location!");
+                    return;
+                }
+                Thread.Sleep(1000);
             }
             while (location == null || string.IsNullOrEmpty(location.mapName));
-            Console.WriteLine($"Current map: {location.mapName} [{location.mapId}], zone {location.zoneId}");
+            Console.WriteLine($"[{session.Host}:{session.Port}] Current map: {location.mapName} [{location.mapId}], zone {location.zoneId}");
             Thread.Sleep(1000);
+            if (requestAndSaveIcons)
+            {
+                if (!RequestIcons(session))
+                    return;
+            }
             TryGoOutsideIfAtHome(session);
             Console.WriteLine($"[{session.Host}:{session.Port}] Disconnect from {session.Host}:{session.Port} in 10s...");
             writer.Chat("DataNRO by ElectroHeavenVN");
             Thread.Sleep(5000);
             writer.Chat("GitHub dot com slash ElectroHeavenVN slash DataNRO");
             Thread.Sleep(5000);
-            //request icon here
             session.Disconnect();
             Console.WriteLine($"[{session.Host}:{session.Port}] Writing data to {session.Data.Path}\\...");
             Formatting formatting = Formatting.Indented;
@@ -117,9 +142,99 @@ namespace DataNRO
             File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemOptionTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemOptionTemplates, formatting));
             File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NClasses)}.json", JsonConvert.SerializeObject(session.Data.NClasses, formatting));
             File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemTemplates, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Parts)}.json", JsonConvert.SerializeObject(session.Data.Parts, formatting));
             File.WriteAllText($"{session.Data.Path}\\LastUpdated", DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
             Thread.Sleep(3000);
             session.Dispose();
+        }
+
+        static bool RequestIcons(ISession session)
+        {
+            IMessageWriter writer = session.MessageWriter;
+            writer.UpdateData();
+            int count = 0;
+            while (session.Data.Parts == null)
+            {
+                count++;
+                if (count >= 10)
+                {
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Get parts failed!");
+                    return false;
+                }
+                Thread.Sleep(1000);
+            }
+            List<int> requestedIcons = new List<int>();
+            //item
+            List<ItemTemplate> items = session.Data.ItemTemplates;
+            count = 0;
+            while (items.Count > 0)
+            {
+                ItemTemplate item = items[random.Next(0, items.Count)];
+                items.Remove(item);
+                if (requestedIcons.Contains(item.iconID))
+                    continue;
+                if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{item.iconID}.png"))
+                    continue;
+                writer.RequestIcon(item.iconID);
+                requestedIcons.Add(item.iconID);
+                Thread.Sleep(1000 + random.Next(-200, 201));
+                count++;
+                if (count >= 10)
+                {
+                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    count = 0;
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
+                }
+            }
+            //npc
+            List<Part> parts = new List<Part>(session.Data.Parts);
+            while (parts.Count > 0)
+            {
+                Part part = parts[random.Next(0, parts.Count)];
+                parts.Remove(part);
+                for (int i = 0; i < 3; i++)
+                {
+                    int iconID = part.pi[Math.Max(0, Math.Min(1, i))].id;
+                    if (requestedIcons.Contains(iconID))
+                        continue;
+                    if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{iconID}.png"))
+                        continue;
+                    writer.RequestIcon(iconID);
+                    requestedIcons.Add(iconID);
+                    Thread.Sleep(1000 + random.Next(-200, 201));
+                    count++;
+                    if (count >= 10)
+                    {
+                        writer.RequestChangeZone(session.Player.location.zoneId);
+                        count = 0;
+                        Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
+                    }
+                }
+            }
+            //skills
+            foreach (NClass nClass in session.Data.NClasses)
+            {
+                foreach (SkillTemplate skillTemplate in nClass.skillTemplates)
+                {
+                    if (requestedIcons.Contains(skillTemplate.iconId))
+                        continue;
+                    if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{skillTemplate.iconId}.png"))
+                        continue;
+                    writer.RequestIcon(skillTemplate.iconId);
+                    requestedIcons.Add(skillTemplate.iconId);
+                    Thread.Sleep(1000 + random.Next(-200, 201));
+                    count++;
+                    if (count >= 10)
+                    {
+                        writer.RequestChangeZone(session.Player.location.zoneId);
+                        count = 0;
+                        Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
+                    }
+                }
+            }
+            Console.WriteLine($"[{session.Host}:{session.Port}] Wait 10s...");
+            Thread.Sleep(10000);
+            return true;
         }
 
         static void TryGoOutsideIfAtHome(ISession session)

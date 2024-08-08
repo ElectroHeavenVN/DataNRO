@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 using DataNRO.Interfaces;
 using static DataNRO.GameData;
 
@@ -7,6 +9,13 @@ namespace DataNRO.TeaMobi
 {
     public class TeaMobiMessageReceiver : IMessageReceiver
     {
+        static readonly string[] blankImageHashes = new string[]
+        {
+            "110B964285DEB1A8D3D13562914E1E2B51F4799A85412884B481E0316358DF48",
+            "A09E276301DE73E84A35169799AFEBC9B0DEE6EC73DB827BF97D604E76395433",
+            "95DB5A048C9A4A9AB381FBD97CD7B724112FB11CDEC8E7A083AC2A366D2E9CF0"
+        };
+
         TeaMobiSession session;
 
         internal TeaMobiMessageReceiver(TeaMobiSession session)
@@ -41,7 +50,10 @@ namespace DataNRO.TeaMobi
                     ReadCurrentMapInfo(message);
                     break;
                 case -67:
-                    ReadIconInfo(message);
+                    ReadIcon(message);
+                    break;
+                case -87:
+                    ReadCommonData(message);
                     break;
             }
         }
@@ -201,14 +213,56 @@ namespace DataNRO.TeaMobi
             //Who cares what the rest of the data is?
         }
 
-        void ReadIconInfo(MessageReceive message)
+        void ReadIcon(MessageReceive message)
         {
             if (!session.Data.SaveIcon)
                 return;
             int iconId = message.ReadInt();
-            int dataLength = message.ReadInt();
-            byte[] data = message.ReadBytes(dataLength);
-            File.WriteAllBytes($"{session.Data.Path}\\x{Config.zoomLevel}\\{iconId}.png", data);
+            byte[] data = message.ReadBytes();
+            string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Icons";
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            if (session.Data.OverwriteIcons && File.Exists($"{path}\\{iconId}.png"))
+                return;
+            if (data.Length < 1000)
+            {
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    byte[] hash = sha256.ComputeHash(data);
+                    if (blankImageHashes.Contains(BitConverter.ToString(hash).Replace("-", "")))
+                        return;
+                }
+            }
+            File.WriteAllBytes($"{path}\\{iconId}.png", data);
+        }
+
+        void ReadCommonData(MessageReceive message)
+        {
+            message.ReadByte();
+            byte[] nr_dart = message.ReadBytes();
+            byte[] nr_arrow = message.ReadBytes();
+            byte[] nr_effect = message.ReadBytes();
+            byte[] nr_image = message.ReadBytes();
+            byte[] nr_part = message.ReadBytes();
+            byte[] nr_skill = message.ReadBytes();
+
+            using (MessageReceive partReader = new MessageReceive(0, nr_part))
+            {
+                Part[] parts = new Part[partReader.ReadShort()];
+                for (int i = 0; i < parts.Length; i++)
+                {
+                    parts[i] = new Part(partReader.ReadSByte());
+                    for (int j = 0; j < parts[i].pi.Length; j++)
+                    {
+                        PartImage partImage = new PartImage();
+                        partImage.id = partReader.ReadShort();
+                        partImage.dx = partReader.ReadSByte();
+                        partImage.dy = partReader.ReadSByte();
+                        parts[i].pi[j] = partImage;
+                    }
+                }
+                session.Data.Parts = parts;
+            }
         }
     }
 }

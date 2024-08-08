@@ -62,6 +62,10 @@ namespace DataNRO
         /// <summary>Đọc giá trị <see langword="ulong"/> từ dữ liệu của gói tin</summary>
         public ulong ReadULong() => reader.ReadUInt64BE();
         /// <summary>
+        /// Đọc một mảng <see langword="byte"/> với độ dài là 4 bute đầu từ dữ liệu của gói tin
+        /// </summary>
+        public byte[] ReadBytes() => ReadBytes(ReadInt());
+        /// <summary>
         /// Đọc một mảng <see langword="byte"/> từ dữ liệu của gói tin
         /// </summary>
         /// <param name="count">Độ dài mảng cần đọc</param>

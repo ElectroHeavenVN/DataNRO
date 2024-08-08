@@ -91,7 +91,6 @@ namespace DataNRO.TeaMobi
                     if (getKeyComplete && sendMessages.Count > 0)
                     {
                         MessageSend message = sendMessages.Dequeue();
-                        Console.WriteLine($"[{Host}:{Port}] Send message: {message.Command}, {message.DataLength} bytes");
                         WriteMessageToStream(message);
                     }
                     Thread.Sleep(5);
