@@ -49,12 +49,11 @@ jobs:
           if_no_artifact_found: warn
           allow_forks: false
           workflow: update-data.yml
-          name: DataNRO
-          # name: DataNRO-TeaMobi
+          name: DataNRO-TeaMobi
           path: Output\Data
 
       # remove this later
-      - run: Remove-Item -Path Output\Data\HSNR -Force -Recurse
+      - run:  Expand-Archive -Path Page\Icons.zip -Destination Output\Data\TeaMobi\
 
       - name: Run headless client
         run: |
