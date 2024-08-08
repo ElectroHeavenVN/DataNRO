@@ -125,7 +125,7 @@ namespace DataNRO.TeaMobi
                     skillTemplate.maxPoint = message.ReadSByte();
                     skillTemplate.manaUseType = message.ReadSByte();
                     skillTemplate.type = message.ReadSByte();
-                    skillTemplate.iconId = message.ReadShort();
+                    skillTemplate.icon = message.ReadShort();
                     skillTemplate.damInfo = message.ReadString();
                     skillTemplate.description = message.ReadString();
                     skillTemplate.skills = new Skill[message.ReadByte()];
@@ -183,7 +183,7 @@ namespace DataNRO.TeaMobi
                     itemTemplate.description = message.ReadString();
                     itemTemplate.level = message.ReadSByte();
                     itemTemplate.strRequire = message.ReadInt();
-                    itemTemplate.iconID = message.ReadShort();
+                    itemTemplate.icon = message.ReadShort();
                     itemTemplate.part = message.ReadShort();
                     itemTemplate.isUpToUp = message.ReadBool();
                     session.Data.ItemTemplates.Add(itemTemplate);

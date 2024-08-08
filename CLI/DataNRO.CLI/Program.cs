@@ -184,12 +184,12 @@ namespace DataNRO
             {
                 ItemTemplate item = items[random.Next(0, items.Count)];
                 items.Remove(item);
-                if (requestedIcons.Contains(item.iconID))
+                if (requestedIcons.Contains(item.icon))
                     continue;
-                if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{item.iconID}.png"))
+                if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{item.icon}.png"))
                     continue;
-                writer.RequestIcon(item.iconID);
-                requestedIcons.Add(item.iconID);
+                writer.RequestIcon(item.icon);
+                requestedIcons.Add(item.icon);
                 Thread.Sleep(1000 + random.Next(-200, 201));
                 count++;
                 if (count >= 10)
@@ -255,12 +255,12 @@ namespace DataNRO
             {
                 foreach (SkillTemplate skillTemplate in nClass.skillTemplates)
                 {
-                    if (requestedIcons.Contains(skillTemplate.iconId))
+                    if (requestedIcons.Contains(skillTemplate.icon))
                         continue;
-                    if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{skillTemplate.iconId}.png"))
+                    if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{skillTemplate.icon}.png"))
                         continue;
-                    writer.RequestIcon(skillTemplate.iconId);
-                    requestedIcons.Add(skillTemplate.iconId);
+                    writer.RequestIcon(skillTemplate.icon);
+                    requestedIcons.Add(skillTemplate.icon);
                     Thread.Sleep(1000 + random.Next(-200, 201));
                     count++;
                     if (count >= 10)

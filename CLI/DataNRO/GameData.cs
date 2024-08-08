@@ -30,7 +30,7 @@ namespace DataNRO
         public class ItemTemplate
         {
             public bool isUpToUp;
-            public int id, type, gender, level, strRequire, iconID, part;
+            public int id, type, gender, level, strRequire, icon, part;
             public string name, description;
         }
 
@@ -43,7 +43,7 @@ namespace DataNRO
 
         public class SkillTemplate
         {
-            public int id, maxPoint, manaUseType, type, iconId;
+            public int id, maxPoint, manaUseType, type, icon;
             public string name, description, damInfo;
             public Skill[] skills;
         }
