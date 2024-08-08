@@ -230,8 +230,12 @@ namespace DataNRO.TeaMobi
 
         public void Dispose()
         {
-            Disconnect();
-            tcpClient.Dispose();
+            try
+            {
+                Disconnect();
+                tcpClient.Dispose();
+            }
+            catch { }
             Data.Reset();
         }
 

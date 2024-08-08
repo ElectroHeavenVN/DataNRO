@@ -37,7 +37,17 @@ namespace DataNRO
 #endif
             string[] datas = data.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             foreach (string d in datas)
-                LoginAndGetData(d);
+            {
+                try
+                {
+                    LoginAndGetData(d);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+            Environment.Exit(0);
         }
 
         static void FailoverThread()
