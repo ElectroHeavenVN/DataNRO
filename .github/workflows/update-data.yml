@@ -51,10 +51,6 @@ jobs:
       #     workflow: update-data.yml
       #     name: DataNRO-TeaMobi
       #     path: Output\Data
-
-      # remove this later
-      - run:  Expand-Archive -Path TeaMobi.zip -Destination Output\Data\
-
       # - name: Run headless client
       #   run: |
       #     cd Output
@@ -62,6 +58,10 @@ jobs:
       #   env:
       #     DATA: ${{ secrets.DATA_TEAMOBI }}
       #     PROXY: ${{ secrets.PROXY }}
+      
+      # remove this later
+      - run:  Expand-Archive -Path TeaMobi.zip -Destination Output\Data\
+      
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -111,19 +111,18 @@ jobs:
       # - name: Move DataNRO.HSNR to Output
       #   if: ${{ env.HSNR_TOKEN }} != ''
       #   run: Move-Item -Path HSNR/Output/DataNRO.HSNR.dll -Destination Output/DataNRO.HSNR.dll -Force
-      - name: Download artifact DataNRO-HSNR
-        if: ${{ env.HSNR_TOKEN }} != ''
-        uses: dawidd6/action-download-artifact@v5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow_search: true
-          # workflow_conclusion: success
-          workflow_conclusion: ""
-          if_no_artifact_found: warn
-          allow_forks: false
-          workflow: update-data.yml
-          name: DataNRO-HSNR
-          path: Output\Data
+      # - name: Download artifact DataNRO-HSNR
+      #   if: ${{ env.HSNR_TOKEN }} != ''
+      #   uses: dawidd6/action-download-artifact@v5
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     workflow_search: true
+      #     workflow_conclusion: success
+      #     if_no_artifact_found: warn
+      #     allow_forks: false
+      #     workflow: update-data.yml
+      #     name: DataNRO-HSNR
+      #     path: Output\Data
       # - name: Run headless client
       #   if: ${{ env.HSNR_TOKEN }} != ''
       #   run: |
@@ -132,6 +131,10 @@ jobs:
       #   env:
       #     DATA: ${{ secrets.DATA_HSNR }}
       #     PROXY: ${{ secrets.PROXY }}
+
+      # remove this later
+      - run:  Expand-Archive -Path TeaMobi.zip -Destination Output\Data\
+
       - name: Upload artifact
         if: ${{ env.HSNR_TOKEN }} != ''
         uses: actions/upload-artifact@v4
