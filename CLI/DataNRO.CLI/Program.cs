@@ -115,7 +115,7 @@ namespace DataNRO
             {
                 location = session.Player.location;
                 count++;
-                if (count >= 10)
+                if (count >= 20)
                 {
                     Console.WriteLine($"[{session.Host}:{session.Port}] Failed to get the player's location!");
                     return;
