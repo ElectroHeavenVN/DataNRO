@@ -187,20 +187,20 @@ namespace DataNRO
                 }
             }
             //npc
-            List<Part> parts = new List<Part>(session.Data.Parts);
-            while (parts.Count > 0)
+            foreach (NpcTemplate npc in session.Data.NpcTemplates)
             {
-                Part part = parts[random.Next(0, parts.Count)];
-                parts.Remove(part);
-                for (int i = 0; i < 3; i++)
+                Part partHead = session.Data.Parts[npc.headId];
+                Part partBody = session.Data.Parts[npc.bodyId];
+                Part partLeg = session.Data.Parts[npc.legId];
+                void RequestPartIcon(Part part, int index)
                 {
-                    int iconID = part.pi[Math.Max(0, Math.Min(1, i))].id;
-                    if (requestedIcons.Contains(iconID))
-                        continue;
-                    if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{iconID}.png"))
-                        continue;
-                    writer.RequestIcon(iconID);
-                    requestedIcons.Add(iconID);
+                    int id = part.pi[index].id;
+                    if (!requestedIcons.Contains(id))
+                        return;
+                    if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
+                        return;
+                    writer.RequestIcon(id);
+                    requestedIcons.Add(id);
                     Thread.Sleep(1000 + random.Next(-200, 201));
                     count++;
                     if (count >= 10)
@@ -210,6 +210,10 @@ namespace DataNRO
                         Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
                     }
                 }
+                RequestPartIcon(partHead, 0);
+                RequestPartIcon(partBody, 1);
+                RequestPartIcon(partLeg, 1);
+
             }
             //skills
             foreach (NClass nClass in session.Data.NClasses)
