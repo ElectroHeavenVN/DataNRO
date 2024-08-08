@@ -37,9 +37,6 @@ namespace DataNRO
             string[] datas = data.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             foreach (string d in datas)
                 LoginAndGetData(d);
-#if DEBUG
-            Console.ReadLine();
-#endif
         }
 
         static void LoginAndGetData(string data)
