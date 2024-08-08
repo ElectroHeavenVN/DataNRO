@@ -224,7 +224,7 @@ namespace DataNRO.TeaMobi
                 Directory.CreateDirectory(path);
             if (session.Data.OverwriteIcons && File.Exists($"{path}\\{iconId}.png"))
                 return;
-            if (data.Length < 1000)
+            if (data.Length < 500)
             {
                 using (SHA256 sha256 = SHA256.Create())
                 {
