@@ -16,12 +16,10 @@ jobs:
   update-pages:
     name: Update pages
     runs-on: windows-latest
-    env:
-      SolutionPath: DataNRO/DataNRO.sln
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Download artifact DataNRO
+      - name: Download artifact DataNRO-TeaMobi
         uses: dawidd6/action-download-artifact@v5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -30,7 +28,18 @@ jobs:
           if_no_artifact_found: fail
           allow_forks: false
           workflow: update-data.yml
-          name: DataNRO
+          name: DataNRO-TeaMobi
+          path: Page
+      - name: Download artifact DataNRO-HSNR
+        uses: dawidd6/action-download-artifact@v5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow_search: true
+          workflow_conclusion: success
+          if_no_artifact_found: fail
+          allow_forks: false
+          workflow: update-data.yml
+          name: DataNRO-HSNR
           path: Page
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
