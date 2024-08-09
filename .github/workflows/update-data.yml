@@ -3,6 +3,12 @@ on:
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
+    inputs:
+      use-sample-data:
+        description: 'Use sample data'
+        type: 'boolean'
+        required: false
+        default: false
   push:
     paths:
     - 'CLI/**'
@@ -24,6 +30,7 @@ jobs:
 
   update-data-TeaMobi:
     name: Update data (TeaMobi)
+    if: github.event.inputs.use-sample-data == false 
     runs-on: windows-latest
     env:
       CLISolutionPath: CLI/DataNRO.sln
@@ -58,7 +65,7 @@ jobs:
         env:
           DATA: ${{ secrets.DATA_TEAMOBI }}
           PROXY: ${{ secrets.PROXY }}
-      - name: Upload artifact
+      - name: Upload artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
           name: DataNRO-TeaMobi
@@ -66,11 +73,12 @@ jobs:
 
   update-data-HSNR:
     name: Update data (HSNR)
+    if: github.event.inputs.use-sample-data == false 
     runs-on: windows-latest
     env:
       CLISolutionPath: CLI/DataNRO.sln
       HSNRSolutionPath: HSNR/DataNRO.HSNR.sln
-      HSNR_TOKEN: ${{ secrets.DataNRO_HSNR_TOKEN }}
+      HSNR_TOKEN: ${{ secrets.PAT_TOKEN }}
     steps:
       - name: Checkout
         if: ${{ env.HSNR_TOKEN }} != ''
@@ -127,7 +135,7 @@ jobs:
         env:
           DATA: ${{ secrets.DATA_HSNR }}
           PROXY: ${{ secrets.PROXY }}
-      - name: Upload artifact
+      - name: Upload artifact DataNRO-HSNR
         if: ${{ env.HSNR_TOKEN }} != ''
         uses: actions/upload-artifact@v4
         with:
@@ -136,6 +144,7 @@ jobs:
 
   create-pages:
     name: Create pages
+    if: github.event.inputs.use-sample-data == false 
     runs-on: windows-latest
     needs: [update-data-TeaMobi, update-data-HSNR]
     steps:
@@ -164,16 +173,52 @@ jobs:
       - name: Upload page artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: Page        
+          path: Page
 
-  deploy:
+  deploy-pages:
     name: Deploy to GitHub Pages
+    if: github.event.inputs.use-sample-data == false 
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: create-pages
     steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+  # ----------------------------------------------------
+  update-data-sample:
+    name: Update data and deploy using sample data
+    if: github.event.inputs.use-sample-data == true
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Decompress sample data (TeaMobi)
+        run: Expand-Archive -Path SampleData\TeaMobi.zip -DestinationPath Output\Data
+      - name: Upload artifact DataNRO-TeaMobi
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataNRO-TeaMobi
+          path: Output\Data
+      - name: Decompress sample data (HSNR)
+        run: Expand-Archive -Path SampleData\HSNR.zip -DestinationPath Output\Data2
+      - name: Upload artifact DataNRO-HSNR
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataNRO-HSNR
+          path: Output\Data2
+      - name: Move sample data to Page (TeaMobi)
+        run: Move-Item -Path Output\Data -Destination Page -Force
+      - name: Move sample data to Page (HSNR)
+        run: Move-Item -Path Output\Data2 -Destination Page -Force
+      - name: Upload page artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: Page
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Deploy to GitHub Pages
