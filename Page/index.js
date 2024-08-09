@@ -1,8 +1,7 @@
 const skippedProperties = ['isUpToUp', 'dartType', 'menu', 'skills', 'damInfo'];
 
-const escapeHtml = (unsafe) => {
-    return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
-}
+const gamePublisher = 'TeaMobi';
+const server = gamePublisher + '/Server8910';
 
 document.addEventListener('DOMContentLoaded', function () {
     const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
@@ -11,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentPage = 1;
     const rowsPerPage = 10;
     let currentData = null;
-
+    var filteredData = null;
+    var parts = null;
     allSideMenu.forEach(item => {
         const li = item.parentElement;
         item.addEventListener('click', function () {
@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
         let searchContainer = '';
         switch (page) {
             case 'itemTemplates':
-                url = 'TeaMobi/Server8910/ItemTemplates.json';
-                title = 'Item Templates';
-                breadcrumb = 'Item Templates';
+                url = server + '/ItemTemplates.json';
+                title = 'Items';
+                breadcrumb = 'Items';
                 searchContainer = `
                 <div class="search-container">
                     <input type="text" id="search-name" placeholder="Tìm kiếm theo tên...">
@@ -41,9 +41,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>`;
                 break;
             case 'npcTemplates':
-                url = 'TeaMobi/Server8910/NpcTemplates.json';
-                title = 'NPC Templates';
-                breadcrumb = 'NPC Templates';
+                url = server + '/NpcTemplates.json';
+                title = 'NPCs';
+                breadcrumb = 'NPCs';
                 searchContainer = `
                 <div class="search-container">
                     <input type="text" id="search-name" placeholder="Tìm kiếm theo tên...">
@@ -51,9 +51,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>`;
                 break;
             case 'nClasses':
-                url = 'TeaMobi/Server8910/NClasses.json';
-                title = 'Class Skills';
-                breadcrumb = 'Class Skills';
+                url = server + '/NClasses.json';
+                title = 'Skills';
+                breadcrumb = 'Skills';
                 searchContainer = `
                 <div class="search-container">
                     <input type="text" id="search-name" placeholder="Tìm kiếm theo tên...">
@@ -61,9 +61,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>`;
                 break;
             case 'itemOptions':
-                url = 'TeaMobi/Server8910/ItemOptionTemplates.json';
-                title = 'Item Options';
-                breadcrumb = 'Item Options';
+                url = server + '/ItemOptionTemplates.json';
+                title = 'ItemOptions';
+                breadcrumb = 'ItemOptions';
                 searchContainer = `
                 <div class="search-container">
                     <input type="text" id="search-name" placeholder="Tìm kiếm theo tên...">
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>`;
                 break;
             case 'maps':
-                url = 'TeaMobi/Server8910/Maps.json';
+                url = server + '/Maps.json';
                 title = 'Maps';
                 breadcrumb = 'Maps';
                 searchContainer = `
@@ -90,14 +90,18 @@ document.addEventListener('DOMContentLoaded', function () {
     function searchData() {
         const searchInput = document.getElementById('search-name');
         const searchValue = searchInput.value.toLowerCase();
-
-        var filteredData = currentData.filter(item => {
-            return item.name?.toString().toLowerCase().includes(searchValue);
-        });
-
-        currentPage = 1;
-        displayPageData(filteredData);
-    }  
+        if (searchValue) {
+            filteredData = currentData.filter(item => {
+                return item.name?.toString().toLowerCase().includes(searchValue);
+            });
+            currentPage = 1;
+            displayPageData(filteredData);
+        } else {
+            filteredData = null;
+            currentPage = 1;
+            displayPageData(currentData);
+        }
+    }
     document.querySelector('footer').innerHTML += decodeURIComponent(atob('ICAgICAgICA8cCBjbGFzcz0iZ2F5Ij4mY29weTsgMjAyNCBUcsaw4budbmcgR2lhbmcgKFZOR0FZKS4gQWxsIHJpZ2h0cyByZXNlcnZlZC48L3A+').split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
 
     function fetchData(url, page, searchContainer) {
@@ -122,10 +126,18 @@ document.addEventListener('DOMContentLoaded', function () {
                         return;
                     tableData += `<th>${prop.charAt(0).toUpperCase() + prop.slice(1)}</th>`;
                 });
+                if (page === 'npcTemplates')
+                    tableData += `<th>Image</th>`;
                 tableData += `</tr></thead><tbody></tbody></table>`;
                 tableContainer.innerHTML = searchContainer + tableData;
-                if (searchContainer)
+                if (searchContainer) {
+                    var searchInput = tableContainer.querySelector('.search-container input');
+                    searchInput.addEventListener('input', () => {
+                        if (!searchInput.value.toLowerCase())
+                            searchData();
+                    });
                     tableContainer.querySelector('.search-container button').addEventListener('click', searchData);
+                }
                 displayPageData(data);
             })
             .catch(error => console.error('Error loading data:', error));
@@ -140,32 +152,167 @@ document.addEventListener('DOMContentLoaded', function () {
             const endIndex = startIndex + rowsPerPage;
             const pageData = data.slice(startIndex, endIndex);
 
-            pageData.forEach(item => {
+            pageData.forEach(npc => {
                 const row = document.createElement('tr');
-                Object.getOwnPropertyNames(item).forEach(prop => {
+                Object.getOwnPropertyNames(npc).forEach(prop => {
                     if (skippedProperties.includes(prop))
                         return;
-                    const cell = document.createElement('td');
-                    cell.textContent = escapeHtml(item[prop].toString());
+                    var cell = document.createElement('td');
+                    if (prop.includes('icon')) {
+                        var container = document.createElement('div');
+                        container.classList.add('icon-container');
+                        var img = document.createElement('img');
+                        img.src = gamePublisher + '/Icons/' + npc[prop].toString() + '.png';
+                        img.onerror = () => {
+                            container.removeChild(img);
+                            var text = document.createElement('span');
+                            text.textContent = npc[prop];
+                            container.appendChild(text);
+                        }
+                        container.appendChild(img);
+                        cell.appendChild(container);
+                    }
+                    else
+                        cell.textContent = npc[prop];
                     row.appendChild(cell);
                 });
+                if (Object.getOwnPropertyNames(npc).find(prop => prop.includes('npcTemplateId'))) {
+                    if (npc.npcTemplateId === 3)
+                    {
+                        var cell = document.createElement('td');
+                        var container = document.createElement('div');
+                        container.classList.add('icon-container');
+                        var img = document.createElement('img');
+                        img.src = gamePublisher + '/Icons/265.png';
+                        img.onerror = () => {
+                            container.removeChild(img);
+                            var text = document.createElement('span');
+                            text.textContent = "265";
+                            container.appendChild(text);
+                        }
+                        container.appendChild(img);
+                        cell.appendChild(container);
+                        row.appendChild(cell);
+                    }
+                    else if (npc.npcTemplateId === 4)
+                        row.appendChild(document.createElement('td'));
+                    else if (npc.npcTemplateId === 6)
+                        {
+                            var cell = document.createElement('td');
+                            var container = document.createElement('div');
+                            container.classList.add('icon-container');
+                            var img = document.createElement('img');
+                            img.src = gamePublisher + '/Icons/545.png';
+                            img.onerror = () => {
+                                container.removeChild(img);
+                                var text = document.createElement('span');
+                                text.textContent = "545";
+                                container.appendChild(text);
+                            }
+                            container.appendChild(img);
+                            cell.appendChild(container);
+                            row.appendChild(cell);
+                        }
+                    else
+                        LoadParts(npc, row);
+                }
                 tableBody.appendChild(row);
             });
 
-            setupPagination(data.length);
+            setupPagination(data);
         }
     }
 
-    function setupPagination(totalItems) {
-        const totalPages = Math.ceil(totalItems / rowsPerPage);
+    function LoadParts(npc, row) {
+        var cell = document.createElement('td');
+        var container = document.createElement('div');
+        var childContainer = document.createElement('div');
+        container.classList.add('npc-image-container');
+        var partHeadId = npc.headId == -1 ? -1 : parts[npc.headId].pi[0].id;
+        var partBodyId = npc.bodyId == -1 ? -1 : parts[npc.bodyId].pi[1].id;
+        var partLegId = npc.legId == -1 ? -1 : parts[npc.legId].pi[1].id;
+        var imgHead, imgBody, imgLeg;
+
+        if (partLegId !== -1) {
+            imgLeg = document.createElement('img');
+            imgLeg.classList.add('npc-leg');
+            imgLeg.src = gamePublisher + '/Icons/' + partLegId + '.png';
+        }
+        if (partBodyId !== -1) {
+            imgBody = document.createElement('img');
+            imgBody.classList.add('npc-body');
+            imgBody.src = gamePublisher + '/Icons/' + partBodyId + '.png';
+        }
+        if (partHeadId !== -1) {
+            imgHead = document.createElement('img');
+            imgHead.classList.add('npc-head');
+            imgHead.src = gamePublisher + '/Icons/' + partHeadId + '.png';
+        }
+        var baseTranslateX = 0, baseTranslateY = 0;
+        if (imgHead) {
+            imgHead.style.transform = "translateX(50px)";
+            baseTranslateX = 50 + (-12 + parts[npc.headId].pi[0].dx) * 2;
+            baseTranslateY = (-8 + parts[npc.headId].pi[0].dy) * 2;
+        }
+        if (imgBody) {
+            imgBody.style.transform = `translate(${-baseTranslateX + 100 + (-8 + parts[npc.bodyId].pi[1].dx) * 2}px, ${-baseTranslateY + (10 + parts[npc.bodyId].pi[1].dy) * 2}px)`;
+        }
+        if (imgLeg) {
+            imgLeg.style.transform = `translate(${-baseTranslateX + 100 + (-7 + parts[npc.legId].pi[1].dx) * 2}px, ${-baseTranslateY + (16 + parts[npc.legId].pi[1].dy) * 2}px)`;
+        }
+
+        if (imgLeg)
+            childContainer.appendChild(imgLeg);
+        if (imgHead)
+            childContainer.appendChild(imgHead);
+        if (imgBody)
+            childContainer.appendChild(imgBody);
+
+        CalcRowHeight(row, imgHead, imgBody, imgLeg).then(() => {
+            container.appendChild(childContainer);
+            cell.appendChild(container);
+            row.appendChild(cell);
+        });
+    }
+
+    async function CalcRowHeight(row, imgHead, imgBody, imgLeg) {
+        var rowHeight = 0;
+        if (imgBody) {
+            await imgBody.decode();
+            rowHeight += imgBody.height;
+        }
+        if (imgLeg) {
+            await imgLeg.decode();
+            rowHeight += imgLeg.height;
+        }
+        if (imgHead) {
+            await imgHead.decode();
+            rowHeight += imgHead.height;
+        }
+        if (rowHeight > 0)
+            row.style.height = (rowHeight * 1.3) + 'px';
+    }
+
+    function setupPagination(data) {
+        const totalPages = Math.ceil(data.length / rowsPerPage);
         paginationContainer.innerHTML = '';
 
+        const firstButton = document.createElement('button');
+        firstButton.textContent = '<<';
+        firstButton.disabled = currentPage === 1;
+        firstButton.addEventListener('click', () => {
+            currentPage = 1;
+            displayPageData(data);
+        });
+        paginationContainer.appendChild(firstButton);
+
         const prevButton = document.createElement('button');
-        prevButton.textContent = '<<';
+        prevButton.textContent = '<';
         prevButton.disabled = currentPage === 1;
         prevButton.addEventListener('click', () => {
-            currentPage = 1;
-            displayPageData(currentData);
+            if (currentPage > 1)
+                currentPage--;
+            displayPageData(data);
         });
         paginationContainer.appendChild(prevButton);
 
@@ -176,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 button.classList.toggle('active', i === currentPage);
                 button.addEventListener('click', () => {
                     currentPage = i;
-                    displayPageData(currentData);
+                    displayPageData(data);
                 });
                 paginationContainer.appendChild(button);
             }
@@ -187,13 +334,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 start = 1;
             if (currentPage >= totalPages - 2)
                 start = 1;
+            if (start + 2 === totalPages - 2)
+                start--;
             for (let i = start; i <= start + 2; i++) {
                 const button = document.createElement('button');
                 button.textContent = i;
                 button.classList.toggle('active', i === currentPage);
                 button.addEventListener('click', () => {
                     currentPage = i;
-                    displayPageData(currentData);
+                    displayPageData(data);
                 });
                 paginationContainer.appendChild(button);
             }
@@ -207,20 +356,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 button.classList.toggle('active', i === currentPage);
                 button.addEventListener('click', () => {
                     currentPage = i;
-                    displayPageData(currentData);
+                    displayPageData(data);
                 });
                 paginationContainer.appendChild(button);
             }
         }
 
         const nextButton = document.createElement('button');
-        nextButton.textContent = '>>';
+        nextButton.textContent = '>';
         nextButton.disabled = currentPage === totalPages;
         nextButton.addEventListener('click', () => {
-            currentPage = totalPages;
+            if (currentPage < totalPages)
+                currentPage++;
             displayPageData(currentData);
         });
         paginationContainer.appendChild(nextButton);
+
+        const lastButton = document.createElement('button');
+        lastButton.textContent = '>>';
+        lastButton.disabled = currentPage === totalPages;
+        lastButton.addEventListener('click', () => {
+            currentPage = totalPages;
+            displayPageData(currentData);
+        });
+        paginationContainer.appendChild(lastButton);
 
         // const pageInfo = document.createElement('span');
         // pageInfo.className = 'page-info';
@@ -228,5 +387,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // paginationContainer.appendChild(pageInfo);
     }
 
+    fetch(server + "/Parts.json").then(response => response.json()).then(data => parts = data).catch(error => console.error('Error loading data:', error));
     loadPageContent('itemTemplates');
 });

@@ -443,6 +443,17 @@ th {
 	background: #f4f4f4;
 }
 
+td .icon-container {
+	display: flex;
+	justify-content: center;
+}
+
+td .icon-container img {
+	max-height: 40px;
+	width: 40px;
+	object-fit: contain;
+}
+
 .search-container {
 	margin: 20px 0;
 	display: flex;
@@ -509,8 +520,21 @@ nav {
 	margin: 0 10px;
 }
 
-.pagination button:not(:last-child):not(:first-child) {
+.pagination button:nth-child(n+3):nth-last-child(n+3) {
 	min-width: 40px;
+}
+
+td:has(.npc-image-container) {
+	overflow: auto;
+}
+
+.npc-image-container div {
+	display: grid;
+}
+
+.npc-image-container img {
+	grid-column: 1;
+	grid-row: 1;
 }
 
 footer {
