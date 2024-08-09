@@ -1,9 +1,10 @@
 # DataNRO
-Xem dữ liệu vật phẩm, quái, NPC, map,... của game [**Ngọc Rồng Online**](http://ngocrongonline.com/) và [**Hồi sinh Ngọc Rồng**](https://hoisinhngocrong.com/). Dữ liệu được tự động cập nhật mỗi ngày.
-<br>*Mã nguồn của phần lấy dữ liệu từ game **Hồi sinh Ngọc Rồng** là **độc quyền** và **không có trong kho mã nguồn này**.*
+Xem dữ liệu vật phẩm, quái, NPC, map,... của game [**Ngọc Rồng Online**](http://ngocrongonline.com/) và [**Hồi sinh Ngọc Rồng**](https://hoisinhngocrong.com/). Dữ liệu được tự động cập nhật mỗi ngày bằng GitHub Actions.
+
 ## API
-Định dạng: `Loại Game`/`Server`/`Loại dữ liệu`
-### Loại Game / Server
+**Định dạng API dữ liệu:** `Nhà phát hành`/`Server`/`Loại dữ liệu`
+<br>**Định dạng API ảnh:** `Nhà phát hành`/Icons/`ID`.png
+### Nhà phát hành / Server
 - `/TeaMobi`: Data game Ngọc Rồng Online
   + `/Server`*: Server 1-7 và 11-13
   + `/Server8910`: Server gộp (server 8, 9, 10)
@@ -108,3 +109,26 @@ Xem dữ liệu vật phẩm, quái, NPC, map,... của game [**Ngọc Rồng On
     ]
   }
 ```
+- `Parts.json`: Dữ liệu part nhân vật và NPC
+```json
+  {
+    "type": 2,
+    "pi": [
+      {
+        "id": 11826,
+        "dx": 3,
+        "dy": 2
+      },
+      ...
+    ]
+  }
+```
+
+## Lưu ý
+- **Không phải tất cả ảnh đều có sẵn.** API chỉ chứa những ảnh quan trọng (ảnh vật phẩm, kỹ năng, ảnh NPC) để hiển thị trên trang web.
+- **Một số ảnh có thể không tồn tại trên API, kém chất lượng hoặc khác với ứng dụng khách** do máy chủ không trả về ảnh, trả về ảnh rỗng hoặc kém chất lượng, hoặc ảnh chỉ có sẵn trên ứng dụng khách.
+- **Dữ liệu của một số server TeaMobi có thể bị chậm** do TeaMobi chặn địa chỉ IP nước ngoài truy cập game.
+- Mã nguồn của phần lấy dữ liệu từ game __Hồi sinh Ngọc Rồng__ (module `DataNRO.HSNR`) là __độc quyền__ và __không có trong kho mã nguồn này__.
+
+## Giấy phép
+Mã nguồn của dự án này, bao gồm module `DataNRO.TeaMobi`, được phát hành dưới giấy phép [GNU AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html).
