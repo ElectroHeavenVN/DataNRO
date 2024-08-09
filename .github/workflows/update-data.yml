@@ -192,7 +192,7 @@ jobs:
   # ----------------------------------------------------
   update-data-sample:
     name: Update data and deploy using sample data
-    if: github.event.inputs.use-sample-data == true
+    if: github.event.inputs.use-sample-data == 'true'
     runs-on: windows-latest
     steps:
       - name: Checkout
