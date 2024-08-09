@@ -30,7 +30,7 @@ jobs:
 
   update-data-TeaMobi:
     name: Update data (TeaMobi)
-    if: github.event.inputs.use-sample-data == false 
+    if: github.event.inputs.use-sample-data == 'false'
     runs-on: windows-latest
     env:
       CLISolutionPath: CLI/DataNRO.sln
@@ -73,7 +73,7 @@ jobs:
 
   update-data-HSNR:
     name: Update data (HSNR)
-    if: github.event.inputs.use-sample-data == false 
+    if: github.event.inputs.use-sample-data == 'false'
     runs-on: windows-latest
     env:
       CLISolutionPath: CLI/DataNRO.sln
@@ -144,7 +144,7 @@ jobs:
 
   create-pages:
     name: Create pages
-    if: github.event.inputs.use-sample-data == false 
+    if: github.event.inputs.use-sample-data == 'false'
     runs-on: windows-latest
     needs: [update-data-TeaMobi, update-data-HSNR]
     steps:
@@ -177,7 +177,7 @@ jobs:
 
   deploy-pages:
     name: Deploy to GitHub Pages
-    if: github.event.inputs.use-sample-data == false 
+    if: github.event.inputs.use-sample-data == 'false'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
