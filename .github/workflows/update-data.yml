@@ -104,7 +104,7 @@ jobs:
         with:
           repository: 'ElectroHeavenVN/DataNRO.HSNR'
           submodules: 'true'
-          token: ${{ secrets.DataNRO_HSNR_TOKEN }}
+          token: ${{ env.HSNR_TOKEN }}
           path: HSNR
       - name: Restore DataNRO.HSNR
         if: ${{ env.HSNR_TOKEN }} != ''
