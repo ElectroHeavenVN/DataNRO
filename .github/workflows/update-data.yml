@@ -1,17 +1,17 @@
 name: Update data and deploy to GitHub Pages
-on: 
+on:
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
     inputs:
       use-sample-data:
-        description: 'Use sample data'
-        type: 'boolean'
+        description: "Use sample data"
+        type: "boolean"
         required: false
         default: false
   push:
     paths:
-    - 'CLI/**'
+      - "CLI/**"
 permissions:
   contents: read
   pages: write
@@ -28,9 +28,34 @@ jobs:
       - uses: actions/checkout@v4
       - uses: gautamkrishnar/keepalive-workflow@v2
 
+  check-data:
+    name: Check data
+    runs-on: windows-latest
+    outputs:
+      data-teamobi: ${{ steps.update-data-TeaMobi.outputs.run }}
+      data-hsnr: ${{ steps.update-data-HSNR.outputs.run }}
+    steps:
+      - name: Chech if data should be updated (TeaMobi)
+        id: update-data-TeaMobi
+        run: |
+          if ('${{ github.event.inputs.use-sample-data }}' -eq 'true') {
+            echo run=false | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
+          } else {
+            echo run=true | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
+          }
+      - name: Chech if data should be updated (HSNR)
+        id: update-data-HSNR
+        run: |
+          if ('${{ github.event.inputs.use-sample-data }}' -eq 'true' -or '${{ secrets.PAT_TOKEN }}' -eq '') {
+            echo run=false | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
+          } else {
+            echo run=true | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
+          }
+
   update-data-TeaMobi:
     name: Update data (TeaMobi)
-    if: github.event.inputs.use-sample-data == 'false'
+    needs: check-data
+    if: needs.check-data.outputs.data-teamobi == 'true'
     runs-on: windows-latest
     env:
       CLISolutionPath: CLI/DataNRO.sln
@@ -73,50 +98,39 @@ jobs:
 
   update-data-HSNR:
     name: Update data (HSNR)
-    if: github.event.inputs.use-sample-data == 'false'
+    needs: check-data
+    if: needs.check-data.outputs.data-hsnr == 'true'
     runs-on: windows-latest
     env:
       CLISolutionPath: CLI/DataNRO.sln
       HSNRSolutionPath: HSNR/DataNRO.HSNR.sln
-      HSNR_TOKEN: ${{ secrets.PAT_TOKEN }}
     steps:
       - name: Checkout
-        if: ${{ env.HSNR_TOKEN }} != ''
         uses: actions/checkout@v4
       - name: Setup MSBuild
-        if: ${{ env.HSNR_TOKEN }} != ''
         uses: microsoft/setup-msbuild@v2
       - name: Setup NuGet
-        if: ${{ env.HSNR_TOKEN }} != ''
         uses: NuGet/setup-nuget@v2
       - name: Restore DataNRO
-        if: ${{ env.HSNR_TOKEN }} != ''
         run: msbuild $env:CLISolutionPath /t:restore /p:Configuration=Release
       - name: Restore NuGet packages
-        if: ${{ env.HSNR_TOKEN }} != ''
         run: nuget restore $env:CLISolutionPath
       - name: Build DataNRO.CLI
-        if: ${{ env.HSNR_TOKEN }} != ''
         run: msbuild $env:CLISolutionPath /t:rebuild /p:Configuration=Release
       - name: Checkout DataNRO.HSNR
-        if: ${{ env.HSNR_TOKEN }} != ''
         uses: actions/checkout@v4
         with:
-          repository: 'ElectroHeavenVN/DataNRO.HSNR'
-          submodules: 'true'
-          token: ${{ env.HSNR_TOKEN }}
+          repository: "ElectroHeavenVN/DataNRO.HSNR"
+          submodules: "true"
+          token: ${{ secrets.PAT_TOKEN }}
           path: HSNR
       - name: Restore DataNRO.HSNR
-        if: ${{ env.HSNR_TOKEN }} != ''
         run: msbuild $env:HSNRSolutionPath /t:restore /p:Configuration=Release
       - name: Build DataNRO.HSNR
-        if: ${{ env.HSNR_TOKEN }} != ''
         run: msbuild $env:HSNRSolutionPath /t:rebuild /p:Configuration=Release
       - name: Move DataNRO.HSNR to Output
-        if: ${{ env.HSNR_TOKEN }} != ''
         run: Move-Item -Path HSNR/Output/DataNRO.HSNR.dll -Destination Output/DataNRO.HSNR.dll -Force
       - name: Download artifact DataNRO-HSNR
-        if: ${{ env.HSNR_TOKEN }} != ''
         uses: dawidd6/action-download-artifact@v5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -128,7 +142,6 @@ jobs:
           name: DataNRO-HSNR
           path: Output\Data
       - name: Run headless client
-        if: ${{ env.HSNR_TOKEN }} != ''
         run: |
           cd Output
           .\DataNRO.CLI.exe
@@ -136,7 +149,6 @@ jobs:
           DATA: ${{ secrets.DATA_HSNR }}
           PROXY: ${{ secrets.PROXY }}
       - name: Upload artifact DataNRO-HSNR
-        if: ${{ env.HSNR_TOKEN }} != ''
         uses: actions/upload-artifact@v4
         with:
           name: DataNRO-HSNR
@@ -144,9 +156,8 @@ jobs:
 
   create-pages:
     name: Create pages
-    if: github.event.inputs.use-sample-data == 'false'
-    runs-on: windows-latest
     needs: [update-data-TeaMobi, update-data-HSNR]
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -177,7 +188,6 @@ jobs:
 
   deploy-pages:
     name: Deploy to GitHub Pages
-    if: github.event.inputs.use-sample-data == 'false'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -189,7 +199,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
   # ----------------------------------------------------
+
   update-data-sample:
     name: Update data and deploy using sample data
     if: github.event.inputs.use-sample-data == 'true'
