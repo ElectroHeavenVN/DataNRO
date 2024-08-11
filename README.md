@@ -130,5 +130,10 @@ Xem dữ liệu vật phẩm, quái, NPC, map,... của game [**Ngọc Rồng On
 - **Dữ liệu của một số server TeaMobi có thể bị chậm** do TeaMobi chặn địa chỉ IP nước ngoài truy cập game.
 - Mã nguồn của phần lấy dữ liệu từ game __Hồi sinh Ngọc Rồng__ (module `DataNRO.HSNR`) là __độc quyền__ và __không có trong kho mã nguồn này__.
 
-## Giấy phép
+# Giấy phép
 Mã nguồn của dự án này, bao gồm module `DataNRO.TeaMobi`, được phát hành dưới giấy phép [GNU AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html).
+
+# Credit
+- [Mirco Bauer](https://github.com/meebey), tác giả dự án [StarkSoftProxy](https://github.com/meebey/starksoftproxy)
+- [James Newton-King](https://github.com/JamesNK), tác giả dự án [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
+- [Lê Trường Giang (VNPAY)](https://www.youtube.com/watch?v=dQw4w9WgXcQ), code UI cho web
