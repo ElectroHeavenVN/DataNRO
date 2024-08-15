@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -169,8 +170,30 @@ namespace DataNRO
         static bool RequestIcons(ISession session)
         {
             IMessageWriter writer = session.MessageWriter;
-            writer.UpdateData();
+            List<int> requestedIcons = new List<int>();
             int count = 0;
+            void RequestPartIcon(Part part, int index)
+            {
+                if (part == null)
+                    return;
+                int id = part.pi[index].id;
+                if (requestedIcons.Contains(id))
+                    return;
+                if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
+                    return;
+                writer.RequestIcon(id);
+                requestedIcons.Add(id);
+                Thread.Sleep(1000 + random.Next(-200, 201));
+                count++;
+                if (count >= 10)
+                {
+                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    count = 0;
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
+                }
+            }
+
+            writer.UpdateData();
             while (session.Data.Parts == null)
             {
                 count++;
@@ -181,7 +204,6 @@ namespace DataNRO
                 }
                 Thread.Sleep(1000);
             }
-            List<int> requestedIcons = new List<int>();
             //item
             count = 0;
             while (session.Data.ItemTemplates == null)
@@ -215,45 +237,37 @@ namespace DataNRO
                 }
             }
             //npc
-            while (session.Data.NpcTemplates == null)
+            //while (session.Data.NpcTemplates == null)
+            //{
+            //    Thread.Sleep(1000 + random.Next(-200, 201));
+            //    count++;
+            //    if (count >= 10)
+            //    {
+            //        writer.RequestChangeZone(session.Player.location.zoneId);
+            //        count = 0;
+            //    }
+            //}
+            //foreach (NpcTemplate npc in session.Data.NpcTemplates)
+            //{
+            //    Part partHead = npc.headId == -1 ? null : session.Data.Parts[npc.headId];
+            //    Part partBody = npc.bodyId == -1 ? null : session.Data.Parts[npc.bodyId];
+            //    Part partLeg = npc.legId == -1 ? null : session.Data.Parts[npc.legId];
+            //    RequestPartIcon(partHead, 0);
+            //    RequestPartIcon(partBody, 1);
+            //    RequestPartIcon(partLeg, 1);
+            //}
+            //parts
+            List<Part> parts = new List<Part>(session.Data.Parts);
+            while (parts.Count > 0)
             {
-                Thread.Sleep(1000 + random.Next(-200, 201));
-                count++;
-                if (count >= 10)
-                {
-                    writer.RequestChangeZone(session.Player.location.zoneId);
-                    count = 0;
-                }
-            }
-            foreach (NpcTemplate npc in session.Data.NpcTemplates)
-            {
-                Part partHead = npc.headId == -1 ? null : session.Data.Parts[npc.headId];
-                Part partBody = npc.bodyId == -1 ? null : session.Data.Parts[npc.bodyId];
-                Part partLeg = npc.legId == -1 ? null : session.Data.Parts[npc.legId];
-                void RequestPartIcon(Part part, int index)
-                {
-                    if (part == null)
-                        return;
-                    int id = part.pi[index].id;
-                    if (requestedIcons.Contains(id))
-                        return;
-                    if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
-                        return;
-                    writer.RequestIcon(id);
-                    requestedIcons.Add(id);
-                    Thread.Sleep(1000 + random.Next(-200, 201));
-                    count++;
-                    if (count >= 10)
-                    {
-                        writer.RequestChangeZone(session.Player.location.zoneId);
-                        count = 0;
-                        Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
-                    }
-                }
-                RequestPartIcon(partHead, 0);
-                RequestPartIcon(partBody, 1);
-                RequestPartIcon(partLeg, 1);
-
+                Part part = parts[random.Next(0, parts.Count)];
+                parts.Remove(part);
+                int index = 0;
+                if (part.type == 1 || part.type == 2) //body, leg
+                    index = 1;
+                if (part.pi[index].id <= 0)
+                    continue;
+                RequestPartIcon(part, index);
             }
             //skills
             while (session.Data.NClasses == null)

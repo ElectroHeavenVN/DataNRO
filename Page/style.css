@@ -528,6 +528,10 @@ td:has(.npc-image-container) {
 	overflow: auto;
 }
 
+.part-image-container {
+	
+}
+
 .npc-image-container div {
 	display: grid;
 }

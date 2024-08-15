@@ -75,6 +75,11 @@ main = () => {
                     <button>Tìm kiếm</button>
                 </div>`;
                 break;
+            case 'parts':
+                url = server + '/Parts.json';
+                title = 'Parts';
+                breadcrumb = 'Parts';
+                break;
         }
         document.getElementById('page-title').textContent = title;
         document.getElementById('breadcrumb-active').textContent = breadcrumb;
@@ -114,6 +119,22 @@ main = () => {
                     data = data2;
                     data.sort((a, b) => a.id - b.id);
                 }
+                if (page == 'parts') {
+                    let data2 = [];
+                    data.forEach(orig => {
+                        let item = {};
+                        var index = 0;
+                        if (orig.type == 1 || orig.type == 2)
+                            index = 1;
+                        item.id = orig.pi[index].id;
+                        item.dx = orig.pi[index].dx;
+                        item.dy = orig.pi[index].dy;
+                        item.type = orig.type;
+                        data2.push(item);
+                    });
+                    data = data2;
+                    data.sort((a, b) => a.id - b.id);
+                }
                 currentData = data;
                 let tableData = `<table id="data-table"><thead><tr>`;
                 Object.getOwnPropertyNames(data[0]).forEach(prop => {
@@ -121,7 +142,7 @@ main = () => {
                         return;
                     tableData += `<th>${prop.charAt(0).toUpperCase() + prop.slice(1)}</th>`;
                 });
-                if (page === 'npcTemplates')
+                if (page === 'npcTemplates' || page === 'parts')
                     tableData += `<th>Image</th>`;
                 tableData += `</tr></thead><tbody></tbody></table>`;
                 tableContainer.innerHTML = searchContainer + tableData;
@@ -146,10 +167,11 @@ main = () => {
             const startIndex = (currentPage - 1) * rowsPerPage;
             const endIndex = startIndex + rowsPerPage;
             const pageData = data.slice(startIndex, endIndex);
-
-            pageData.forEach(npc => {
+            for (let i = 0; i < pageData.length; i++) 
+            {
+                const item = pageData[i];
                 const row = document.createElement('tr');
-                Object.getOwnPropertyNames(npc).forEach(prop => {
+                Object.getOwnPropertyNames(item).forEach(prop => {
                     if (skippedProperties.includes(prop))
                         return;
                     var cell = document.createElement('td');
@@ -157,22 +179,22 @@ main = () => {
                         var container = document.createElement('div');
                         container.classList.add('icon-container');
                         var img = document.createElement('img');
-                        img.src = gamePublisher + '/Icons/' + npc[prop].toString() + '.png';
+                        img.src = gamePublisher + '/Icons/' + item[prop].toString() + '.png';
                         img.onerror = () => {
                             container.removeChild(img);
                             var text = document.createElement('span');
-                            text.textContent = npc[prop];
+                            text.textContent = item[prop];
                             container.appendChild(text);
                         }
                         container.appendChild(img);
                         cell.appendChild(container);
                     }
                     else
-                        cell.textContent = npc[prop];
+                        cell.textContent = item[prop];
                     row.appendChild(cell);
                 });
-                if (Object.getOwnPropertyNames(npc).find(prop => prop.includes('npcTemplateId'))) {
-                    if (npc.npcTemplateId === 3) {
+                if (Object.getOwnPropertyNames(item).find(prop => prop.includes('npcTemplateId'))) {
+                    if (item.npcTemplateId === 3) {
                         var cell = document.createElement('td');
                         var container = document.createElement('div');
                         container.classList.add('icon-container');
@@ -188,9 +210,9 @@ main = () => {
                         cell.appendChild(container);
                         row.appendChild(cell);
                     }
-                    else if (npc.npcTemplateId === 4)
+                    else if (item.npcTemplateId === 4)
                         row.appendChild(document.createElement('td'));
-                    else if (npc.npcTemplateId === 6) {
+                    else if (item.npcTemplateId === 6) {
                         var cell = document.createElement('td');
                         var container = document.createElement('div');
                         container.classList.add('icon-container');
@@ -207,16 +229,44 @@ main = () => {
                         row.appendChild(cell);
                     }
                     else
-                        LoadParts(npc, row);
+                        LoadNPCParts(item, row);
+                }
+                if (Object.getOwnPropertyNames(item).find(prop => prop.includes('dx'))) {
+                    LoadParts(item, row);
                 }
                 tableBody.appendChild(row);
-            });
+            }
 
             setupPagination(data);
         }
     }
 
-    function LoadParts(npc, row) {
+    function LoadParts(part, row) {
+        var cell = document.createElement('td');
+        var container = document.createElement('div');
+        var childContainer = document.createElement('div');
+        container.classList.add('part-image-container');
+        var img;
+
+        if (part.id !== 0) {
+            img = document.createElement('img');
+            img.src = gamePublisher + '/Icons/' + part.id + '.png';
+            childContainer.appendChild(img);
+        }
+
+        CalcRowHeight(row, img).then(() => {
+            container.appendChild(childContainer);
+            cell.appendChild(container);
+            row.appendChild(cell);
+        }).catch(e => {
+            childContainer.removeChild(img);
+            container.appendChild(childContainer);
+            cell.appendChild(container);
+            row.appendChild(cell);
+        });
+    }
+
+    function LoadNPCParts(npc, row) {
         var cell = document.createElement('td');
         var container = document.createElement('div');
         var childContainer = document.createElement('div');
@@ -268,19 +318,13 @@ main = () => {
         });
     }
 
-    async function CalcRowHeight(row, imgHead, imgBody, imgLeg) {
+    async function CalcRowHeight(row, ...images) {
         var rowHeight = 0;
-        if (imgBody) {
-            await imgBody.decode();
-            rowHeight += imgBody.height;
-        }
-        if (imgLeg) {
-            await imgLeg.decode();
-            rowHeight += imgLeg.height;
-        }
-        if (imgHead) {
-            await imgHead.decode();
-            rowHeight += imgHead.height;
+        for (let img of images) {
+            if (!img)
+                continue;
+            await img.decode();
+            rowHeight += img.height;
         }
         if (rowHeight > 0)
             row.style.height = (rowHeight * 1.3) + 'px';
