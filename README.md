@@ -2,8 +2,8 @@
 Xem dữ liệu vật phẩm, quái, NPC, map,... của game [**Ngọc Rồng Online**](http://ngocrongonline.com/) và [**Hồi sinh Ngọc Rồng**](https://hoisinhngocrong.com/). Dữ liệu được tự động cập nhật mỗi ngày bằng [GitHub Actions](https://github.com/features/actions).
 
 ## Web
-- Web xem data chính thức: https://electroheavenvn.github.io/DataNRO/ | https://electroheavenvn.github.io/DataNRO/hsnr.html
-- Web của [ShopWibu (Cường)](https://shopwibu.net/): https://nro.shopwibu.net/tea-data/item
+- Web xem data chính thức: [Server TeaMobi](https://electroheavenvn.github.io/DataNRO/) | [Server Hồi sinh Ngọc Rồng](https://electroheavenvn.github.io/DataNRO/hsnr.html)
+- Web của [ShopWibu (Cường)](https://shopwibu.net/): [Server TeaMobi](https://nro.shopwibu.net/tea-data/item) | [Server Hồi sinh Ngọc Rồng](https://nro.shopwibu.net/hsnr-data/item)
 
 Web khác ngoài 2 web trên có thể là [fork của repository này](../../forks), của người khác làm dựa trên data được tạo từ các [Actions](../../actions), [__*của thằng nào đó ăn cắp*__](https://thanhlc.com/data/item/) hoặc [tự họ tạo data và làm web](https://bantool.net/tools/dataNRO). Tất cả đều không liên quan đến repository này, vui lòng không tạo issue mới về các web ngoài 2 địa chỉ trên.
 
