@@ -3,7 +3,7 @@ Xem dữ liệu vật phẩm, quái, NPC, map,... của game [**Ngọc Rồng On
 
 ## Web
 - Web xem data chính thức: https://electroheavenvn.github.io/DataNRO/ | https://electroheavenvn.github.io/DataNRO/hsnr.html
-- Web của [ToolWibu (Cường)](https://shopwibu.net/): https://nro.shopwibu.net/tea-data/item
+- Web của [ShopWibu (Cường)](https://shopwibu.net/): https://nro.shopwibu.net/tea-data/item
 
 Web khác ngoài 2 web trên có thể là [fork của repository này](../../forks), của người khác làm dựa trên data được tạo từ các [Actions](../../actions), [__*của thằng nào đó ăn cắp*__](https://thanhlc.com/data/item/) hoặc [tự họ tạo data và làm web](https://bantool.net/tools/dataNRO). Tất cả đều không liên quan đến repository này, vui lòng không tạo issue mới về các web ngoài 2 địa chỉ trên.
 
