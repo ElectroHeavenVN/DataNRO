@@ -10,7 +10,7 @@ on:
         required: false
         default: false
       overwrite-icons:
-        description: "Use sample data"
+        description: "Overwrite icons"
         type: "boolean"
         required: false
         default: false
