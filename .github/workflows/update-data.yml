@@ -9,6 +9,11 @@ on:
         type: "boolean"
         required: false
         default: false
+      overwrite-icons:
+        description: "Use sample data"
+        type: "boolean"
+        required: false
+        default: false
   push:
     paths:
       - "CLI/**"
@@ -27,6 +32,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: gautamkrishnar/keepalive-workflow@v2
+
+  # ----------------------------------------------------
 
   check-data:
     name: Check data
@@ -99,6 +106,7 @@ jobs:
         env:
           DATA: ${{ secrets.DATA_TEAMOBI }}
           PROXY: ${{ secrets.PROXY }}
+          OVERWRITE_ICONS: ${{ github.event.inputs.overwrite-icons }}
       - name: Upload artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
@@ -157,6 +165,7 @@ jobs:
         env:
           DATA: ${{ secrets.DATA_HSNR }}
           PROXY: ${{ secrets.PROXY }}
+          OVERWRITE_ICONS: ${{ github.event.inputs.overwrite-icons }}
       - name: Upload artifact DataNRO-HSNR
         uses: actions/upload-artifact@v4
         with:
