@@ -53,9 +53,9 @@ namespace DataNRO
 
         static void FailoverThread()
         {
-            Thread.Sleep(1000 * 60 * 30);
-            Console.WriteLine("DataNRO has been running for 30 minutes, exiting...");
-            Environment.Exit(0);
+            Thread.Sleep(1000 * 60 * 60);
+            Console.WriteLine("DataNRO has been running for an hour, exiting...");
+            Environment.Exit(1);
         }
 
         static void LoginAndGetData(string data)
