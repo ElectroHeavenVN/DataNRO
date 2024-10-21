@@ -8,7 +8,7 @@ namespace DataNRO.TeaMobi
 {
     internal static class Config
     {
-        internal static readonly string gameVersion = "2.4.0";
+        internal static readonly string gameVersion = "2.4.2";
         internal static readonly byte clientType = 4;
         internal static readonly byte zoomLevel = 2;
         internal static readonly int screenWidth = 1024;
