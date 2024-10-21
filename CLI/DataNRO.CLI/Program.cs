@@ -18,7 +18,7 @@ namespace DataNRO
     {
         static Random random = new Random();
         static string proxyData = "";
-        static bool overwriteIcons;
+        static int[] overwriteIconIDs = new int[0];
 
         static void Main(string[] args)
         {
@@ -27,9 +27,9 @@ namespace DataNRO
             if (!Directory.Exists("Data"))
                 Directory.CreateDirectory("Data");
             proxyData = Environment.GetEnvironmentVariable("PROXY");
-            string overwriteIconsStr = Environment.GetEnvironmentVariable("OVERWRITE_ICONS");
-            if (!string.IsNullOrEmpty(overwriteIconsStr))
-                overwriteIcons = bool.Parse(overwriteIconsStr);
+            string overwriteIconsEnv = Environment.GetEnvironmentVariable("OVERWRITE_ICONS");
+            if (!string.IsNullOrEmpty(overwriteIconsEnv))
+                overwriteIconIDs = overwriteIconsEnv.Split(',').Select(int.Parse).ToArray();
 #if DEBUG
             Console.Write("DATA: ");
             string data = Console.ReadLine();
@@ -94,7 +94,7 @@ namespace DataNRO
             }
             session.Data.Path = dataPath;
             session.Data.SaveIcon = requestAndSaveIcons;
-            session.Data.OverwriteIcons = overwriteIcons;
+            session.Data.OverwriteIconIDs = overwriteIconIDs;
             Console.WriteLine($"Connecting to {session.Host}:{session.Port}...");
             if (!TryConnect(session))
                 return;
@@ -179,7 +179,7 @@ namespace DataNRO
                 int id = part.pi[index].id;
                 if (requestedIcons.Contains(id))
                     return;
-                if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
+                if (!session.Data.OverwriteIconIDs.Contains(id) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
                     return;
                 writer.RequestIcon(id);
                 requestedIcons.Add(id);
@@ -223,7 +223,7 @@ namespace DataNRO
                 items.Remove(item);
                 if (requestedIcons.Contains(item.icon))
                     continue;
-                if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{item.icon}.png"))
+                if (!session.Data.OverwriteIconIDs.Contains(item.icon) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{item.icon}.png"))
                     continue;
                 writer.RequestIcon(item.icon);
                 requestedIcons.Add(item.icon);
@@ -286,7 +286,7 @@ namespace DataNRO
                 {
                     if (requestedIcons.Contains(skillTemplate.icon))
                         continue;
-                    if (!session.Data.OverwriteIcons && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{skillTemplate.icon}.png"))
+                    if (!session.Data.OverwriteIconIDs.Contains(skillTemplate.icon) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{skillTemplate.icon}.png"))
                         continue;
                     writer.RequestIcon(skillTemplate.icon);
                     requestedIcons.Add(skillTemplate.icon);

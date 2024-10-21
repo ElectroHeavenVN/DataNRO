@@ -10,10 +10,10 @@ on:
         required: false
         default: false
       overwrite-icons:
-        description: "Overwrite icons"
-        type: "boolean"
+        description: "ID icons to overwrite, separated by comma, -1 to overwrite all"
+        type: "string"
         required: false
-        default: false
+        default: ""
   push:
     paths:
       - "CLI/**"

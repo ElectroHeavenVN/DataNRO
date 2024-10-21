@@ -96,9 +96,9 @@ namespace DataNRO
         public bool SaveIcon { get; set; }
 
         /// <summary>
-        /// Trạng thái ghi đè icon hay không
+        /// Danh sách ID icon ghi đè, [-1] là ghi đè tất cả
         /// </summary>
-        public bool OverwriteIcons { get; set; }
+        public int[] OverwriteIconIDs { get; set; } = new int[0];
 
         public NpcTemplate[] NpcTemplates { get; set; }
         public MobTemplate[] MobTemplates { get; set; }
