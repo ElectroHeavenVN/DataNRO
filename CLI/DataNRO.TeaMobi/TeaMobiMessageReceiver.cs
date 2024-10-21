@@ -222,7 +222,7 @@ namespace DataNRO.TeaMobi
             string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Icons";
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
-            if (session.Data.OverwriteIcons && File.Exists($"{path}\\{iconId}.png"))
+            if (!session.Data.OverwriteIconIDs.Contains(iconId) && File.Exists($"{path}\\{iconId}.png"))
                 return;
             if (data.Length < 500)
             {
