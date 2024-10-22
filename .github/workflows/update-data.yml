@@ -229,14 +229,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Decompress sample data (TeaMobi)
-        run: Expand-Archive -Path SampleData\TeaMobi.zip -DestinationPath Output\Data
+        run: Expand-Archive -Path SampleData\DataNRO-TeaMobi.zip -DestinationPath Output\Data
       - name: Upload artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
           name: DataNRO-TeaMobi
           path: Output\Data
       - name: Decompress sample data (HSNR)
-        run: Expand-Archive -Path SampleData\HSNR.zip -DestinationPath Output\Data2
+        run: Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Output\Data2
       - name: Upload artifact DataNRO-HSNR
         uses: actions/upload-artifact@v4
         with:
