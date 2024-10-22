@@ -101,13 +101,13 @@ namespace DataNRO
             Console.WriteLine("Connected successfully!");
             IMessageWriter writer = session.MessageWriter;
             writer.SetClientType();
-            Thread.Sleep(500);
+            Thread.Sleep(1500);
             writer.ImageSource();
             Thread.Sleep(1000);
             if (!string.IsNullOrEmpty(unregisteredUser))
             {
                 Console.WriteLine($"[{session.Host}:{session.Port}] Login as {unregisteredUser.Substring(0, 4)}{new string('*', unregisteredUser.Length - 4)}");
-                writer.Login(unregisteredUser, "", 1);
+                writer.Login(unregisteredUser, "a", 1);
             }
             else
             {
@@ -119,12 +119,10 @@ namespace DataNRO
             writer.UpdateSkill();
             writer.UpdateItem();
             writer.UpdateData();
-            Thread.Sleep(100);
+            Thread.Sleep(1000);
             writer.ClientOk();
             writer.FinishUpdate();
-            Thread.Sleep(500);
-            writer.FinishLoadMap();
-            Thread.Sleep(3000);
+            Thread.Sleep(4000);
             int count = 0;
             Location location;
             do
@@ -139,8 +137,9 @@ namespace DataNRO
                 Thread.Sleep(1000);
             }
             while (location == null || string.IsNullOrEmpty(location.mapName));
+            writer.FinishLoadMap();
             Console.WriteLine($"[{session.Host}:{session.Port}] Current map: {location.mapName} [{location.mapId}], zone {location.zoneId}");
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             if (session.Data.SaveIcon)
             {
                 if (!RequestIcons(session))

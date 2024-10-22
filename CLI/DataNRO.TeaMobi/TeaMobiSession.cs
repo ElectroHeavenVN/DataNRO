@@ -173,7 +173,7 @@ namespace DataNRO.TeaMobi
                 sbyte b = reader.ReadSByte();
                 if (getKeyComplete)
                     b = ReadKey(b);
-                if (b == -32 || b == -66 || b == 11 || b == -67 || b == -74 || b == -87 || b == 66)
+                if (b == -32 || b == -66 || b == 11 || b == -67 || b == -74 || b == -87 || b == 66 || b == 12)
                 {
                     int num = ReadKey(reader.ReadSByte()) + 128;
                     int num2 = ReadKey(reader.ReadSByte()) + 128;

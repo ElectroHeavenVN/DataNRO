@@ -28,7 +28,6 @@ namespace DataNRO.TeaMobi
             switch (message.Command)
             {
                 case -28:
-
                     //MessageNotMap
                     switch (message.ReadSByte())
                     {
@@ -54,6 +53,12 @@ namespace DataNRO.TeaMobi
                     break;
                 case -87:
                     ReadCommonData(message);
+                    break;
+
+                case 12:    //read_cmdExtraBig
+                    byte b = message.ReadByte();
+                    if (b == 0)
+                        ReadItemData(message);
                     break;
             }
         }
