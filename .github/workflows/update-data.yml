@@ -108,7 +108,7 @@ jobs:
           PROXY: ${{ secrets.PROXY }}
           OVERWRITE_ICONS: ${{ github.event.inputs.overwrite-icons }}
       - name: Decompress high-res images extracted from the game
-        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data -Force
+        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data\TeaMobi\Icons\ -Force
       - name: Upload artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
@@ -169,7 +169,7 @@ jobs:
           PROXY: ${{ secrets.PROXY }}
           OVERWRITE_ICONS: ${{ github.event.inputs.overwrite-icons }}
       - name: Decompress high-res images extracted from the game
-        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data -Force
+        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data\HSNR\Icons -Force
       - name: Upload artifact DataNRO-HSNR
         uses: actions/upload-artifact@v4
         with:
@@ -235,7 +235,7 @@ jobs:
       - name: Decompress sample data (TeaMobi)
         run: Expand-Archive -Path SampleData\DataNRO-TeaMobi.zip -DestinationPath Output\Data
       - name: Decompress high-res images extracted from the game
-        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data -Force
+        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data\TeaMobi\Icons -Force
       - name: Upload artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
@@ -244,7 +244,7 @@ jobs:
       - name: Decompress sample data (HSNR)
         run: Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Output\Data2
       - name: Decompress high-res images extracted from the game
-        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data2 -Force
+        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data2\HSNR\Icons -Force
       - name: Upload artifact DataNRO-HSNR
         uses: actions/upload-artifact@v4
         with:
