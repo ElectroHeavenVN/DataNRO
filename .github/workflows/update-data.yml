@@ -251,9 +251,9 @@ jobs:
           name: DataNRO-HSNR
           path: Output\Data2
       - name: Move sample data to Page (TeaMobi)
-        run: Move-Item -Path Output\Data -Destination Page -Force
+        run: Move-Item -Path Output\Data\TeaMobi -Destination Page -Force
       - name: Move sample data to Page (HSNR)
-        run: Move-Item -Path Output\Data2 -Destination Page -Force
+        run: Move-Item -Path Output\Data2\HSNR -Destination Page -Force
       - name: Upload page artifact
         uses: actions/upload-pages-artifact@v3
         with:
