@@ -66,7 +66,7 @@ namespace DataNRO.TeaMobi
         void ReadMapData(MessageReceive message)
         {
             message.ReadByte();
-            int mapLength = message.ReadByte();
+            int mapLength = message.ReadShort();
             for (int i = 0; i < mapLength; i++)
             {
                 Map map = new Map();
@@ -92,14 +92,14 @@ namespace DataNRO.TeaMobi
                 }
                 session.Data.NpcTemplates[i] = npcTemplate;
             }
-            session.Data.MobTemplates = new MobTemplate[message.ReadByte()];
+            session.Data.MobTemplates = new MobTemplate[message.ReadShort()];
             for (sbyte i = 0; i < session.Data.MobTemplates.Length; i++)
             {
                 MobTemplate mobTemplate = new MobTemplate();
                 mobTemplate.mobTemplateId = i;
                 mobTemplate.type = message.ReadSByte();
                 mobTemplate.name = message.ReadString();
-                mobTemplate.hp = message.ReadInt();
+                mobTemplate.hp = message.ReadLong();
                 mobTemplate.rangeMove = message.ReadSByte();
                 mobTemplate.speed = message.ReadSByte();
                 mobTemplate.dartType = message.ReadSByte();
@@ -162,7 +162,7 @@ namespace DataNRO.TeaMobi
             sbyte type = message.ReadSByte();
             if (type == 0)
             {
-                session.Data.ItemOptionTemplates = new ItemOptionTemplate[message.ReadByte()];
+                session.Data.ItemOptionTemplates = new ItemOptionTemplate[message.ReadShort()];
                 for (int i = 0; i < session.Data.ItemOptionTemplates.Length; i++)
                 {
                     ItemOptionTemplate itemOptionTemplate = new ItemOptionTemplate();
@@ -172,11 +172,9 @@ namespace DataNRO.TeaMobi
                     session.Data.ItemOptionTemplates[i] = itemOptionTemplate;
                 }
             }
-            else if (type == 1 || type == 2)
+            else if (type == 1)
             {
                 short start = 0;
-                if (type == 2)
-                    start = message.ReadShort();
                 short end = message.ReadShort();
                 for (int i = start; i < end; i++)
                 {
