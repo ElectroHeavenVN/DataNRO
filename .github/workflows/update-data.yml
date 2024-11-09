@@ -107,6 +107,8 @@ jobs:
           DATA: ${{ secrets.DATA_TEAMOBI }}
           PROXY: ${{ secrets.PROXY }}
           OVERWRITE_ICONS: ${{ github.event.inputs.overwrite-icons }}
+      - name: Decompress high-res images extracted from the game
+        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data -Force
       - name: Upload artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
@@ -166,6 +168,8 @@ jobs:
           DATA: ${{ secrets.DATA_HSNR }}
           PROXY: ${{ secrets.PROXY }}
           OVERWRITE_ICONS: ${{ github.event.inputs.overwrite-icons }}
+      - name: Decompress high-res images extracted from the game
+        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data -Force
       - name: Upload artifact DataNRO-HSNR
         uses: actions/upload-artifact@v4
         with:
@@ -230,6 +234,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Decompress sample data (TeaMobi)
         run: Expand-Archive -Path SampleData\DataNRO-TeaMobi.zip -DestinationPath Output\Data
+      - name: Decompress high-res images extracted from the game
+        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data -Force
       - name: Upload artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
@@ -237,6 +243,8 @@ jobs:
           path: Output\Data
       - name: Decompress sample data (HSNR)
         run: Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Output\Data2
+      - name: Decompress high-res images extracted from the game
+        run: Expand-Archive -Path SampleData\HighResImage.zip -DestinationPath Output\Data2 -Force
       - name: Upload artifact DataNRO-HSNR
         uses: actions/upload-artifact@v4
         with:
