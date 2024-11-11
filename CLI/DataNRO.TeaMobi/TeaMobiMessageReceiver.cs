@@ -42,8 +42,13 @@ namespace DataNRO.TeaMobi
                             break;
                     }
                     break;
+                case -29:
+                    if (message.ReadSByte() != 2)
+                        break;
+                    Console.WriteLine("IP address list received: " + message.ReadString());
+                    break;
                 case -26:
-                    Console.WriteLine(message.ReadString());
+                    Console.WriteLine("Message received: " + message.ReadString());
                     break;
                 case -24:
                     ReadCurrentMapInfo(message);
