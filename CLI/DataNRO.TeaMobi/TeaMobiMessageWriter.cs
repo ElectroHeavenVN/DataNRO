@@ -126,6 +126,13 @@ namespace DataNRO.TeaMobi
             session.SendMessage(message);
         }
 
+        public void GetResource(byte action)
+        {
+            MessageSend message = new MessageSend(-74);
+            message.WriteByte(action);
+            session.SendMessage(message);
+        }
+
         public void OpenUIZone()
         {
             MessageSend message = new MessageSend(29);

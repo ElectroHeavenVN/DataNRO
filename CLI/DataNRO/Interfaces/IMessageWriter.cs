@@ -84,5 +84,11 @@
         /// </summary>
         /// <param name="zoneId">ID khu vực</param>
         void RequestChangeZone(int zoneId);
+
+        /// <summary>
+        /// Gửi yêu cầu tải dữ liệu
+        /// </summary>
+        /// <param name="action">Hành động tải dữ liệu</param>
+        void GetResource(byte action);
     }
 }

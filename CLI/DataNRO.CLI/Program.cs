@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace DataNRO
         static Random random = new Random();
         static string proxyData = "";
         static int[] overwriteIconIDs = new int[0];
+        static readonly int ZOOM_LEVEL = 4;
 
         static void Main(string[] args)
         {
@@ -104,6 +106,13 @@ namespace DataNRO
             Thread.Sleep(1500);
             writer.ImageSource();
             Thread.Sleep(1000);
+            if (session.Data.SaveIcon)
+                writer.GetResource(1);
+            do
+            {
+                Thread.Sleep(1000);
+            }
+            while (!session.Data.AllResourceLoaded);
             if (!string.IsNullOrEmpty(unregisteredUser))
             {
                 Console.WriteLine($"[{session.Host}:{session.Port}] Login as {unregisteredUser.Substring(0, 4)}{new string('*', unregisteredUser.Length - 4)}");
@@ -152,6 +161,36 @@ namespace DataNRO
             writer.Chat("GitHub dot com slash ElectroHeavenVN slash DataNRO");
             Thread.Sleep(5000);
             session.Disconnect();
+
+            if (session.Data.SaveIcon)
+            {
+                Console.WriteLine($"[{session.Host}:{session.Port}] Splitting images...");
+                List<Bitmap> smallImages = new List<Bitmap>();
+                for (int i = 0; File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\Big{i}.png"); i++)
+                    smallImages.Add(new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\Big{i}.png"));
+                for (int id = 0; id < session.Data.SmallImg.Length; id++)
+                {
+                    int[] smallImg = session.Data.SmallImg[id];
+                    int imgBigIndex = smallImg[0];
+                    if (imgBigIndex < 0 || imgBigIndex >= smallImages.Count || smallImages[imgBigIndex] == null)
+                        continue;
+                    if (smallImg[1] >= 256 || smallImg[2] >= 256 || smallImg[3] >= 256 || smallImg[4] >= 256)
+                        continue;
+                    int x = smallImg[1] * ZOOM_LEVEL;
+                    int y = smallImg[2] * ZOOM_LEVEL;
+                    int width = smallImg[3] * ZOOM_LEVEL;
+                    int height = smallImg[4] * ZOOM_LEVEL;
+                    using (Bitmap bitmap = new Bitmap(width, height))
+                    {
+                        using (Graphics g = Graphics.FromImage(bitmap))
+                        {
+                            g.DrawImage(smallImages[imgBigIndex], new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);
+                        }
+                        bitmap.Save($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png");
+                    }
+                }
+            }
+
             Console.WriteLine($"[{session.Host}:{session.Port}] Writing data to {session.Data.Path}\\...");
             Formatting formatting = Formatting.Indented;
             File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Maps)}.json", JsonConvert.SerializeObject(session.Data.Maps, formatting));

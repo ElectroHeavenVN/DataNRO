@@ -107,6 +107,8 @@ namespace DataNRO
         public List<Map> Maps { get; set; } = new List<Map>();
         public List<ItemTemplate> ItemTemplates { get; set; } = new List<ItemTemplate>();
         public Part[] Parts { get; set; }
+        public bool AllResourceLoaded { get; set; }
+        public int[][] SmallImg { get; set; }
 
         /// <summary>
         /// Đặt lại dữ liệu của game

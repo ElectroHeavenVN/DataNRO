@@ -59,6 +59,9 @@ namespace DataNRO.TeaMobi
                 case -87:
                     ReadCommonData(message);
                     break;
+                case -74:
+                    ReadResource(message);
+                    break;
 
                 case 12:    //read_cmdExtraBig
                     byte b = message.ReadByte();
@@ -270,6 +273,52 @@ namespace DataNRO.TeaMobi
                     }
                 }
                 session.Data.Parts = parts;
+            }
+
+            using (MessageReceive imageReader = new MessageReceive(0, nr_image))
+            {
+                session.Data.SmallImg = new int[imageReader.ReadShort()][];
+                for (int i = 0; i < session.Data.SmallImg.Length; i++)
+                    session.Data.SmallImg[i] = new int[5];
+                for (int i = 0; i < session.Data.SmallImg.Length; i++)
+                {
+                    session.Data.SmallImg[i][0] = imageReader.ReadByte();
+                    session.Data.SmallImg[i][1] = imageReader.ReadShort();
+                    session.Data.SmallImg[i][2] = imageReader.ReadShort();
+                    session.Data.SmallImg[i][3] = imageReader.ReadShort();
+                    session.Data.SmallImg[i][4] = imageReader.ReadShort();
+                }
+            }
+        }
+
+        void ReadResource(MessageReceive message)
+        {
+            if (!session.Data.SaveIcon)
+                return;
+            byte b = message.ReadByte();
+            switch (b)
+            {
+                case 0:
+                    break;
+                case 1:
+                    message.ReadShort();
+                    session.MessageWriter.GetResource(2);
+                    break;
+                case 2:
+                    string fileName = message.ReadString();
+                    if (!fileName.Contains("Big"))
+                        break;
+                    fileName = fileName.Substring(fileName.IndexOf("Big"));
+                    byte[] data = message.ReadBytes();
+                    string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Icons";
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    File.WriteAllBytes($"{path}\\{fileName}.png", data);
+                    break;
+                case 3:
+                    message.ReadInt();
+                    session.Data.AllResourceLoaded = true;
+                    break;
             }
         }
     }
