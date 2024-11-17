@@ -220,8 +220,11 @@ namespace DataNRO
                 int id = part.pi[index].id;
                 if (requestedIcons.Contains(id))
                     return;
-                if (!session.Data.OverwriteIconIDs.Contains(id) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
-                    return;
+                if (!session.Data.OverwriteIconIDs.Contains(-1))
+                {
+                    if (!session.Data.OverwriteIconIDs.Contains(id) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
+                        return;
+                }
                 writer.RequestIcon(id);
                 requestedIcons.Add(id);
                 Thread.Sleep(1000 + random.Next(-200, 201));
