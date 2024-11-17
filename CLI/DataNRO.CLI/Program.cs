@@ -107,12 +107,15 @@ namespace DataNRO
             writer.ImageSource();
             Thread.Sleep(1000);
             if (session.Data.SaveIcon)
-                writer.GetResource(1);
-            do
             {
-                Thread.Sleep(1000);
+                Console.WriteLine($"[{session.Host}:{session.Port}] Downloading data...");
+                writer.GetResource(1);
+                do
+                {
+                    Thread.Sleep(1000);
+                }
+                while (!session.Data.AllResourceLoaded);
             }
-            while (!session.Data.AllResourceLoaded);
             if (!string.IsNullOrEmpty(unregisteredUser))
             {
                 Console.WriteLine($"[{session.Host}:{session.Port}] Login as {unregisteredUser.Substring(0, 4)}{new string('*', unregisteredUser.Length - 4)}");
