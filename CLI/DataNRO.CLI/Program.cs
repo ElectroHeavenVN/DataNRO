@@ -20,7 +20,6 @@ namespace DataNRO
         static Random random = new Random();
         static string proxyData = "";
         static int[] overwriteIconIDs = new int[0];
-        static readonly int ZOOM_LEVEL = 4;
 
         static void Main(string[] args)
         {
@@ -179,10 +178,10 @@ namespace DataNRO
                         continue;
                     if (smallImg[1] >= 256 || smallImg[2] >= 256 || smallImg[3] >= 256 || smallImg[4] >= 256)
                         continue;
-                    int x = smallImg[1] * ZOOM_LEVEL;
-                    int y = smallImg[2] * ZOOM_LEVEL;
-                    int width = smallImg[3] * ZOOM_LEVEL;
-                    int height = smallImg[4] * ZOOM_LEVEL;
+                    int x = smallImg[1] * session.Data.ZoomLevel;
+                    int y = smallImg[2] * session.Data.ZoomLevel;
+                    int width = smallImg[3] * session.Data.ZoomLevel;
+                    int height = smallImg[4] * session.Data.ZoomLevel;
                     using (Bitmap bitmap = new Bitmap(width, height))
                     {
                         using (Graphics g = Graphics.FromImage(bitmap))

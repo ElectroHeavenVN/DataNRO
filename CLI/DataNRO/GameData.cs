@@ -109,6 +109,7 @@ namespace DataNRO
         public List<ItemTemplate> ItemTemplates { get; set; } = new List<ItemTemplate>();
         public Part[] Parts { get; set; }
         public bool AllResourceLoaded { get; set; }
+        public int ZoomLevel { get; set; }
         public int[][] SmallImg { get; set; }
 
         /// <summary>
@@ -125,6 +126,10 @@ namespace DataNRO
             Parts = null;
         }
 
+        /// <summary>
+        /// Trạng thái có thể ghi đè icon
+        /// </summary>
+        /// <param name="iconID">ID icon</param>
         public bool CanOverwriteIcon(int iconID)
         {
             if (OverwriteIconIDs.Contains(-1))

@@ -51,6 +51,7 @@ namespace DataNRO.TeaMobi
 
         public void SetClientType()
         {
+            session.Data.ZoomLevel = Config.zoomLevel;
             MessageSend message = MessageNotLogin(2);
             message.WriteByte(Config.clientType);
             message.WriteByte(Config.zoomLevel);
