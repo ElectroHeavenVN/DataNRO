@@ -90,5 +90,11 @@
         /// </summary>
         /// <param name="action">Hành động tải dữ liệu</param>
         void GetResource(byte action);
+
+        /// <summary>
+        /// Gửi yêu cầu thông tin template của quái
+        /// </summary>
+        /// <param name="mobTemplateID">ID template của quái cần lấy thông tin</param>
+        void RequestMobTemplate(short mobTemplateID);
     }
 }

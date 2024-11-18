@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -13,7 +15,7 @@ using Newtonsoft.Json;
 using Starksoft.Net.Proxy;
 using static DataNRO.GameData;
 
-namespace DataNRO
+namespace DataNRO.CLI
 {
     internal class Program
     {
@@ -21,9 +23,15 @@ namespace DataNRO
         static string proxyData = "";
         static int[] overwriteIconIDs = new int[0];
 
+        [DllImport("msvcrt.dll")]
+        public static extern int system(string cmd);
+
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
+#if DEBUG
+            Environment.CurrentDirectory = "D:\\Working Repositories\\DataNRO\\Output";
+#endif
             new Thread(FailoverThread) { IsBackground = true }.Start();
             if (!Directory.Exists("Data"))
                 Directory.CreateDirectory("Data");
@@ -49,6 +57,9 @@ namespace DataNRO
                     Console.WriteLine(ex);
                 }
             }
+#if DEBUG
+            system("pause");
+#endif
             Environment.Exit(0);
         }
 
@@ -154,7 +165,8 @@ namespace DataNRO
             if (session.Data.SaveIcon)
             {
                 if (!RequestIcons(session))
-                    return;
+                  return;
+                RequestMobsImg(session);
             }
             TryGoOutsideIfAtHome(session);
             Console.WriteLine($"[{session.Host}:{session.Port}] Disconnect from {session.Host}:{session.Port} in 10s...");
@@ -165,33 +177,7 @@ namespace DataNRO
             session.Disconnect();
 
             if (session.Data.SaveIcon)
-            {
-                Console.WriteLine($"[{session.Host}:{session.Port}] Splitting images...");
-                List<Bitmap> smallImages = new List<Bitmap>();
-                for (int i = 0; File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\Big{i}.png"); i++)
-                    smallImages.Add(new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\Big{i}.png"));
-                for (int id = 0; id < session.Data.SmallImg.Length; id++)
-                {
-                    int[] smallImg = session.Data.SmallImg[id];
-                    int imgBigIndex = smallImg[0];
-                    if (imgBigIndex < 0 || imgBigIndex >= smallImages.Count || smallImages[imgBigIndex] == null)
-                        continue;
-                    if (smallImg[1] >= 256 || smallImg[2] >= 256 || smallImg[3] >= 256 || smallImg[4] >= 256)
-                        continue;
-                    int x = smallImg[1] * session.Data.ZoomLevel;
-                    int y = smallImg[2] * session.Data.ZoomLevel;
-                    int width = smallImg[3] * session.Data.ZoomLevel;
-                    int height = smallImg[4] * session.Data.ZoomLevel;
-                    using (Bitmap bitmap = new Bitmap(width, height))
-                    {
-                        using (Graphics g = Graphics.FromImage(bitmap))
-                        {
-                            g.DrawImage(smallImages[imgBigIndex], new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);
-                        }
-                        bitmap.Save($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png");
-                    }
-                }
-            }
+                ProcessImages(session);
 
             Console.WriteLine($"[{session.Host}:{session.Port}] Writing data to {session.Data.Path}\\...");
             Formatting formatting = Formatting.Indented;
@@ -202,9 +188,153 @@ namespace DataNRO
             File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NClasses)}.json", JsonConvert.SerializeObject(session.Data.NClasses, formatting));
             File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemTemplates, formatting));
             File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Parts)}.json", JsonConvert.SerializeObject(session.Data.Parts, formatting));
+            //if (session.Data.SaveIcon)
+            //    File.WriteAllText($"{Path.GetDirectoryName(session.Data.Path)}\\{nameof(GameData.MobTemplateEffectData)}.json", JsonConvert.SerializeObject(session.Data.MobTemplateEffectData, formatting));
             File.WriteAllText($"{session.Data.Path}\\LastUpdated", DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
             Thread.Sleep(3000);
+            session.FileWriter.DeleteTempFiles();
             session.Dispose();
+        }
+
+        static void ProcessImages(ISession session)
+        {
+            Console.WriteLine($"[{session.Host}:{session.Port}] Splitting images...");
+            List<Bitmap> smallImages = new List<Bitmap>();
+            for (int i = 0; File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\BigIcons\\Big{i}.png"); i++)
+                smallImages.Add(new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\BigIcons\\Big{i}.png"));
+            for (int id = 0; id < session.Data.SmallImg.Length; id++)
+            {
+                if (!session.Data.CanOverwriteIcon(id) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
+                    continue;
+                int[] smallImg = session.Data.SmallImg[id];
+                int imgBigIndex = smallImg[0];
+                if (imgBigIndex < 0 || imgBigIndex >= smallImages.Count || smallImages[imgBigIndex] == null)
+                    continue;
+                if (smallImg[1] >= 256 || smallImg[2] >= 256 || smallImg[3] >= 256 || smallImg[4] >= 256)
+                    continue;
+                int x = smallImg[1] * session.Data.ZoomLevel;
+                int y = smallImg[2] * session.Data.ZoomLevel;
+                int width = smallImg[3] * session.Data.ZoomLevel;
+                int height = smallImg[4] * session.Data.ZoomLevel;
+                using (Bitmap bitmap = new Bitmap(width, height))
+                {
+                    using (Graphics g = Graphics.FromImage(bitmap))
+                    {
+                        g.DrawImage(smallImages[imgBigIndex], new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);
+                    }
+                    bitmap.Save($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png");
+                }
+            }
+
+            Console.WriteLine($"[{session.Host}:{session.Port}] Combining NPC images...");
+            for (int i = 0; i < session.Data.NpcTemplates.Length; i++)
+            {
+                NpcTemplate npc = session.Data.NpcTemplates[i];
+                if (Constants.EXCLUDED_NPCS.Contains(npc.npcTemplateId))
+                    continue;
+                Part partHead = npc.headId == -1 ? null : session.Data.Parts[npc.headId];
+                Part partBody = npc.bodyId == -1 ? null : session.Data.Parts[npc.bodyId];
+                Part partLeg = npc.legId == -1 ? null : session.Data.Parts[npc.legId];
+                if (partHead == null && partBody == null && partLeg == null)
+                    continue;
+                Bitmap imgHead = null, imgBody = null, imgLeg = null;
+                if (partHead != null)
+                    imgHead = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partHead.pi[0].id}.png");
+                if (partBody != null)
+                    imgBody = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partBody.pi[1].id}.png");
+                if (partLeg != null)
+                    imgLeg = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partLeg.pi[1].id}.png");
+                int maxWidth = 0, maxHeight = 0;
+                if (imgHead != null)
+                {
+                    maxWidth = imgHead.Width;
+                    maxHeight = imgHead.Height;
+                }
+                if (imgBody != null)
+                {
+                    maxWidth += imgBody.Width;
+                    maxHeight += imgBody.Height;
+                }
+                if (imgLeg != null)
+                {
+                    maxWidth += imgLeg.Width;
+                    maxHeight += imgLeg.Height;
+                }
+                using (Bitmap imgNpc = new Bitmap(maxWidth * 3, maxHeight * 3))
+                {
+                    using (Graphics g = Graphics.FromImage(imgNpc))
+                    {
+                        g.FillRectangle(Brushes.Transparent, 0, 0, imgNpc.Width, imgNpc.Height);
+                        float cx = imgNpc.Width / 2f / session.Data.ZoomLevel;
+                        float cy = imgNpc.Height / 2f / session.Data.ZoomLevel;
+                        if (imgHead != null)
+                            g.DrawImage(imgHead, (cx + -13 + partHead.pi[0].dx) * session.Data.ZoomLevel, (cy - 34 + partHead.pi[0].dy) * session.Data.ZoomLevel, imgHead.Width, imgHead.Height);
+                        if (imgLeg != null)
+                            g.DrawImage(imgLeg, (cx + -8 + partLeg.pi[1].dx) * session.Data.ZoomLevel, (cy - 10 + partLeg.pi[1].dy) * session.Data.ZoomLevel, imgLeg.Width, imgLeg.Height);
+                        if (imgBody != null)
+                            g.DrawImage(imgBody, (cx + -9 + partBody.pi[1].dx) * session.Data.ZoomLevel, (cy - 16 + partBody.pi[1].dy) * session.Data.ZoomLevel, imgBody.Width, imgBody.Height);
+                    }
+                    string path = $"{Path.GetDirectoryName(session.Data.Path)}\\NPCs";
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    Bitmap croppedImg = CropToContent(imgNpc);
+                    using (Graphics g = Graphics.FromImage(croppedImg))
+                    {
+                        g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+                        Font font = new Font("Arial", 8);
+                        g.DrawString("© ElectroHeavenVN", font, Brushes.Black, 0, 30);
+                    }
+                    croppedImg.Save($"{path}\\{npc.npcTemplateId}.png");
+                    croppedImg.Dispose();
+                    imgNpc.Dispose();
+                }
+                imgHead?.Dispose();
+                imgBody?.Dispose();
+                imgLeg?.Dispose();
+            }
+
+            Console.WriteLine($"[{session.Host}:{session.Port}] Combining monster images...");
+            for (int templateId = 0; templateId < session.Data.MobTemplates.Length; templateId++)
+            {
+                MobTemplate template = session.Data.MobTemplates[templateId];
+                EffectData effectData = session.Data.MobTemplateEffectData[templateId];
+                if (effectData.frame == null || effectData.frame.Length == 0)
+                    continue;
+                Frame frame = effectData.frame[0];
+                Bitmap mobImg = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\MobImg\\{templateId}.png");
+                using (Bitmap monster = new Bitmap(mobImg.Width * 3, mobImg.Height * 3))
+                {
+                    int x = (int)(monster.Width / 2f / session.Data.ZoomLevel);
+                    int y = (int)(monster.Height / 2f / session.Data.ZoomLevel);
+                    using (Graphics g = Graphics.FromImage(monster))
+                    {
+                        for (int i = 0; i < frame.dx.Length; i++)
+                        {
+                            ImageInfo imageInfo = effectData.imgInfo.FirstOrDefault(img => img.id == frame.idImg[i]);
+                            if (imageInfo == null)
+                                continue;
+                            try
+                            {
+                                g.DrawImage(mobImg, new Rectangle((x + frame.dx[i]) * session.Data.ZoomLevel, (y + frame.dy[i]) * session.Data.ZoomLevel, imageInfo.w * session.Data.ZoomLevel, imageInfo.h * session.Data.ZoomLevel), new Rectangle(imageInfo.x0 * session.Data.ZoomLevel, imageInfo.y0 * session.Data.ZoomLevel, imageInfo.w * session.Data.ZoomLevel, imageInfo.h * session.Data.ZoomLevel), GraphicsUnit.Pixel);
+                            }
+                            catch { }
+                        }
+                    }
+                    string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Monsters";
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    Bitmap croppedImg = CropToContent(monster);
+                    using (Graphics g = Graphics.FromImage(croppedImg))
+                    {
+                        g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+                        Font font = new Font("Arial", 12);
+                        g.DrawString("© ElectroHeavenVN", font, Brushes.Black, 0, 30);
+                    }
+                    croppedImg.Save($"{path}\\{templateId}.png");
+                    croppedImg.Dispose();
+                }
+                mobImg.Dispose();
+            }
         }
 
         static bool RequestIcons(ISession session)
@@ -345,6 +475,25 @@ namespace DataNRO
             return true;
         }
 
+        static void RequestMobsImg(ISession session)
+        {
+            IMessageWriter writer = session.MessageWriter;
+            MobTemplate[] mobTemplates = session.Data.MobTemplates;
+            int count = 0;
+            for (int templateID = 0; templateID < mobTemplates.Length; templateID++)
+            {
+                writer.RequestMobTemplate((short)templateID);
+                count++;
+                Thread.Sleep(1000 + random.Next(-200, 201));
+                if (count >= 10)
+                {
+                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    count = 0;
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Requested {templateID} mob templates");
+                }
+            }
+        }
+
         static void TryGoOutsideIfAtHome(ISession session)
         {
             IMessageWriter writer = session.MessageWriter;
@@ -456,6 +605,35 @@ namespace DataNRO
                 }
             }
             return true;
+        }
+
+        static Bitmap CropToContent(Bitmap source)
+        {
+            int width = source.Width;
+            int height = source.Height;
+            int minX = width, minY = height, maxX = 0, maxY = 0;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color pixelColor = source.GetPixel(x, y);
+                    if (pixelColor.A == 0)
+                        continue;
+                    minX = Math.Min(minX, x);
+                    minY = Math.Min(minY, y);
+                    maxX = Math.Max(maxX, x);
+                    maxY = Math.Max(maxY, y);
+                }
+            }
+            if (minX > maxX || minY > maxY)
+                return new Bitmap(1, 1);
+            Rectangle cropRect = new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
+            Bitmap croppedBitmap = new Bitmap(cropRect.Width, cropRect.Height);
+            using (Graphics g = Graphics.FromImage(croppedBitmap))
+            {
+                g.DrawImage(source, new Rectangle(0, 0, croppedBitmap.Width, croppedBitmap.Height), cropRect, GraphicsUnit.Pixel);
+            }
+            return croppedBitmap;
         }
     }
 }

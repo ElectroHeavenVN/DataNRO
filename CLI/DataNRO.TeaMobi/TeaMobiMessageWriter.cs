@@ -140,6 +140,13 @@ namespace DataNRO.TeaMobi
             session.SendMessage(message);
         }
 
+        public void RequestMobTemplate(short mobTemplateID)
+        {
+            MessageSend message = new MessageSend(11);
+            message.WriteShort(mobTemplateID);
+            session.SendMessage(message);
+        }
+
         public void RequestChangeZone(int zoneId)
         {
             MessageSend message = new MessageSend(21);

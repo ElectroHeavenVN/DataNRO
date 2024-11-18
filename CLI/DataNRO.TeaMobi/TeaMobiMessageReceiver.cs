@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using DataNRO.Interfaces;
@@ -62,7 +61,9 @@ namespace DataNRO.TeaMobi
                 case -74:
                     ReadResource(message);
                     break;
-
+                case 11:
+                    ReadMobTemplate(message);
+                    break;
                 case 12:    //read_cmdExtraBig
                     byte b = message.ReadByte();
                     if (b == 0)
@@ -101,6 +102,7 @@ namespace DataNRO.TeaMobi
                 session.Data.NpcTemplates[i] = npcTemplate;
             }
             session.Data.MobTemplates = new MobTemplate[message.ReadShort()];
+            session.Data.MobTemplateEffectData = new EffectData[session.Data.MobTemplates.Length];
             for (sbyte i = 0; i < session.Data.MobTemplates.Length; i++)
             {
                 MobTemplate mobTemplate = new MobTemplate();
@@ -112,6 +114,8 @@ namespace DataNRO.TeaMobi
                 mobTemplate.speed = message.ReadSByte();
                 mobTemplate.dartType = message.ReadSByte();
                 session.Data.MobTemplates[i] = mobTemplate;
+
+                session.Data.MobTemplateEffectData[i] = new EffectData();
             }
         }
 
@@ -230,11 +234,6 @@ namespace DataNRO.TeaMobi
                 return;
             int iconId = message.ReadInt();
             byte[] data = message.ReadBytes();
-            string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Icons";
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-            if (!session.Data.CanOverwriteIcon(iconId) && File.Exists($"{path}\\{iconId}.png"))
-                return;
             if (data.Length < 500)
             {
                 using (SHA256 sha256 = SHA256.Create())
@@ -244,7 +243,7 @@ namespace DataNRO.TeaMobi
                         return;
                 }
             }
-            File.WriteAllBytes($"{path}\\{iconId}.png", data);
+            session.FileWriter.WriteIcon(iconId, data);
         }
 
         void ReadCommonData(MessageReceive message)
@@ -310,16 +309,185 @@ namespace DataNRO.TeaMobi
                         break;
                     fileName = fileName.Substring(fileName.IndexOf("Big"));
                     byte[] data = message.ReadBytes();
-                    string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Icons";
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-                    File.WriteAllBytes($"{path}\\{fileName}.png", data);
+                    session.FileWriter.WriteBigIcon(fileName, data);
                     break;
                 case 3:
                     message.ReadInt();
                     session.Data.AllResourceLoaded = true;
                     break;
             }
+        }
+
+        void ReadMobTemplate(MessageReceive message)
+        {
+            int templateID = message.ReadShort();
+            byte type = message.ReadByte();
+            byte[] data = message.ReadBytes();
+            if (type == 0)
+                ReadMobData(templateID, data);
+            else
+                ReadNewMobData(templateID, data, type);
+            byte[] imgData = message.ReadBytes();
+            session.FileWriter.WriteMobImg(templateID, imgData);
+            byte typeData = message.ReadByte();
+        }
+
+        void ReadMobData(int templateID, byte[] data)
+        {
+            MessageReceive reader = new MessageReceive(0, data);
+            int left = 0;
+            int top = 0;
+            int right = 0;
+            int bottom = 0;
+            EffectData effectData = session.Data.MobTemplateEffectData[templateID];
+            try
+            {
+                ImageInfo[] imgInfos = new ImageInfo[reader.ReadByte()];
+                for (int i = 0; i < imgInfos.Length; i++)
+                {
+                    ImageInfo imgInfo = new ImageInfo();
+                    imgInfo.id = reader.ReadSByte();
+                    imgInfo.x0 = reader.ReadByte();
+                    imgInfo.y0 = reader.ReadByte();
+                    imgInfo.w = reader.ReadByte();
+                    imgInfo.h = reader.ReadByte();
+                    imgInfos[i] = imgInfo;
+                }
+                effectData.imgInfo = imgInfos;
+                Frame[] frame = new Frame[reader.ReadShort()];
+                for (int i = 0; i < frame.Length; i++)
+                {
+                    frame[i] = new Frame();
+                    frame[i].dx = new short[reader.ReadByte()];
+                    frame[i].dy = new short[frame[i].dx.Length];
+                    frame[i].idImg = new sbyte[frame[i].dx.Length];
+                    for (int j = 0; j < frame[i].dx.Length; j++)
+                    {
+                        frame[i].dx[j] = reader.ReadShort();
+                        frame[i].dy[j] = reader.ReadShort();
+                        frame[i].idImg[j] = reader.ReadSByte();
+                        if (i == 0)
+                        {
+                            if (left > frame[i].dx[j])
+                                left = frame[i].dx[j];
+                            if (top > frame[i].dy[j])
+                                top = frame[i].dy[j];
+                            if (right < frame[i].dx[j] + imgInfos[frame[i].idImg[j]].w)
+                                right = frame[i].dx[j] + imgInfos[frame[i].idImg[j]].w;
+                            if (bottom < frame[i].dy[j] + imgInfos[frame[i].idImg[j]].h)
+                                bottom = frame[i].dy[j] + imgInfos[frame[i].idImg[j]].h;
+                            effectData.width = right - left;
+                            effectData.height = bottom - top;
+                        }
+                    }
+                }
+                effectData.frame = frame;
+                short[] arrFrame = new short[reader.ReadShort()];
+                if (effectData.id >= 201)
+                {
+                    short index = 0;
+                    short[] array = new short[arrFrame.Length];
+                    int count = 0;
+                    bool flag = false;
+                    for (int i = 0; i < array.Length; i++)
+                    {
+                        arrFrame[i] = reader.ReadShort();
+                        if (arrFrame[i] + 500 >= 500)
+                        {
+                            array[count++] = arrFrame[i];
+                            flag = true;
+                            continue;
+                        }
+                        index = (short)Math.Abs(arrFrame[i] + 500);
+                        effectData.anim_data[index] = new short[count];
+                        Array.Copy(array, 0, effectData.anim_data[index], 0, count);
+                        count = 0;
+                    }
+                    if (!flag)
+                    {
+                        effectData.anim_data[0] = new short[count];
+                        Array.Copy(array, 0, effectData.anim_data[index], 0, count);
+                        return;
+                    }
+                    for (int i = 0; i < 16; i++)
+                    {
+                        if (effectData.anim_data[i] == null)
+                            effectData.anim_data[i] = effectData.anim_data[2];
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < arrFrame.Length; i++)
+                        arrFrame[i] = reader.ReadShort();
+                }
+                effectData.arrFrame = arrFrame;
+            }
+            catch { }
+        }
+
+        void ReadNewMobData(int templateID, byte[] data, byte typeRead)
+        {
+            MessageReceive reader = new MessageReceive(0, data);
+            int left = 0;
+            int top = 0;
+            int right = 0;
+            int bottom = 0;
+            EffectData effectData = session.Data.MobTemplateEffectData[templateID];
+            try
+            {
+                ImageInfo[] imgInfos = new ImageInfo[reader.ReadByte()];
+                for (int i = 0; i < imgInfos.Length; i++)
+                {
+                    imgInfos[i] = new ImageInfo();
+                    imgInfos[i].id = reader.ReadByte();
+                    if (typeRead == 1)
+                    {
+                        imgInfos[i].x0 = reader.ReadByte();
+                        imgInfos[i].y0 = reader.ReadByte();
+                    }
+                    else
+                    {
+                        imgInfos[i].x0 = reader.ReadShort();
+                        imgInfos[i].y0 = reader.ReadShort();
+                    }
+                    imgInfos[i].w = reader.ReadByte();
+                    imgInfos[i].h = reader.ReadByte();
+                }
+                effectData.imgInfo = imgInfos;
+                Frame[] frames = new Frame[reader.ReadShort()];
+                for (int i = 0; i < frames.Length; i++)
+                {
+                    frames[i] = new Frame();
+                    frames[i].dx = new short[reader.ReadByte()];
+                    frames[i].dy = new short[frames[i].dx.Length];
+                    frames[i].idImg = new sbyte[frames[i].dx.Length];
+                    for (int j = 0; j < frames[i].dx.Length; j++)
+                    {
+                        frames[i].dx[j] = reader.ReadShort();
+                        frames[i].dy[j] = reader.ReadShort();
+                        frames[i].idImg[j] = reader.ReadSByte();
+                        if (i == 0)
+                        {
+                            if (left > frames[i].dx[j])
+                                left = frames[i].dx[j];
+                            if (top > frames[i].dy[j])
+                                top = frames[i].dy[j];
+                            if (right < frames[i].dx[j] + imgInfos[frames[i].idImg[j]].w)
+                                right = frames[i].dx[j] + imgInfos[frames[i].idImg[j]].w;
+                            if (bottom < frames[i].dy[j] + imgInfos[frames[i].idImg[j]].h)
+                                bottom = frames[i].dy[j] + imgInfos[frames[i].idImg[j]].h;
+                            effectData.width = right - left;
+                            effectData.height = bottom - top;
+                        }
+                    }
+                }
+                effectData.frame = frames;
+                short[] arrFrame = new short[reader.ReadShort()];
+                for (int l = 0; l < arrFrame.Length; l++)
+                    arrFrame[l] = reader.ReadShort();
+                effectData.arrFrame = arrFrame;
+            }
+            catch { }
         }
     }
 }

@@ -15,6 +15,27 @@ namespace DataNRO
             public string[][] menu;
         }
 
+        public class ImageInfo
+        {
+            public int id, x, y, x0, y0, w, h;
+        }
+
+        public class Frame
+        {
+            public int id;
+            public short[] dx, dy;
+            public sbyte[] idImg;
+        }
+
+        public class EffectData
+        {
+            public ImageInfo[] imgInfo;
+            public Frame[] frame;
+            public short[] arrFrame;
+            public short[][] anim_data = new short[16][];
+            public int id, typeData, width, height;
+        }
+
         public class MobTemplate
         {
             public int mobTemplateId, rangeMove, speed, type, dartType;
@@ -103,6 +124,7 @@ namespace DataNRO
 
         public NpcTemplate[] NpcTemplates { get; set; }
         public MobTemplate[] MobTemplates { get; set; }
+        public EffectData[] MobTemplateEffectData { get; set; }
         public ItemOptionTemplate[] ItemOptionTemplates { get; set; }
         public NClass[] NClasses { get; set; }
         public List<Map> Maps { get; set; } = new List<Map>();

@@ -15,6 +15,7 @@ namespace DataNRO.TeaMobi
         public ushort Port { get; }
         public IMessageReceiver MessageReceiver { get; private set; }
         public IMessageWriter MessageWriter { get; private set; }
+        public FileWriter FileWriter { get; private set; }
         public bool IsConnected => tcpClient == null ? false : tcpClient.Connected;
         public GameData Data { get; } = new GameData();
         public Player Player { get; } = new Player();
@@ -36,6 +37,7 @@ namespace DataNRO.TeaMobi
             Port = port;
             MessageReceiver = new TeaMobiMessageReceiver(this);
             MessageWriter = new TeaMobiMessageWriter(this);
+            FileWriter = new FileWriter(this);
         }
 
         public void Connect()

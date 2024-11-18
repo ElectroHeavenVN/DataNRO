@@ -68,5 +68,10 @@ namespace DataNRO.Interfaces
         /// Nhân vật của phiên hiện tại
         /// </summary>
         Player Player { get; }
+
+        /// <summary>
+        /// Đối tượng quản lý việc ghi dữ liệu vào file
+        /// </summary>
+        FileWriter FileWriter { get; }
     }
 }
