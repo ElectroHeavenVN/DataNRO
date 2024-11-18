@@ -220,11 +220,8 @@ namespace DataNRO
                 int id = part.pi[index].id;
                 if (requestedIcons.Contains(id))
                     return;
-                if (!session.Data.OverwriteIconIDs.Contains(-1))
-                {
-                    if (!session.Data.OverwriteIconIDs.Contains(id) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
-                        return;
-                }
+                if (!session.Data.CanOverwriteIcon(id) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
+                    return;
                 writer.RequestIcon(id);
                 requestedIcons.Add(id);
                 Thread.Sleep(1000 + random.Next(-200, 201));
@@ -267,7 +264,7 @@ namespace DataNRO
                 items.Remove(item);
                 if (requestedIcons.Contains(item.icon))
                     continue;
-                if (!session.Data.OverwriteIconIDs.Contains(item.icon) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{item.icon}.png"))
+                if (!session.Data.CanOverwriteIcon(item.icon) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{item.icon}.png"))
                     continue;
                 writer.RequestIcon(item.icon);
                 requestedIcons.Add(item.icon);
@@ -330,7 +327,7 @@ namespace DataNRO
                 {
                     if (requestedIcons.Contains(skillTemplate.icon))
                         continue;
-                    if (!session.Data.OverwriteIconIDs.Contains(skillTemplate.icon) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{skillTemplate.icon}.png"))
+                    if (!session.Data.CanOverwriteIcon(skillTemplate.icon) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{skillTemplate.icon}.png"))
                         continue;
                     writer.RequestIcon(skillTemplate.icon);
                     requestedIcons.Add(skillTemplate.icon);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace DataNRO
 {
@@ -122,6 +123,13 @@ namespace DataNRO
             Maps = new List<Map>();
             ItemTemplates = new List<ItemTemplate>();
             Parts = null;
+        }
+
+        public bool CanOverwriteIcon(int iconID)
+        {
+            if (OverwriteIconIDs.Contains(-1))
+                return true;
+            return OverwriteIconIDs.Contains(iconID);
         }
     }
 }
