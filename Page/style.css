@@ -443,14 +443,34 @@ th {
 	background: #f4f4f4;
 }
 
-td .icon-container {
+td .icon-container,
+td .npc-container,
+td .mob-container,
+td .npc-noti-container {
 	display: flex;
 	justify-content: center;
+}
+
+td .npc-noti-container {
+	flex-direction: column;
+	align-items: center;
 }
 
 td .icon-container img {
 	max-height: 40px;
 	width: 40px;
+	object-fit: contain;
+}
+
+td .npc-container img,
+td .mob-container img {
+	max-height: 300px;
+	width: 70px;
+	object-fit: contain;
+}
+
+td .npc-noti-container img {
+	width: 70px;
 	object-fit: contain;
 }
 

@@ -55,6 +55,16 @@ main = () => {
                     <button>Tìm kiếm</button>
                 </div>`;
                 break;
+            case 'mobs':
+                url = server + '/MobTemplates.json';
+                title = 'Monsters';
+                breadcrumb = 'Monsters';
+                searchContainer = `
+                <div class="search-container">
+                    <input type="text" id="search-name" placeholder="Tìm kiếm theo tên...">
+                    <button>Tìm kiếm</button>
+                </div>`;
+                break;
             case 'itemOptions':
                 url = server + '/ItemOptionTemplates.json';
                 title = 'ItemOptions';
@@ -142,7 +152,7 @@ main = () => {
                         return;
                     tableData += `<th>${prop.charAt(0).toUpperCase() + prop.slice(1)}</th>`;
                 });
-                if (page === 'npcTemplates' || page === 'parts')
+                if (page === 'npcTemplates' || page === 'parts' || page === 'mobs')
                     tableData += `<th>Image</th>`;
                 tableData += `</tr></thead><tbody></tbody></table>`;
                 tableContainer.innerHTML = searchContainer + tableData;
@@ -167,8 +177,7 @@ main = () => {
             const startIndex = (currentPage - 1) * rowsPerPage;
             const endIndex = startIndex + rowsPerPage;
             const pageData = data.slice(startIndex, endIndex);
-            for (let i = 0; i < pageData.length; i++) 
-            {
+            for (let i = 0; i < pageData.length; i++) {
                 const item = pageData[i];
                 const row = document.createElement('tr');
                 Object.getOwnPropertyNames(item).forEach(prop => {
@@ -180,11 +189,12 @@ main = () => {
                         container.classList.add('icon-container');
                         var img = document.createElement('img');
                         img.src = gamePublisher + '/Icons/' + item[prop].toString() + '.png';
-                        img.onerror = () => {
-                            container.removeChild(img);
+                        img.onerror = event => {
+                            var parentElement = event.target.parentElement;
+                            parentElement.removeChild(event.target);
                             var text = document.createElement('span');
                             text.textContent = item[prop];
-                            container.appendChild(text);
+                            parentElement.appendChild(text);
                         }
                         container.appendChild(img);
                         cell.appendChild(container);
@@ -197,39 +207,96 @@ main = () => {
                     if (item.npcTemplateId === 3) {
                         var cell = document.createElement('td');
                         var container = document.createElement('div');
-                        container.classList.add('icon-container');
+                        container.classList.add('npc-container');
                         var img = document.createElement('img');
                         img.src = gamePublisher + '/Icons/265.png';
-                        img.onerror = () => {
-                            container.removeChild(img);
+                        img.onerror = event => {
+                            var parentElement = event.target.parentElement;
+                            parentElement.removeChild(event.target);
                             var text = document.createElement('span');
                             text.textContent = "265";
-                            container.appendChild(text);
+                            parentElement.appendChild(text);
                         }
                         container.appendChild(img);
                         cell.appendChild(container);
                         row.appendChild(cell);
                     }
-                    else if (item.npcTemplateId === 4)
-                        row.appendChild(document.createElement('td'));
-                    else if (item.npcTemplateId === 6) {
+                    else if (item.npcTemplateId === 5) {
                         var cell = document.createElement('td');
                         var container = document.createElement('div');
-                        container.classList.add('icon-container');
+                        container.classList.add('npc-noti-container');
+
                         var img = document.createElement('img');
-                        img.src = gamePublisher + '/Icons/545.png';
-                        img.onerror = () => {
-                            container.removeChild(img);
+                        img.src = gamePublisher + '/Icons/281.png';
+                        img.onerror = event => {
+                            var parentElement = event.target.parentElement;
+                            parentElement.removeChild(event.target);
                             var text = document.createElement('span');
-                            text.textContent = "545";
-                            container.appendChild(text);
+                            text.textContent = "281";
+                            parentElement.appendChild(text);
+                        }
+                        
+                        var img2 = document.createElement('img');
+                        img2.src = gamePublisher + '/Icons/512.png';
+                        img2.onerror = event => {
+                            var parentElement = event.target.parentElement;
+                            parentElement.removeChild(event.target);
+                            var text = document.createElement('span');
+                            text.textContent = "512";
+                            parentElement.appendChild(text);
+                        }
+                        
+                        var img3 = document.createElement('img');
+                        img3.src = gamePublisher + '/Icons/514.png';
+                        img3.onerror = event => {
+                            var parentElement = event.target.parentElement;
+                            parentElement.removeChild(event.target);
+                            var text = document.createElement('span');
+                            text.textContent = "514";
+                            parentElement.appendChild(text);
+                        }
+
+                        container.appendChild(img);
+                        container.appendChild(img2);
+                        container.appendChild(img3);
+                        cell.appendChild(container);
+                        row.appendChild(cell);
+                    }
+                    else {
+                        //LoadNPCParts(item, row);
+                        var cell = document.createElement('td');
+                        var container = document.createElement('div');
+                        container.classList.add('npc-container');
+                        var img = document.createElement('img');
+                        img.src = gamePublisher + '/NPCs/' + item.npcTemplateId + '.png';
+                        img.onerror = event => {
+                            var parentElement = event.target.parentElement;
+                            parentElement.removeChild(event.target);
+                            var text = document.createElement('span');
+                            text.textContent = item.npcTemplateId;
+                            parentElement.appendChild(text);
                         }
                         container.appendChild(img);
                         cell.appendChild(container);
                         row.appendChild(cell);
                     }
-                    else
-                        LoadNPCParts(item, row);
+                }
+                if (Object.getOwnPropertyNames(item).find(prop => prop.includes('mobTemplateId'))) {
+                    var cell = document.createElement('td');
+                        var container = document.createElement('div');
+                        container.classList.add('mob-container');
+                        var img = document.createElement('img');
+                        img.src = gamePublisher + '/Monsters/' + item.mobTemplateId + '.png';
+                        img.onerror = event => {
+                            var parentElement = event.target.parentElement;
+                            parentElement.removeChild(event.target);
+                            var text = document.createElement('span');
+                            text.textContent = item.mobTemplateId;
+                            parentElement.appendChild(text);
+                        }
+                        container.appendChild(img);
+                        cell.appendChild(container);
+                        row.appendChild(cell);
                 }
                 if (Object.getOwnPropertyNames(item).find(prop => prop.includes('dx'))) {
                     LoadParts(item, row);
