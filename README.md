@@ -12,6 +12,8 @@ API được tạo ra với mục đích dùng miễn phí, vui lòng không s�
 
 **Định dạng API dữ liệu:** `Nhà phát hành`/`Server`/`Loại dữ liệu`
 <br>**Định dạng API ảnh:** `Nhà phát hành`/Icons/`ID`.png
+- Ảnh NPC: `Nhà phát hành`/NCPs/`ID template NPC`.png
+- Ảnh quái: `Nhà phát hành`/Monsters/`ID template quái`.png
 ### Nhà phát hành / Server
 - `/TeaMobi`: Data game Ngọc Rồng Online
   + `/Server`*: Server 1-7 và 11-13
