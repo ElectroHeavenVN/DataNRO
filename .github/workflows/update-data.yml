@@ -89,7 +89,7 @@ jobs:
       - name: Build DataNRO.CLI
         run: msbuild $env:CLISolutionPath /t:rebuild /p:Configuration=Release
       - name: Download artifact DataNRO-TeaMobi
-        uses: dawidd6/action-download-artifact@v5
+        uses: dawidd6/action-download-artifact@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
@@ -148,7 +148,7 @@ jobs:
       - name: Move DataNRO.HSNR to Output
         run: Move-Item -Path HSNR/Output/DataNRO.HSNR.dll -Destination Output/DataNRO.HSNR.dll -Force
       - name: Download artifact DataNRO-HSNR
-        uses: dawidd6/action-download-artifact@v5
+        uses: dawidd6/action-download-artifact@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
@@ -180,7 +180,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Download artifact DataNRO-TeaMobi
-        uses: dawidd6/action-download-artifact@v5
+        uses: dawidd6/action-download-artifact@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           name: DataNRO-TeaMobi
@@ -190,7 +190,7 @@ jobs:
           allow_forks: false
           path: Page
       - name: Download artifact DataNRO-HSNR
-        uses: dawidd6/action-download-artifact@v5
+        uses: dawidd6/action-download-artifact@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           name: DataNRO-HSNR
