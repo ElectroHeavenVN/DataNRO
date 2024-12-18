@@ -1,4 +1,6 @@
 main = () => {
+    document.title += ' - PhamGiang gay';
+
     const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
     const tableContainer = document.querySelector('#table-container');
     const paginationContainer = document.querySelector('#pagination');
