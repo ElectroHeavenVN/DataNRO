@@ -1,9 +1,108 @@
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n();
+
 const copyToClipboard = (content) => {
   try {
     navigator.clipboard.writeText(content);
   } catch (err) {
     console.error('Failed to copy to clipboard', err);
+  }
+}
+
+const getGenderString = (gender) => {
+  switch (gender) {
+    case 0:
+      return t('genderEarth');
+    case 1:
+      return t('genderNamekian');
+    case 2:
+      return t('genderSaiyan');
+    default:
+      return t('genderCommon');
+  }
+}
+
+const formatPowerRequired = (powerRequired) => {
+  if (powerRequired < 10) 
+    return '';
+  if (powerRequired < 1000)
+    return powerRequired.toString();
+  if (powerRequired < 1000000) 
+    return (powerRequired / 1000) + 'K';
+  if (powerRequired < 1000000000) 
+    return (powerRequired / 1000000) + 'M';
+  return (powerRequired / 1000000000) + 'B';
+}
+
+const getTypeString = (type) => {
+  switch (type) {
+    case 0:
+      return t('typeShirts');
+    case 1:
+      return t('typePants');
+    case 2:
+      return t('typeGloves');
+    case 3:
+      return t('typeShoes');
+    case 4:
+      return t('typeRadars');
+    case 5:
+      return t('typeAvatarsAndDisguises');
+    case 6:
+      return t('typeSenzuBeans');
+    case 7:
+      return t('typeSkillBooks');
+    case 8:
+      return t('typeQuestItems');
+    case 9:
+      return t('typeGolds');
+    case 10:  
+      return t('typeGreenGems');
+    case 11:
+      return t('typeBackpacks');
+    case 12:
+      return t('typeDragonBalls');
+    case 13:
+      return t('typeCharms');
+    case 14:
+      return t('typeUpgradeStones');
+    case 15:
+      return t('typeRubble');
+    case 16:
+      return t('typeMagicBottle');
+    case 22:
+      return t('typeSatellites');
+    case 23:
+      return t('typeFlyPlatforms');
+    case 24:
+      return t('typeVIPFlyPlatforms');
+    case 25:
+      return t('typeTenRadarsPacks');
+    case 27:
+      return t('typeMiscellaneousOrEventItems');
+    case 28:
+      return t('typeFlags');
+    case 29:
+      return t('typeConsumableBuffItems');
+    case 30:
+      return t('typeCrystals');
+    case 31:
+      return t('typeVietnameseCakes');
+    case 32:
+      return t('typeTrainingSuites');
+    case 33:
+      return t('typeCollectionCards');
+    case 34:
+      return t('typeRubies');
+    case 35:
+      return t('typeSecretSkillsBooks');
+    case 36:
+      return t('typeTitles');
+    case 37:
+      return t('typeSkillBooks2');
+    default:
+      return type.toString();
   }
 }
 
@@ -23,31 +122,31 @@ const breakMultiLine = (text) => {
 <template>
   <div class="item" :style="{ width, height }">
     <div class="badges">
-      <div class="badge new-item" v-if="isNewItem" :title="$t('thisIsNewItem')">NEW</div>
-      <div class="badge id" @click="copyToClipboard(id);" :title="$t('clickToCopy') + ' ID'">ID: {{ id }}</div>
+      <div class="badge id" @click="copyToClipboard(id);" :title="t('clickToCopy') + ' ID'">ID: {{ id }}</div>
+      <div class="badge new-item" v-if="isNewItem" :title="t('thisIsNewItem')">NEW</div>
     </div>
-    <div class="content">
+    <div class="content" :style="{ width }">
       <img class="icon" :src="'Icons/' + icon + '.png'" :alt="'Icon ' + icon" :title="'Icon ' + icon"/>
-      <div style="overflow: hidden;">
-        <div class="gender-and-name">
+      <div class="name-desc-gender">
+        <div class="name-desc">
           <span class="name" :title=name>{{ name }}</span>
-          <div style="padding-top: 5px;">
-            <span>{{ $t('gender') }}: </span>
-            <span class="gender">{{ gender }}</span>
-          </div>
+          <div class="description" :title="breakMultiLine(description)">{{ description }}</div>
         </div>
-        <div class="description" :title="breakMultiLine(description)">{{ description }}</div>
+        <div style="padding-top: 5px; display: flex; flex-direction: row;">
+          <span style="padding-right: 3px;">{{ t('gender') }}:</span>
+          <span class="gender">{{ getGenderString(gender) }}</span>
+        </div>
       </div>
     </div>
     <div class="info">
       <div>
-        <span>{{ $t('type') }}: </span>
-        <span class="type">{{ type }}</span>
+        <span>{{ t('type') }}: </span>
+        <span class="type">{{ getTypeString(type) }}</span>
       </div>
       <!-- <span class="level">{{ level }}</span> -->
-      <div v-if="powerRequired">
-        <span>{{ $t('powerRequired') }}: </span>
-        <span class="power-required">{{ powerRequired }}</span>
+      <div v-if="formatPowerRequired(powerRequired) !== ''">
+        <span>{{ t('powerRequired') }}: </span>
+        <span class="power-required">{{ formatPowerRequired(powerRequired) }}</span>
       </div>
     </div>
   </div>
@@ -81,11 +180,11 @@ export default {
       required: true,
     },
     type: {
-      type: String,
+      type: Number,
       required: true,
     },
     gender: {
-      type: String,
+      type: Number,
       required: true,
     },
     level: {
@@ -93,7 +192,8 @@ export default {
       required: true,
     },
     powerRequired: {
-      type: String,
+      type: Number,
+      default: 0,
     },
     isNewItem: {
       type: Boolean,
@@ -115,6 +215,7 @@ export default {
   position: relative;
   min-width: 275px;
   min-height: 100px;
+  justify-content: space-between;
 }
 
 .badges {
@@ -126,6 +227,7 @@ export default {
   font-size: 12px;
   text-transform: uppercase;
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
 }
 
@@ -151,21 +253,29 @@ export default {
 }
 
 .icon {
-  width: 70px;
-  height: 70px;
+  min-width: 70px;
+  max-height: 70px;
   margin-right: 15px;
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: bold;
 }
 
-.gender-and-name {
+.name-desc-gender {
   display: flex;
   flex-direction: row;
   font-weight: bold;
   font-size: 12px;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.name-desc {
+  overflow: hidden;
 }
 
 .gender {
   color: #0ff;
+  width: max-content;
 }
 
 .name {
@@ -178,9 +288,9 @@ export default {
 }
 
 .description {
-  font-size: 14px;
-  color: #bbb;
-  padding-top: 5px;
+  font-size: 12px;
+  color: #aaa;
+  padding-top: 3px;
   text-overflow: ellipsis;
   display: -webkit-box;
   line-clamp: 2;
