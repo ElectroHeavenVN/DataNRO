@@ -102,7 +102,7 @@ const getTypeString = (type) => {
     case 37:
       return t('typeSkillBooks2');
     default:
-      return type.toString();
+      return  t('typeUnknown') + ' (' + type + ')';
   }
 }
 
@@ -253,11 +253,12 @@ export default {
 }
 
 .icon {
-  min-width: 70px;
-  max-height: 70px;
+  width: 70px;
+  height: 70px;
   margin-right: 15px;
   font-size: 14px;
   font-weight: bold;
+  object-fit: contain;
 }
 
 .name-desc-gender {

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import ItemsPage from './views/ItemsPage.vue';
-import NPCsPage from './views/NPCsPage.vue';
+import NotFound from './components/NotFound.vue';
 
 const routes = [
   // {
@@ -23,6 +22,11 @@ const routes = [
   //   name: 'Hồi sinh Ngọc Rồng',
   //   component: HSNRPage,
   // },
+  {
+    path: '/:pathMatch(.*)*', // Catch all routes
+    name: 'NotFound',
+    component: NotFound
+  }
 ];
 
 const router = createRouter({

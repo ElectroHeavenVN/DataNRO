@@ -47,6 +47,9 @@ const messages = {
         typeSecretSkillsBooks: 'Secret skills book',
         typeTitles: 'Title',
         typeSkillBooks2: 'Skill book 2',
+        typeUnknown: 'Unknown',
+
+        items: 'Items',
     },
     vi: {
         loading: 'Đang tải',
@@ -94,6 +97,9 @@ const messages = {
         typeSecretSkillsBooks: 'Sách tuyệt kỹ',
         typeTitles: 'Danh hiệu',
         typeSkillBooks2: 'Sách kỹ năng 2',
+        typeUnknown: 'Chưa biết',
+
+        items: 'Vật phẩm',
     },
 };
 
