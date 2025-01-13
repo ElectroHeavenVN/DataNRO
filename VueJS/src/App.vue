@@ -7,7 +7,7 @@ document.title += ' - Server ' + location.pathname.replace(/^\/+|\/+$/g, '').spl
 </script>
 
 <template>
-  <ItemPage server="Universe1" />
+  <ItemPage server="Server1" />
 </template>
 
 <style>
