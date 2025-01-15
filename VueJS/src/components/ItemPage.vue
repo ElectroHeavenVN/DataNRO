@@ -49,6 +49,7 @@ export default {
   data() {
     return {
       loading: true,
+      reversed: false,
       items: [],
       filteredItems: [],
       visibleItems: [],
@@ -61,6 +62,8 @@ export default {
       let data = await response.json();
       this.items = data;
       this.filteredItems = data;
+      if (this.reversed) 
+        this.filteredItems.reverse();
       this.visibleItems = this.filteredItems.slice(0, 30);
       this.loading = false;
     },
@@ -75,22 +78,24 @@ export default {
       switch (this.currentSort) {
         case 'id':
           this.filteredItems.sort((a, b) => a.id - b.id);
-          this.visibleItems = this.filteredItems.slice(0, 30);
           break;
         case 'name':
           this.filteredItems.sort((a, b) => a.name.localeCompare(b.name));
-          this.visibleItems = this.filteredItems.slice(0, 30);
           break;
         case 'icon':
           this.filteredItems.sort((a, b) => a.icon - b.icon);
-          this.visibleItems = this.filteredItems.slice(0, 30);
           break;
       }
+      if (this.reversed) 
+        this.filteredItems.reverse();
+      this.visibleItems = this.filteredItems.slice(0, 30);
     },
     searchItem(e) {
       const search = e.target.value.toLowerCase();
       if (search === '') {
         this.filteredItems = this.items;
+        if (this.reversed) 
+          this.filteredItems.reverse();
         this.sortItems();
         return;
       }
@@ -98,6 +103,8 @@ export default {
     searchKeypress(e) {
       if (e.key === 'Enter') {
         this.filteredItems = this.items.filter(item => this.replaceVietnameseChars((item.name + '|' + item.description + '|' + item.id).toLowerCase()).includes(e.target.value));
+        if (this.reversed) 
+          this.filteredItems.reverse();
         this.visibleItems = this.filteredItems.slice(0, 30);
       }
     },
@@ -105,6 +112,7 @@ export default {
       this.filteredItems.reverse();
       this.visibleItems = this.filteredItems.slice(0, 30);
       e.target.style.transform = e.target.style.transform === 'scale(1, -1)' ? 'scale(1, 1)' : 'scale(1, -1)';
+      this.reversed = e.target.style.transform === 'scale(1, 1)';
     },
     replaceVietnameseChars(str) {
       return str.replace(/á|à|ả|ã|ạ|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/g, 'a')
