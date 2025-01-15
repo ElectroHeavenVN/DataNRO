@@ -28,7 +28,7 @@ const { t } = useI18n();
         :description=item.description :id=item.id :type=item.type :gender=item.gender :level=item.level
         :isNewItem="index > items.length - 50" :powerRequired=item.strRequire class="hoverable" />
     </div>
-    <div class="load-more hoverable" v-if="filteredItems.length > 30" @click="loadMore">
+    <div class="load-more hoverable" v-if="filteredItems.length > 30 && visibleItems.length < filteredItems.length" @click="loadMore">
       <span class="material-symbols-outlined" style="font-size: 2rem;">keyboard_arrow_down</span>
       <p style="margin: 0; font-size: 1.5rem;">{{ t('loadMore') }}</p>
     </div>
