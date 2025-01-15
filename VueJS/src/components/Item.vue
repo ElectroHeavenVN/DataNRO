@@ -122,17 +122,20 @@ const breakMultiLine = (text) => {
 <template>
   <div class="item" :style="{ width, height }">
     <div class="badges">
-      <div class="badge id" @click="copyToClipboard(id);" :title="t('clickToCopy') + ' ID'">ID: {{ id }}</div>
+      <div class="badge id" @click="copyToClipboard(id);" :title="t('clickToCopy') + ' ID'">
+        ID: {{ id }}
+        <img src="../assets/Copy.svg" style="height: 10px;" alt="Copy" />
+      </div>
       <div class="badge new-item" v-if="isNewItem" :title="t('thisIsNewItem')">NEW</div>
     </div>
-    <div class="content" :style="{ width }">
+    <div class="content">
       <img class="icon" :src="'Icons/' + icon + '.png'" :alt="'Icon ' + icon" :title="'Icon ' + icon"/>
       <div class="name-desc-gender">
         <div class="name-desc">
-          <span class="name" :title=name>{{ name }}</span>
+          <h2 class="name" :title=name>{{ name }}</h2>
           <div class="description" :title="breakMultiLine(description)">{{ description }}</div>
         </div>
-        <div style="padding-top: 5px; display: flex; flex-direction: row;">
+        <div style="padding-top: 5px; display: flex; flex-direction: row; max-width: max-content;">
           <span style="padding-right: 3px;">{{ t('gender') }}:</span>
           <span class="gender">{{ getGenderString(gender) }}</span>
         </div>
@@ -253,8 +256,8 @@ export default {
 }
 
 .icon {
-  width: 70px;
-  height: 70px;
+  width: 75px;
+  height: 75px;
   margin-right: 15px;
   font-size: 14px;
   font-weight: bold;
@@ -268,30 +271,32 @@ export default {
   font-size: 12px;
   flex: 1;
   justify-content: space-between;
+  overflow: hidden;
 }
 
 .name-desc {
   overflow: hidden;
+  flex: 1;
 }
 
 .gender {
   color: #0ff;
   width: max-content;
-}
-
-.name {
-  font-size: 16px;
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   flex: 1;
 }
 
+.name {
+  font-size: 1.75em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+  margin: 0;
+}
+
 .description {
-  font-size: 12px;
+  font-size: 14px;
   color: #aaa;
-  padding-top: 3px;
   text-overflow: ellipsis;
   display: -webkit-box;
   line-clamp: 2;
@@ -312,5 +317,11 @@ export default {
 
 .power-required {
   color: #ff0000;
+}
+
+@media screen and (max-width: 1002px) {
+    .item {
+        width: 100% !important;
+    }
 }
 </style>

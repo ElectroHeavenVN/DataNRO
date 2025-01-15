@@ -1,7 +1,8 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Nunito, sans-serif;
+  font-weight: 400;    
+  font-style: normal;
   line-height: 1.5;
-  font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -59,9 +60,9 @@ button:focus-visible {
 }
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 @media (prefers-color-scheme: light) {
@@ -75,4 +76,12 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
 }
