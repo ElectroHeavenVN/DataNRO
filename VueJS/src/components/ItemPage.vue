@@ -131,6 +131,10 @@ export default {
 </script>
 
 <style scoped>
+.material-symbols-outlined {
+  user-select: none;
+}
+
 .items {
   display: flex;
   flex-wrap: wrap;

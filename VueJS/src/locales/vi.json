@@ -47,6 +47,12 @@
 	"typeUnknown": "Chưa biết",
 
 	"items": "Vật phẩm",
+	"npcs": "NPC",
+	"skills": "Kỹ năng",
+	"mobs": "Quái",
+	"itemOptions": "Thuộc tính vật phẩm",
+	"maps": "Map",
+	"parts": "Part",
 
 	"loadMore": "Tải thêm",
 

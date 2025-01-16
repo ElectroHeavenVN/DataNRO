@@ -160,7 +160,7 @@ export default {
   props: {
     width: {
       type: String,
-      default: '450px',
+      default: '425px',
     },
     height: {
       type: String,

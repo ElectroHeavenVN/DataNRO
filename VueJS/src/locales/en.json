@@ -47,6 +47,12 @@
 	"typeUnknown": "Unknown",
 
 	"items": "Items",
+	"npcs": "NPCs",
+	"skills": "Skills",
+	"mobs": "Monsters",
+	"itemOptions": "Item modifiers",
+	"maps": "Maps",
+	"parts": "Parts",
 
 	"loadMore": "Load more",
 
