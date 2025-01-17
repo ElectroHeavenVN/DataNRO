@@ -54,8 +54,27 @@
 	"maps": "Map",
 	"parts": "Part",
 
+	"server1": "Vũ Trụ 1",
+	"server2": "Vũ Trụ 2",
+	"server3": "Vũ Trụ 3",
+	"server4": "Vũ Trụ 4",
+	"server5": "Vũ Trụ 5",
+	"server6": "Vũ Trụ 6",
+	"server7": "Vũ Trụ 7",
+	"server8910": "Vũ Trụ 8, 9 & 10",
+	"server11": "Vũ Trụ 11",
+	"server12": "Vũ Trụ 12",
+	"server13": "Vũ Trụ 13",
+	"server14": "Vũ Trụ 14",
+	"super1": "Super 1",
+	"super2": "Super 2",
+	"universe1": "Universe 1",
+	"naga": "Naga",
+
+
 	"loadMore": "Tải thêm",
 
+	"selectServer": "Chọn máy chủ",
 	"search": "Tìm kiếm",
 	"searchItem": "Tìm vật phẩm",
 	"sort": "Sắp xếp",

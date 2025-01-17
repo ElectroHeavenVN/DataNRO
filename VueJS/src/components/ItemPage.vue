@@ -8,7 +8,15 @@ const { t } = useI18n();
 <template>
   <div v-if="loading" style="width: 100%; text-align: center;">{{ t('loading') }}...</div>
   <div v-else>
-    <h1>{{ t('items') }}</h1>
+    <div class="title">
+      <h1>{{ t('items') }}</h1>
+      <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
+        <h2>{{ t('selectServer') }}</h2>
+        <select @change="changeServer">
+          <option v-for = "server in servers" :value="server">{{ t(server.toLowerCase()) }}</option>
+        </select>
+      </div>
+    </div>
     <div class="searching">
       <div class="search-bar">
         <span class="material-symbols-outlined" style="font-size: 2rem;">search</span>
@@ -24,9 +32,9 @@ const { t } = useI18n();
         </div>
     </div>
     <div class="items">
-      <Item v-for="(item, index) in visibleItems" :key=item.id :icon=item.icon :name=item.name
+      <Item v-for="item in visibleItems" :key=item.id :icon=item.icon :name=item.name
         :description=item.description :id=item.id :type=item.type :gender=item.gender :level=item.level
-        :isNewItem="index > items.length - 50" :powerRequired=item.strRequire class="hoverable" />
+        :isNewItem="items.map(i => i.id).indexOf(item.id) > items.length - 50" :powerRequired=item.strRequire class="hoverable" />
     </div>
     <div class="load-more hoverable" v-if="filteredItems.length > 30 && visibleItems.length < filteredItems.length" @click="loadMore">
       <span class="material-symbols-outlined" style="font-size: 2rem;">keyboard_arrow_down</span>
@@ -41,8 +49,8 @@ export default {
     Item,
   },
   props: {
-    server: {
-      type: String,
+    servers: {
+      type: Array,
       required: true,
     },
   },
@@ -54,14 +62,15 @@ export default {
       filteredItems: [],
       visibleItems: [],
       currentSort: 'id',
+      selectedServer: 1,
     }
   },
   methods: {
     async getItems() {
-      const response = await fetch(this.server + '/ItemTemplates.json');
+      const response = await fetch(this.servers[this.selectedServer] + '/ItemTemplates.json');
       let data = await response.json();
       this.items = data;
-      this.filteredItems = data;
+      this.filteredItems = [...data];
       if (this.reversed) 
         this.filteredItems.reverse();
       this.visibleItems = this.filteredItems.slice(0, 30);
@@ -123,6 +132,10 @@ export default {
         .replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/g, 'u')
         .replace(/ý|ỳ|ỷ|ỹ|ỵ/g, 'y');
     },
+    changeServer(e) {
+      this.selectedServer = e.target.selectedIndex;
+      this.getItems();
+    },
   },
   mounted() {
     this.getItems();
@@ -133,6 +146,19 @@ export default {
 <style scoped>
 .material-symbols-outlined {
   user-select: none;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title select {
+  font-size: 1.25rem;
+  width: 200px;
+  padding: 10px;
+  height: fit-content;
 }
 
 .items {
@@ -178,14 +204,14 @@ export default {
 }
 
 .sort {
-  width: 200px;
+  width: 250px;
   display: flex;
   align-items: center;
   gap: 10px;
   justify-content: flex-end;
 }
 
-.sort select {
+select {
   padding: 15px;
   background-color: #1c1a23;
   border: none;
@@ -193,5 +219,6 @@ export default {
   color: #fff;
   outline: none;
   font-size: 1rem;
+  width: 125px;
 }
 </style>

@@ -319,7 +319,7 @@ export default {
   color: #ff0000;
 }
 
-@media screen and (max-width: 1002px) {
+@media screen and (max-width: 1032px) {
     .item {
         width: 100% !important;
     }
