@@ -75,6 +75,11 @@ export default {
       </div>
     </div>
   </div>
+  <footer>
+    <p>Copyright &copy; 2025 ElectroHeavenVN.</p>
+    <p>&nbsp;</p>
+    <p>All rights reserved.</p>
+  </footer>
 </template>
 
 <style>
@@ -92,9 +97,31 @@ export default {
     align-items: center;
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 140px);
+    min-height: calc(100vh - 90px);
     justify-content: flex-start
 }
+
+
+footer {
+    height: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    background-color: #1c1a23;
+    margin-top: 20px
+}
+
+footer p {
+  margin: 0;
+}
+
+footer a {
+    color: cyan;
+    text-decoration: none
+}
+
 </style>
 
 <style scoped>
@@ -115,7 +142,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: calc(100% - 80px);
+    width: calc(100% - 60px);
 }
 
 nav .head {

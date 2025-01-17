@@ -6,6 +6,7 @@
 	"genderSaiyan": "Xayda",
 	"genderCommon": "Chung",
 
+	"new": "Mới",
 	"thisIsNewItem": "Đây là vật phẩm mới",
 	"clickToCopy": "Nhấn để sao chép",
 	"gender": "Hệ",
@@ -74,7 +75,7 @@
 
 	"loadMore": "Tải thêm",
 
-	"selectServer": "Chọn máy chủ",
+	"selectServer": "Máy chủ",
 	"search": "Tìm kiếm",
 	"searchItem": "Tìm vật phẩm",
 	"sort": "Sắp xếp",

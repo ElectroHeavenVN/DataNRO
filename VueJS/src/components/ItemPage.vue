@@ -11,7 +11,7 @@ const { t } = useI18n();
     <div class="title">
       <h1>{{ t('items') }}</h1>
       <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
-        <h2>{{ t('selectServer') }}</h2>
+        <span>{{ t('selectServer') }}</span>
         <select @change="changeServer">
           <option v-for = "server in servers" :value="server">{{ t(server.toLowerCase()) }}</option>
         </select>
@@ -20,7 +20,7 @@ const { t } = useI18n();
     <div class="searching">
       <div class="search-bar">
         <span class="material-symbols-outlined" style="font-size: 2rem;">search</span>
-        <input type="text" :placeholder="t('searchItem')" value="" @input="searchItem" @keypress="searchKeypress" />
+        <input type="text" :placeholder="t('searchItem')" value="" @input="checkDeleteAll" @change="searchItem" />
       </div>
       <div class="sort">
         <span class="material-symbols-outlined" style="font-size: 2rem; transform: scale(1, -1); cursor: pointer;" @click="inverseSort">sort</span>
@@ -99,7 +99,7 @@ export default {
         this.filteredItems.reverse();
       this.visibleItems = this.filteredItems.slice(0, 30);
     },
-    searchItem(e) {
+    checkDeleteAll(e) {
       const search = e.target.value.toLowerCase();
       if (search === '') {
         this.filteredItems = this.items;
@@ -109,13 +109,12 @@ export default {
         return;
       }
     },
-    searchKeypress(e) {
-      if (e.key === 'Enter') {
-        this.filteredItems = this.items.filter(item => this.replaceVietnameseChars((item.name + '|' + item.description + '|' + item.id).toLowerCase()).includes(e.target.value));
-        if (this.reversed) 
-          this.filteredItems.reverse();
-        this.visibleItems = this.filteredItems.slice(0, 30);
-      }
+    searchItem(e) {
+      const search = e.target.value.toLowerCase();
+      this.filteredItems = this.items.filter(item => this.replaceVietnameseChars((item.name + '|' + item.description + '|' + item.id).toLowerCase()).includes(search));
+      if (this.reversed) 
+        this.filteredItems.reverse();
+      this.visibleItems = this.filteredItems.slice(0, 30);
     },
     inverseSort(e) {
       this.filteredItems.reverse();
@@ -152,6 +151,19 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  margin-top: 30px; 
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.title h1 {
+  margin: 0;
+}
+
+.title span {
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
 .title select {
@@ -171,7 +183,7 @@ export default {
 .load-more {
   display: flex;
   justify-content: center;
-  margin: 20px 50px 100px 50px;
+  margin: 50px 50px 30px 50px;
   cursor: pointer;
   font-size: 20px;
   flex-direction: row;
@@ -181,7 +193,7 @@ export default {
 .searching {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
 }
 
 .search-bar {
@@ -204,11 +216,11 @@ export default {
 }
 
 .sort {
-  width: 250px;
   display: flex;
   align-items: center;
   gap: 10px;
   justify-content: flex-end;
+  margin-left: 15px;
 }
 
 select {
@@ -219,6 +231,24 @@ select {
   color: #fff;
   outline: none;
   font-size: 1rem;
-  width: 125px;
+  width: 100px;
 }
+
+@media screen and (max-width: 700px) {
+  .searching {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .sort {
+    width: 100%;
+    justify-content: flex-start;
+    margin-left: 0px;
+  }
+
+  .sort select {
+    width: 100%;
+  }
+}
+
 </style>

@@ -10,18 +10,20 @@ const copyToClipboard = (content) => {
   }
 }
 
-const getGenderString = (gender) => {
+const getGenderClass = (gender) => {
   switch (gender) {
     case 0:
-      return t('genderEarth');
+      return 'genderEarth';
     case 1:
-      return t('genderNamekian');
+      return 'genderNamekian';
     case 2:
-      return t('genderSaiyan');
+      return 'genderSaiyan';
     default:
-      return t('genderCommon');
+      return 'genderCommon';
   }
 }
+
+const getGenderString = (gender) => t(getGenderClass(gender));
 
 const formatPowerRequired = (powerRequired) => {
   if (powerRequired < 10) 
@@ -122,11 +124,14 @@ const breakMultiLine = (text) => {
 <template>
   <div class="item" :style="{ width, height }">
     <div class="badges">
-      <div class="badge id" @click="copyToClipboard(id);" :title="t('clickToCopy') + ' ID'">
+      <div class="badge id" @click="copyToClipboard(id);" @touchstart="copyToClipboard(id);" :title="t('clickToCopy') + ' ID'">
         ID: {{ id }}
         <img src="../assets/Copy.svg" style="height: 10px;" alt="Copy" />
       </div>
-      <div class="badge new-item" v-if="isNewItem" :title="t('thisIsNewItem')">NEW</div>
+      <div style="display: flex; gap: 10px;">
+        <div class="badge new-item" v-if="isNewItem" :title="t('thisIsNewItem')">{{ t('new') }}</div>
+        <div :class="'badge gender ' + getGenderClass(gender)" :title="t('gender') + ': ' + getGenderString(gender)">{{ getGenderString(gender) }}</div>
+      </div>
     </div>
     <div class="content">
       <img class="icon" :src="'Icons/' + icon + '.png'" :alt="'Icon ' + icon" :title="'Icon ' + icon"/>
@@ -134,10 +139,6 @@ const breakMultiLine = (text) => {
         <div class="name-desc">
           <h2 class="name" :title=name>{{ name }}</h2>
           <div class="description" :title="breakMultiLine(description)">{{ description }}</div>
-        </div>
-        <div style="padding-top: 5px; display: flex; flex-direction: row; max-width: max-content;">
-          <span style="padding-right: 3px;">{{ t('gender') }}:</span>
-          <span class="gender">{{ getGenderString(gender) }}</span>
         </div>
       </div>
     </div>
@@ -160,11 +161,11 @@ export default {
   props: {
     width: {
       type: String,
-      default: '425px',
+      default: '350px',
     },
     height: {
       type: String,
-      default: '100px',
+      default: '50px',
     },
     icon: {
       type: Number,
@@ -217,8 +218,7 @@ export default {
   color: white;
   position: relative;
   min-width: 275px;
-  min-height: 100px;
-  justify-content: space-between;
+  min-height: 75px;
 }
 
 .badges {
@@ -246,7 +246,7 @@ export default {
 }
 
 .badge.id {
-  background-color: #37ff00;
+  background-color: #00a0ff;
   cursor: pointer;
 }
 
@@ -256,8 +256,8 @@ export default {
 }
 
 .icon {
-  width: 75px;
-  height: 75px;
+  width: 50px;
+  height: 50px;
   margin-right: 15px;
   font-size: 14px;
   font-weight: bold;
@@ -280,13 +280,27 @@ export default {
 }
 
 .gender {
-  color: #0ff;
   width: max-content;
   flex: 1;
 }
 
+.gender.genderEarth {
+  background-color: #00b000;
+}
+
+.gender.genderNamekian {
+  background-color: #00ffa0;
+}
+
+.gender.genderSaiyan {
+  background-color: #ffa000;
+}
+
+.gender.genderCommon {
+  background-color: #ffffff;
+}
+
 .name {
-  font-size: 1.75em;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -295,16 +309,20 @@ export default {
 }
 
 .description {
-  font-size: 14px;
+  font-size: 12px;
   color: #aaa;
   text-overflow: ellipsis;
   display: -webkit-box;
   line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-height: 0.9rem;
 }
 
 .info {
+  position: absolute;
+  width: calc(100% - 30px);
+  top: calc(100% - 28px);
   display: flex;
   justify-content: space-between;
   font-size: 14px;
