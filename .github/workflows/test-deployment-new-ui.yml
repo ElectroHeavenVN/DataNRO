@@ -1,4 +1,4 @@
-name: Update pages and deploy to GitHub Pages
+name: Test deployment new UI
 on: 
   workflow_dispatch:
 permissions:
@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   update-pages:
-    name: Update pages
+    name: Deploy new UI to GitHub Pages
     runs-on: ubuntu-latest
     environment:
       name: github-pages
