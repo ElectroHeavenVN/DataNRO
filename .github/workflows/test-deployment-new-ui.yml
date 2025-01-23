@@ -1,9 +1,6 @@
 name: Update pages and deploy to GitHub Pages
 on: 
   workflow_dispatch:
-  push:
-    paths:
-    - 'Page/**'
 permissions:
   contents: read
   pages: write
