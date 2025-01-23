@@ -400,3 +400,5 @@ FodyWeavers.xsd
 Output/*
 Page/TeaMobi/*
 Page/HSNR/*
+VueJS/public/TeaMobi/*
+VueJS/public/HSNR/* 
