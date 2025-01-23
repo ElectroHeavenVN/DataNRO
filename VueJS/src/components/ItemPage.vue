@@ -265,7 +265,7 @@ export default {
 
 select {
   padding: 15px;
-  background-color: z;
+  background-color: #1c1a23;
   border: none;
   border-radius: 10px;
   color: #fff;
