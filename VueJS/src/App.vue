@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import HSNRPage from './views/HSNRPage.vue';
 import TeaMobiPage from './views/TeaMobiPage.vue';
 import SelectGamePublisherPage from './views/SelectGamePublisherPage.vue';
+import NotFound from './components/NotFound.vue';
 
 const { t } = useI18n();
 
@@ -44,7 +45,7 @@ export default {
   },
   computed: {
     currentPath() {
-      return location.pathname.replace(/^\/+|\/+$/g, '').split('/')[0];
+      return location.pathname.replace(/^\/+|\/+$/g, '').split('/')[0] ?? '';
     }
   },
   mounted() {
@@ -84,7 +85,8 @@ export default {
       <div class="content">
         <TeaMobiPage v-if="currentPath == 'TeaMobi'" />
         <HSNRPage v-else-if="currentPath == 'HSNR'" />
-        <SelectGamePublisherPage v-else />
+        <SelectGamePublisherPage v-else-if="currentPath == ''" />
+        <NotFound v-else />
       </div>
     </div>
   </div>
@@ -94,46 +96,6 @@ export default {
     <p>All rights reserved.</p>
   </footer>
 </template>
-
-<style>
-.hoverable:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 3px 10px #0003;
-}
-
-.hoverable {
-    transition-duration: .2s;
-}
-
-#main {
-    width: 100%;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    min-height: calc(100vh - 90px);
-    justify-content: flex-start
-}
-
-footer {
-    height: 60px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    background-color: #1c1a23;
-    margin-top: 20px
-}
-
-footer p {
-  margin: 0;
-}
-
-footer a {
-    color: cyan;
-    text-decoration: none
-}
-</style>
 
 <style scoped>
 .sidenav {

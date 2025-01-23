@@ -83,5 +83,9 @@
 	"search": "Search",
 	"searchItem": "Search item",
 	"sort": "Sort",
-	"name": "Name"
+	"name": "Name",
+
+	"pageNotFound": "Page not found",
+	"pageNotFoundDesc": "The page you are looking for does not exist or has been moved.",
+	"goBackToHomepage": "Go back to homepage"
 }

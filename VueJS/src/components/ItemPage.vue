@@ -57,6 +57,10 @@ export default {
       type: Array,
       required: true,
     },
+    defaultServer: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -79,11 +83,11 @@ export default {
       if (this.reversed) 
         this.filteredItems.reverse();
       this.visibleItems = this.filteredItems.slice(0, 30);
-      this.loading = false;
       response = await fetch(this.servers[this.selectedServer - 1] + '/LastUpdated');
       data = await response.text();
       let date = new Date(data);
       this.lastUpdated = date.toLocaleString() + ' (' + moment(date).fromNow() + ')';
+      this.loading = false;
     },
     loadMore() {
       this.visibleItems = this.filteredItems.slice(0, this.visibleItems.length + 30);
@@ -146,8 +150,15 @@ export default {
     },
   },
   mounted() {
+    let index = this.servers.indexOf(this.defaultServer);
+    if (index !== -1) 
+      this.selectedServer = index + 1;
+    else 
+      this.selectedServer = 1;
     moment.locale(navigator.language);
-    this.getItems();
+    this.getItems().then(() => {
+      document.querySelector(".select-server select").selectedIndex = this.selectedServer - 1;
+    });
   },
 };
 </script>

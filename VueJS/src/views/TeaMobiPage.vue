@@ -1,13 +1,6 @@
 <script setup>
 import ItemPage from '../components/ItemPage.vue';
-
-window.history.pushState = new Proxy(window.history.pushState, {
-  apply: (target, thisArg, argArray) => {
-    let result = target.apply(thisArg, argArray);
-    window.dispatchEvent(new Event('pushstate'));
-    return result;
-  },
-});
+import NpcPage from '../components/NpcPage.vue';
 </script>
 
 <script>
@@ -52,6 +45,11 @@ export default {
       this.currentPage = new URL(window.location.href).searchParams.get('page') || 'items';
     }
   },
+  computed: {
+    currentLang() {
+      return navigator.language.split('-')[0];
+    }
+  },
   mounted() {    
     window.addEventListener('pushstate', this.handlePushState);
     this.updateDefaultPage();
@@ -65,13 +63,13 @@ export default {
 <template>
   <div>
     <!-- <ItemPage v-if="currentPage === 'items'" :servers="servers" /> -->
-    <div v-if="currentPage === 'npcs'"></div>
+    <NpcPage v-if="currentPage === 'npcs'" />
     <div v-else-if="currentPage === 'skills'"></div>
     <div v-else-if="currentPage === 'mobs'"></div>
     <div v-else-if="currentPage === 'itemOptions'"></div>
     <div v-else-if="currentPage === 'maps'"></div>
     <div v-else-if="currentPage === 'parts'"></div>
-    <ItemPage v-else :servers="servers" />
+    <ItemPage v-else :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
   </div>
 </template>
 

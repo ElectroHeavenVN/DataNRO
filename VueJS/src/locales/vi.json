@@ -84,5 +84,10 @@
 	"search": "Tìm kiếm",
 	"searchItem": "Tìm vật phẩm",
 	"sort": "Sắp xếp",
-	"name": "Tên"
+	"name": "Tên",
+
+	
+	"pageNotFound": "Không tìm thấy trang",
+	"pageNotFoundDesc": "Trang bạn đang tìm không tồn tại hoặc đã bị di chuyển.",
+	"goBackToHomepage": "Quay lại trang chủ"
 }
