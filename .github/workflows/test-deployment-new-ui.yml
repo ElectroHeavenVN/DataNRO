@@ -48,6 +48,10 @@ jobs:
           cd VueJS
           npm install
           npm run build
+      - name: Copy index.html (Dirty trick)
+        run: |
+          cp VueJS/dist/index.html VueJS/dist/HSNR/index.html
+          cp VueJS/dist/index.html VueJS/dist/TeaMobi/index.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
