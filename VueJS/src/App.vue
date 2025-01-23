@@ -13,24 +13,6 @@ export default {
   data() {
     return {
       title: 'DataNRO',
-      servers : [
-        "Server1",
-        "Server2",
-        "Server3",
-        "Server4",
-        "Server5",
-        "Server6",
-        "Server7",
-        "Server8910",
-        "Server11",
-        "Server12",
-        "Server13",
-        "Server14",
-        "Super1",
-        "Super2",
-        "Universe1",
-        "Naga",
-      ]
     }
   },
   methods: {
