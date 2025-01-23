@@ -1,0 +1,62 @@
+name: Update pages and deploy to GitHub Pages
+on: 
+  workflow_dispatch:
+  push:
+    paths:
+    - 'Page/**'
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  update-pages:
+    name: Update pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: vuejs-webui
+      - name: Download artifact DataNRO-TeaMobi
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow_search: true
+          workflow_conclusion: success
+          if_no_artifact_found: fail
+          allow_forks: false
+          workflow: update-data.yml
+          name: DataNRO-TeaMobi
+          path: VueJS/public
+      - name: Download artifact DataNRO-HSNR
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow_search: true
+          workflow_conclusion: success
+          if_no_artifact_found: fail
+          allow_forks: false
+          workflow: update-data.yml
+          name: DataNRO-HSNR
+          path: VueJS/public
+      - name: Build VueJS
+        run: |
+          cd VueJS
+          npm install
+          npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: VueJS/dist
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
