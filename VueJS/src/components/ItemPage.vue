@@ -141,7 +141,7 @@ export default {
         .replace(/ý|ỳ|ỷ|ỹ|ỵ/g, 'y');
     },
     changeServer(e) {
-      this.selectedServer = e.target.selectedIndex;
+      this.selectedServer = e.target.selectedIndex + 1;
       this.getItems();
     },
   },
