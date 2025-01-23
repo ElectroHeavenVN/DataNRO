@@ -18,13 +18,13 @@ export default {
   },
   methods: {
     changeTitle() {
-      let title = location.pathname.replace(/^\/+|\/+$/g, '').split('/')[0];
+      let title = location.pathname.replace(/^\/+|\/+$/g, '').split('/')[1];
       if (title === 'DataNRO') 
         this.title = 'DataNRO';
       else if (title === 'HSNR')
         this.title = 'DataHSNR';
-    if (location.pathname !== '/')
-      document.title = this.title + ' - Server ' + location.pathname.replace(/^\/+|\/+$/g, '').split('/')[0];
+    if (location.pathname !== '/DataNRO/')
+      document.title = this.title + ' - Server ' + location.pathname.replace(/^\/+|\/+$/g, '').split('/')[1];
     else 
       document.title = this.title + " by ElectroHeavenVN";
     },
@@ -35,8 +35,8 @@ export default {
       document.getElementById("mySidenav").style.width = "0";
     },
     goHome() {
-      if (location.pathname !== '/')
-        location.href = '/';
+      if (location.pathname !== '/DataNRO/')
+        location.href = '/DataNRO/';
     },
     setPage(page)
     {
@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     currentPath() {
-      return location.pathname.replace(/^\/+|\/+$/g, '').split('/')[0] ?? '';
+      return location.pathname.replace(/^\/+|\/+$/g, '').split('/')[1] ?? '';
     }
   },
   mounted() {
