@@ -6,6 +6,11 @@ const { t } = useI18n();
 <script>
 export default {
   name: 'SelectGamePublisherPage',
+  computed: {
+    currentLang() {
+      return navigator.language.split('-')[0];
+    }
+  },
 };
 </script>
 
@@ -14,7 +19,8 @@ export default {
     <h1>{{ t('selectPublisher') }}</h1>
     <div class="publishers">
       <a class="hoverable publisher" href="/TeaMobi/">
-        <img src="../assets/teamobi.png" alt="TeaMobi" />
+        <img src="../assets/teamobi.png" v-if="currentLang == 'vi'" alt="TeaMobi" />
+        <img src="../assets/teamobiEng.png" v-else alt="TeaMobi" />
         <span>{{ t('teaMobiName') }}</span>
       </a>
       <a class="hoverable publisher" href="/HSNR/">
@@ -42,6 +48,7 @@ export default {
 }
 
 .publisher {
+  user-select: none;
   padding: 20px;
   border-radius: 10px;
   background-color: #1c1a23;
@@ -64,6 +71,15 @@ export default {
 .publisher span {
   font-size: 1.5rem;
   margin-top: 10px;
+}
+
+@media screen and (max-width: 600px) {
+  .publisher {
+    width: 100%;
+  }
+  .publisher span {
+    font-size: 1rem;
+  }
 }
 
 </style>

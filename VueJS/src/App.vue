@@ -114,7 +114,6 @@ export default {
     justify-content: flex-start
 }
 
-
 footer {
     height: 60px;
     display: flex;
@@ -134,7 +133,6 @@ footer a {
     color: cyan;
     text-decoration: none
 }
-
 </style>
 
 <style scoped>
@@ -154,10 +152,12 @@ footer a {
 
 .sidenav span,
 .sidenav a {
+  user-select: none;  
+  cursor: pointer;
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 20px;
-  color: #818181;
+  color: #c9c9c9;
   display: block;
   transition: 0.3s;
 }

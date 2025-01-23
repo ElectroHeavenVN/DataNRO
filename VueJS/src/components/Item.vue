@@ -256,6 +256,7 @@ export default {
 }
 
 .icon {
+  user-select: none;
   width: 50px;
   height: 50px;
   margin-right: 15px;
