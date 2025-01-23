@@ -1,17 +1,21 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
 import Item from './Item.vue';
+import moment from 'moment/min/moment-with-locales';
 const { t } = useI18n();
 
 </script>
 
 <template>
-  <div v-if="loading" style="width: 100%; text-align: center;">{{ t('loading') }}...</div>
+  <div v-if="loading" class="loading">{{ t('loading') }}...</div>
   <div v-else>
     <div class="title">
-      <h1>{{ t('items') }}</h1>
-      <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
-        <span>{{ t('selectServer') }}</span>
+      <div>
+        <h1>{{ t('items') }}</h1>
+        <h5>{{ t('lastUpdated') }}: {{ lastUpdated }}</h5>
+      </div>
+      <div class="select-server">
+        <span style="white-space: nowrap;">{{ t('selectServer') }}</span>
         <select @change="changeServer">
           <option v-for = "server in servers" :value="server">{{ t(server.toLowerCase()) }}</option>
         </select>
@@ -63,11 +67,12 @@ export default {
       visibleItems: [],
       currentSort: 'id',
       selectedServer: 1,
+      lastUpdated: '',
     }
   },
   methods: {
     async getItems() {
-      const response = await fetch(this.servers[this.selectedServer] + '/ItemTemplates.json');
+      let response = await fetch(this.servers[this.selectedServer - 1] + '/ItemTemplates.json');
       let data = await response.json();
       this.items = data;
       this.filteredItems = [...data];
@@ -75,6 +80,10 @@ export default {
         this.filteredItems.reverse();
       this.visibleItems = this.filteredItems.slice(0, 30);
       this.loading = false;
+      response = await fetch(this.servers[this.selectedServer - 1] + '/LastUpdated');
+      data = await response.text();
+      let date = new Date(data);
+      this.lastUpdated = date.toLocaleString() + ' (' + moment(date).fromNow() + ')';
     },
     loadMore() {
       this.visibleItems = this.filteredItems.slice(0, this.visibleItems.length + 30);
@@ -137,12 +146,24 @@ export default {
     },
   },
   mounted() {
+    moment.locale(navigator.language);
     this.getItems();
   },
 };
 </script>
 
 <style scoped>
+.loading {
+  width: 100%;
+  left: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: calc(50% - 50px);
+  font-size: 30px;
+}
+
 .material-symbols-outlined {
   user-select: none;
 }
@@ -157,7 +178,8 @@ export default {
   gap: 20px;
 }
 
-.title h1 {
+.title h1,
+.title h5 {
   margin: 0;
 }
 
@@ -171,6 +193,13 @@ export default {
   width: 200px;
   padding: 10px;
   height: fit-content;
+}
+
+.select-server {
+  display: flex; 
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
 }
 
 .items {
@@ -225,7 +254,7 @@ export default {
 
 select {
   padding: 15px;
-  background-color: #1c1a23;
+  background-color: z;
   border: none;
   border-radius: 10px;
   color: #fff;
@@ -246,6 +275,11 @@ select {
     margin-left: 0px;
   }
 
+  .select-server {
+    width: 100%;
+  }
+
+  .select-server select,
   .sort select {
     width: 100%;
   }

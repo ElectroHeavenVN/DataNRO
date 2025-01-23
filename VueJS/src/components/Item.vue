@@ -246,7 +246,7 @@ export default {
 }
 
 .badge.id {
-  background-color: #00a0ff;
+  background-color: #50e0ff;
   cursor: pointer;
 }
 
@@ -285,15 +285,15 @@ export default {
 }
 
 .gender.genderEarth {
-  background-color: #00b000;
+  background-color: #50ff50;
 }
 
 .gender.genderNamekian {
-  background-color: #00ffa0;
+  background-color: #00ffaa;
 }
 
 .gender.genderSaiyan {
-  background-color: #ffa000;
+  background-color: #ffbb50;
 }
 
 .gender.genderCommon {
