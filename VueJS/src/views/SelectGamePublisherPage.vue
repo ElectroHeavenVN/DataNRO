@@ -25,7 +25,7 @@ export default {
       </a>
       <a class="hoverable publisher" href="HSNR/">
         <img src="../assets/hsnr.png" alt="HSNR" />
-        <span>{{ t('hsnrName') }}</span>
+        <span>🏴&zwj;☠️{{ t('hsnrName') }}</span>
       </a>
     </div>
   </div>
@@ -69,7 +69,7 @@ export default {
 }
 
 .publisher span {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   margin-top: 10px;
 }
 
