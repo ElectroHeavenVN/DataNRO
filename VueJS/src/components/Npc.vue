@@ -29,7 +29,7 @@ export default {
     },
     height: {
       type: String,
-      default: '50px',
+      default: '75px',
     },
     name: {
       type: String,

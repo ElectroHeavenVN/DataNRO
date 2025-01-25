@@ -13,11 +13,10 @@
 
 	"new": "Mới",
 	"thisIsNewItem": "Đây là vật phẩm mới",
-	"clickToCopy": "Nhấn để sao chép",
 	"gender": "Hệ",
 	"type": "Loại",
 	"powerRequired": "Sức mạnh yêu cầu",
-
+	
 	"typeShirts": "Áo",
 	"typePants": "Quần",
 	"typeGloves": "Găng",
@@ -51,7 +50,7 @@
 	"typeTitles": "Danh hiệu",
 	"typeSkillBooks2": "Sách kỹ năng 2",
 	"typeUnknown": "Chưa biết",
-
+	
 	"items": "Vật phẩm",
 	"npcs": "NPC",
 	"skills": "Kỹ năng",
@@ -59,7 +58,7 @@
 	"itemOptions": "Thuộc tính vật phẩm",
 	"maps": "Map",
 	"parts": "Part",
-
+	
 	"server1": "Vũ Trụ 1",
 	"server2": "Vũ Trụ 2",
 	"server3": "Vũ Trụ 3",
@@ -76,20 +75,37 @@
 	"super2": "Super 2",
 	"universe1": "Universe 1",
 	"naga": "Naga",
-
-
+	
 	"loadMore": "Tải thêm",
-
+	
 	"selectServer": "Máy chủ",
 	"search": "Tìm kiếm",
 	"searchItem": "Tìm vật phẩm",
 	"searchNPC": "Tìm NPC",
+	"searchSkill": "Tìm kỹ năng",
+	"searchMob": "Tìm quái",
+	"searchItemOption": "Tìm thuộc tính vật phẩm",
+	"searchMap": "Tìm map",
+	"searchPart": "Tìm part",
 	"sort": "Sắp xếp",
 	"name": "Tên",
+	"level": "Cấp",
 
-	
+	"manaType": "Mana",
+	"manaTypeKi": "KI",
+	"manaTypeKiPercent": "% KI",
+	"manaTypeKi100Percent": "100% KI",
+	"skillTypeUnkown": "Chưa biết",
+	"skillTypeDoDamage": "Gây sát thương",
+	"skillTypeRescure": "Trị thương",
+	"skillTypeUseWithoutFocus": "Dùng không cần mục tiêu",
+	"skillTypeSpecial": "Skill 9",
+
+	"clickToCopy": "Nhấn để sao chép",
+	"clickToCopySkillID": "Nhấn để sao chép ID kỹ năng",
 	"pageNotFound": "Không tìm thấy trang",
 	"pageNotFoundDesc": "Trang bạn đang tìm không tồn tại hoặc đã bị di chuyển.",
 	"goBackToHomepage": "Quay lại trang chủ",
+	"moreInfo": "Thông tin thêm",
 	"noName": "[Không tên]"
 }

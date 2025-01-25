@@ -13,7 +13,6 @@
 
 	"new": "New",
 	"thisIsNewItem": "This is new item",
-	"clickToCopy": "Click to copy",
 	"gender": "Planet",
 	"type": "Type",
 	"powerRequired": "Power Required",
@@ -83,12 +82,30 @@
 	"search": "Search",
 	"searchItem": "Search item",
 	"searchNPC": "Search NPC",
+	"searchSkill": "Search skill",
+	"searchMob": "Search monster",
+	"searchItemOption": "Search item modifier",
+	"searchMap": "Search map",
+	"searchPart": "Search part",
 	"sort": "Sort",
 	"name": "Name",
+	"level": "Level",
 
+	"manaType": "Mana type",
+	"manaTypeKi": "MP",
+	"manaTypeKiPercent": "% MP",
+	"manaTypeKi100Percent": "100% MP",
+	"skillTypeUnkown": "Unknown",
+	"skillTypeDoDamage": "Do damage",
+	"skillTypeRescure": "Rescure",
+	"skillTypeUseWithoutFocus": "Use without focus",
+	"skillTypeSpecial": "9th skill",
+
+	"clickToCopy": "Click to copy",
+	"clickToCopySkillID": "Click to copy skill ID",
 	"pageNotFound": "Page not found",
 	"pageNotFoundDesc": "The page you are looking for does not exist or has been moved.",
 	"goBackToHomepage": "Go back to homepage",
-
+	"moreInfo": "More info",
 	"noName": "[No name]"
 }

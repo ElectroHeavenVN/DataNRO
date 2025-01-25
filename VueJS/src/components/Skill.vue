@@ -37,77 +37,6 @@ const formatPowerRequired = (powerRequired) => {
   return (powerRequired / 1000000000) + 'B';
 }
 
-const getTypeString = (type) => {
-  switch (type) {
-    case 0:
-      return t('typeShirts');
-    case 1:
-      return t('typePants');
-    case 2:
-      return t('typeGloves');
-    case 3:
-      return t('typeShoes');
-    case 4:
-      return t('typeRadars');
-    case 5:
-      return t('typeAvatarsAndDisguises');
-    case 6:
-      return t('typeSenzuBeans');
-    case 7:
-      return t('typeSkillBooks');
-    case 8:
-      return t('typeQuestItems');
-    case 9:
-      return t('typeGolds');
-    case 10:  
-      return t('typeGreenGems');
-    case 11:
-      return t('typeBackpacks');
-    case 12:
-      return t('typeDragonBalls');
-    case 13:
-      return t('typeCharms');
-    case 14:
-      return t('typeUpgradeStones');
-    case 15:
-      return t('typeRubble');
-    case 16:
-      return t('typeMagicBottle');
-    case 22:
-      return t('typeSatellites');
-    case 23:
-      return t('typeFlyPlatforms');
-    case 24:
-      return t('typeVIPFlyPlatforms');
-    case 25:
-      return t('typeTenRadarsPacks');
-    case 27:
-      return t('typeMiscellaneousOrEventItems');
-    case 28:
-      return t('typeFlags');
-    case 29:
-      return t('typeConsumableBuffItems');
-    case 30:
-      return t('typeCrystals');
-    case 31:
-      return t('typeVietnameseCakes');
-    case 32:
-      return t('typeTrainingSuites');
-    case 33:
-      return t('typeCollectionCards');
-    case 34:
-      return t('typeRubies');
-    case 35:
-      return t('typeSecretSkillsBooks');
-    case 36:
-      return t('typeTitles');
-    case 37:
-      return t('typeSkillBooks2');
-    default:
-      return  t('typeUnknown') + ' (' + type + ')';
-  }
-}
-
 const breakMultiLine = (text) => {
   let words = text.split(' ');
   let result = '';
@@ -122,15 +51,15 @@ const breakMultiLine = (text) => {
 </script>
 
 <template>
-  <div class="item" :style="{ width, height }">
+  <div class="skill" :style="{ width, height }">
     <div class="badges">
-      <div class="badge id" @click="copyToClipboard(id);" @touchstart="copyToClipboard(id);" :title="t('clickToCopy') + ' ID'">
-        ID: {{ id }}
+      <div class="badge id" @click="copyToClipboard(id);" @touchstart="copyToClipboard(id);" :title="t('clickToCopySkillID')">
+        Skill ID: {{ id }}
         <img src="../assets/Copy.svg" style="height: 10px;" alt="Copy" />
       </div>
       <div style="display: flex; gap: 10px;">
-        <div class="badge new-item" v-if="isNewItem" :title="t('thisIsNewItem')">{{ t('new') }}</div>
         <div :class="'badge gender ' + getGenderClass(gender)" :title="t('gender') + ': ' + getGenderString(gender)">{{ getGenderString(gender) }}</div>
+        <div class="badge level" :title="t('level') + ': ' + level"> {{ t('level') + ': ' + level }} </div>
       </div>
     </div>
     <div class="content">
@@ -165,7 +94,39 @@ export default {
     },
     height: {
       type: String,
-      default: '75px',
+      default: '100px',
+    },
+    maxFight: {
+      type: Number,
+      required: true,
+    },
+    manaUse: {
+      type: Number,
+      required: true,
+    },
+    skillId: {
+      type: Number,
+      required: true,
+    },
+    dx: {
+      type: Number,
+      required: true,
+    },
+    dy: {
+      type: Number,
+      required: true,
+    },
+    damage: {
+      type: Number,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    coolDown: {
+      type: Number,
+      required: true,
     },
     icon: {
       type: Number,
@@ -175,40 +136,28 @@ export default {
       type: String,
       required: true,
     },
-    description: {
+    description: {  //moreInfo
       type: String,
-      required: true,
-    },
-    id: {
-      type: Number,
-      required: true,
-    },
-    type: {
-      type: Number,
       required: true,
     },
     gender: {
       type: Number,
       required: true,
     },
-    level: {
+    level: {  //point
       type: Number,
       required: true,
     },
-    powerRequired: {
+    powerRequired: {  //powRequire
       type: Number,
       default: 0,
-    },
-    isNewItem: {
-      type: Boolean,
-      default: false,
     },
   },
 };
 </script>
 
 <style scoped>
-.item {
+.skill {
   display: flex;
   gap: 10px;
   flex-direction: column;
@@ -239,10 +188,6 @@ export default {
   border-radius: 4px;
   cursor: default;
   user-select: none;
-}
-
-.badge.new-item {
-  background-color: #ffff00;
 }
 
 .badge.id {
@@ -339,7 +284,7 @@ export default {
 }
 
 @media screen and (max-width: 1032px) {
-    .item {
+    .skill {
         width: 100% !important;
     }
 }

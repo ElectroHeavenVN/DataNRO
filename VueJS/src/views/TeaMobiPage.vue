@@ -1,6 +1,11 @@
 <script setup>
-import ItemPage from '../components/ItemPage.vue';
-import NpcPage from '../components/NpcPage.vue';
+import ItemsPage from '../components/ItemsPage.vue';
+import MonstersPage from '../components/MonstersPage.vue';
+import NpcsPage from '../components/NpcsPage.vue';
+import SkillsPage from '../components/SkillsPage.vue';
+import ItemOptionsPage from '../components/ItemOptionsPage.vue';
+import MapsPage from '../components/MapsPage.vue';
+import PartsPage from '../components/PartsPage.vue';
 </script>
 
 <script>
@@ -25,7 +30,7 @@ export default {
         "Universe1",
         "Naga",
       ],
-      currentPage: new URL(window.location.href).searchParams.get('page') || 'defaultPage'
+      currentPage: new URL(window.location.href).searchParams.get('page') || 'items'
     }
   },
   methods: {
@@ -59,15 +64,12 @@ export default {
 <template>
   <div>
     <!-- <ItemPage v-if="currentPage === 'items'" :servers="servers" /> -->
-    <NpcPage v-if="currentPage === 'npcs'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <div v-else-if="currentPage === 'skills'"></div>
-    <div v-else-if="currentPage === 'mobs'"></div>
-    <div v-else-if="currentPage === 'itemOptions'"></div>
-    <div v-else-if="currentPage === 'maps'"></div>
-    <div v-else-if="currentPage === 'parts'"></div>
-    <ItemPage v-else :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <NpcsPage v-if="currentPage === 'npcs'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <SkillsPage v-else-if="currentPage === 'skills'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <MonstersPage v-else-if="currentPage === 'mobs'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <ItemOptionsPage v-else-if="currentPage === 'itemOptions'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <MapsPage v-else-if="currentPage === 'maps'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <PartsPage v-else-if="currentPage === 'parts'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <ItemsPage v-else :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
   </div>
 </template>
-
-<style scoped>
-</style>
