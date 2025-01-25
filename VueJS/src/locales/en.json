@@ -82,10 +82,13 @@
 	"selectServer": "Select server",
 	"search": "Search",
 	"searchItem": "Search item",
+	"searchNPC": "Search NPC",
 	"sort": "Sort",
 	"name": "Name",
 
 	"pageNotFound": "Page not found",
 	"pageNotFoundDesc": "The page you are looking for does not exist or has been moved.",
-	"goBackToHomepage": "Go back to homepage"
+	"goBackToHomepage": "Go back to homepage",
+
+	"noName": "[No name]"
 }

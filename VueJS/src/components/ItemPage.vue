@@ -36,7 +36,7 @@ const { t } = useI18n();
         </div>
     </div>
     <div class="items">
-      <Item v-for="item in visibleItems" :key=item.id :icon=item.icon :name=item.name
+      <Item v-for="item in visibleItems" :icon=item.icon :name=item.name
         :description=item.description :id=item.id :type=item.type :gender=item.gender :level=item.level
         :isNewItem="items.map(i => i.id).indexOf(item.id) > items.length - 50" :powerRequired=item.strRequire class="hoverable" />
     </div>

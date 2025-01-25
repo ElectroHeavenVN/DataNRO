@@ -5,16 +5,14 @@ import NpcPage from '../components/NpcPage.vue';
 
 <script>
 export default {
-  name: 'HSNRPage',
   data() {
     return {
-      title: 'DataNRO',
       servers : [
         "Server1",
         "Server2",
         "Server3",
       ],
-      currentPage: new URL(window.location.href).searchParams.get('page') || 'items'
+      currentPage: new URL(window.location.href).searchParams.get('page') || 'defaultPage'
     }
   },
   methods: {
@@ -27,7 +25,6 @@ export default {
       }
     },
     handlePushState() {
-      console.log('handlePushState');
       this.currentPage = new URL(window.location.href).searchParams.get('page') || 'items';
     }
   },
@@ -44,7 +41,7 @@ export default {
 <template>
   <div>
     <!-- <ItemPage v-if="currentPage === 'items'" :servers="servers" /> -->
-    <NpcPage v-if="currentPage === 'npcs'" />
+    <NpcPage v-if="currentPage === 'npcs'" :servers="servers" />
     <div v-else-if="currentPage === 'skills'"></div>
     <div v-else-if="currentPage === 'mobs'"></div>
     <div v-else-if="currentPage === 'itemOptions'"></div>

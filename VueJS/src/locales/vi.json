@@ -83,11 +83,13 @@
 	"selectServer": "Máy chủ",
 	"search": "Tìm kiếm",
 	"searchItem": "Tìm vật phẩm",
+	"searchNPC": "Tìm NPC",
 	"sort": "Sắp xếp",
 	"name": "Tên",
 
 	
 	"pageNotFound": "Không tìm thấy trang",
 	"pageNotFoundDesc": "Trang bạn đang tìm không tồn tại hoặc đã bị di chuyển.",
-	"goBackToHomepage": "Quay lại trang chủ"
+	"goBackToHomepage": "Quay lại trang chủ",
+	"noName": "[Không tên]"
 }
