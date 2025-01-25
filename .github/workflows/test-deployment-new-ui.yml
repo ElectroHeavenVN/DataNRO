@@ -1,9 +1,6 @@
-name: Update pages and deploy to GitHub Pages
+name: Test deployment new UI
 on: 
   workflow_dispatch:
-  push:
-    paths:
-    - 'Page/**'
 permissions:
   contents: read
   pages: write
@@ -14,7 +11,7 @@ concurrency:
 
 jobs:
   update-pages:
-    name: Update pages
+    name: Deploy new UI to GitHub Pages
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -22,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: vuejs-webui
       - name: Download artifact DataNRO-TeaMobi
         uses: dawidd6/action-download-artifact@v6
         with:
@@ -32,7 +31,7 @@ jobs:
           allow_forks: false
           workflow: update-data.yml
           name: DataNRO-TeaMobi
-          path: Page
+          path: VueJS/public
       - name: Download artifact DataNRO-HSNR
         uses: dawidd6/action-download-artifact@v6
         with:
@@ -43,11 +42,20 @@ jobs:
           allow_forks: false
           workflow: update-data.yml
           name: DataNRO-HSNR
-          path: Page
+          path: VueJS/public
+      - name: Build VueJS
+        run: |
+          cd VueJS
+          npm install
+          npm run build
+      - name: Copy index.html (Dirty trick)
+        run: |
+          cp VueJS/dist/index.html VueJS/dist/HSNR/index.html
+          cp VueJS/dist/index.html VueJS/dist/TeaMobi/index.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: Page
+          path: VueJS/dist
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Deploy to GitHub Pages
