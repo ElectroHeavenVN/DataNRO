@@ -91,6 +91,10 @@
 	"name": "Name",
 	"level": "Level",
 
+	"head": "Head",
+	"body": "Body",
+	"legs": "Legs",
+
 	"manaType": "Mana type",
 	"manaTypeKi": "MP",
 	"manaTypeKiPercent": "% MP",

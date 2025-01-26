@@ -13,7 +13,7 @@ const { t } = useI18n();
       </div>
     </div>
     <div class="content">
-      <img class="icon" :src="'NPCs/' + id + '.png'" :alt="'ID: ' + id" :title="'ID: ' + id"/>
+      <img class="icon" :src="'NPCs/' + id + '.png'" :alt="head + ', ' + body + ', ' + legs" :title="t('head') + ': ' + head + ', ' + t('body') + ': ' + body + ', ' + t('legs') + ': ' + legs" />
       <h2 class="name" :title="name.length == 0 ? t('noName') : name">{{ name.length == 0 ? t('noName') : name }}</h2>
     </div>
   </div>

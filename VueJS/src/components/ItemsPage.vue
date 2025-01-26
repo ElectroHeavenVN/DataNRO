@@ -115,7 +115,7 @@ export default {
     checkDeleteAll(e) {
       const search = e.target.value.toLowerCase();
       if (search === '') {
-        this.filteredItems = this.items;
+        this.filteredItems = [...this.items];
         if (this.reversed) 
           this.filteredItems.reverse();
         this.sortItems();
@@ -123,7 +123,7 @@ export default {
       }
     },
     searchItem(e) {
-      const search = e.target.value.toLowerCase();
+      const search = this.replaceVietnameseChars(e.target.value.toLowerCase());
       this.filteredItems = this.items.filter(item => this.replaceVietnameseChars((item.name + '|' + item.description + '|' + item.id).toLowerCase()).includes(search));
       if (this.reversed) 
         this.filteredItems.reverse();

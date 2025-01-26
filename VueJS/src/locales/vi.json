@@ -91,6 +91,10 @@
 	"name": "Tên",
 	"level": "Cấp",
 
+	"head": "Đầu",
+	"body": "Thân",
+	"legs": "Chân",
+
 	"manaType": "Mana",
 	"manaTypeKi": "KI",
 	"manaTypeKiPercent": "% KI",
