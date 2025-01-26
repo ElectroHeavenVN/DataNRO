@@ -38,6 +38,12 @@ export default {
       if (location.pathname !== '/DataNRO/')
         location.href = '/DataNRO/';
     },
+    goToNRO() {
+      location.href = '/DataNRO/TeaMobi/';
+    },
+    goToHSNR() {
+      location.href = '/DataNRO/HSNR/';
+    },
     setPage(page)
     {
       window.history.pushState({}, '', window.location.origin + window.location.pathname + '?page=' + page);
@@ -70,8 +76,11 @@ export default {
       <div class="wrapper">
         <div href="/" class="content head">
           <span v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR'" style="font-size:30px; cursor:pointer; padding-right: 10px;" @click=openNav>&#9776;</span>
-          <img @click="goHome" src="./assets/vue.svg" :alt="title">
+          <img v-if="currentPath == 'HSNR'" @click="goHome" src="/DataHSNR.png" :alt="title">
+          <img v-else-if="currentPath == 'TeaMobi'" @click="goHome" src="/DataNRO.png" :alt="title">
           <h1 @click="goHome">{{ title }}</h1>
+          <img v-if="currentPath == ''" @click="goToNRO" src="/DataNRO.png" :alt="title">
+          <img v-if="currentPath == ''" @click="goToHSNR" src="/DataHSNR.png" :alt="title">
         </div>
         <div class="content">
           <div class="content links">
@@ -175,7 +184,8 @@ nav .head h1:hover {
 
 nav .head img {
     width: 32px;
-    height: 32px
+    height: 32px;
+    border-radius: 5px;
 }
 
 nav .content {
