@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="bookmark" href="/favicon144.png" />
+    <meta name="description" content="Xem dữ liệu vật phẩm, quái, NPC, map,... của game Ngọc Rồng Online và Hồi sinh Ngọc Rồng. Dữ liệu được tự động cập nhật mỗi ngày." />
+    <meta name="keywords" content="ElectroHeavenVN,EHVN" />
+    <meta name="author" content="ElectroHeavenVN" />
+    <meta content="#FFBB00" name="theme-color" />
+    <meta property="og:site_name" content="https://electroheavenvn.github.io/DataNRO/" />
+    <meta property="og:image" content="https://electroheavenvn.github.io/DataNRO/DataNRO.png"/>
+    <link id="favicon" href="./favicon.png" rel="icon" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <title>DataNRO by ElectroHeavenVN</title>
+    <script src="https://kit.fontawesome.com/9454be34e9.js" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+</head>
+<body>
+    <section id="sidebar" class="hide">
+        <a href="#" class="brand">
+            <i class='bx bxs-smile'></i>
+            <span class="text">DataNRO</span>
+        </a>
+        <ul class="side-menu top">
+            <li class="active">
+                <a href="#" data-page="itemTemplates">
+                    <i class='bx bx-coin-stack'></i>
+                    <span class="text">Items</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-page="npcTemplates">
+                    <i class='bx bx-user'></i>
+                    <span class="text">NPCs</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-page="nClasses">
+                    <i class='bx bx-book'></i>
+                    <span class="text">Skills</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-page="mobs">
+                    <i class='bx bxs-invader'></i>
+                    <span class="text">Monsters</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-page="itemOptions">
+                    <i class='bx bx-book-content'></i>
+                    <span class="text">ItemOptions</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-page="maps">
+                    <i class='bx bx-map'></i>
+                    <span class="text">Maps</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-page="parts">
+                    <i class='bx bx-network-chart'></i>
+                    <span class="text">Parts</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+
+    <section id="content">
+        <main id="main-content">
+            <div class="head-title">
+                <div class="left">
+                    <h1 id="page-title">Items</h1>
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><i class='bx bx-chevron-right'></i></li>
+                        <li><a id="breadcrumb-active" class="active" href="#">Items</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="table-container" id="table-container">
+            </div>
+            <div class="pagination-wrapper">
+                <div class="pagination-container">
+                    <div class="pagination" id="pagination"></div>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <footer>
+        <p class="footer-text">&copy; 2024 Trường Giang (VNPAY). All rights reserved.</p>
+    </footer>
+
+    <script src="index.js"></script>
+</body>
+</html>

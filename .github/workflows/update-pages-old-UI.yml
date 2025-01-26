@@ -1,9 +1,9 @@
 name: Update pages and deploy to GitHub Pages
 on: 
   workflow_dispatch:
-  push:
-    paths:
-    - 'Page/**'
+#   push:
+#     paths:
+#     - 'Page-oldUI/**'
 permissions:
   contents: read
   pages: write
@@ -22,8 +22,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: main
       - name: Download artifact DataNRO-TeaMobi
         uses: dawidd6/action-download-artifact@v6
         with:
@@ -34,7 +32,7 @@ jobs:
           allow_forks: false
           workflow: update-data.yml
           name: DataNRO-TeaMobi
-          path: Page/public
+          path: Page-oldUI
       - name: Download artifact DataNRO-HSNR
         uses: dawidd6/action-download-artifact@v6
         with:
@@ -45,21 +43,11 @@ jobs:
           allow_forks: false
           workflow: update-data.yml
           name: DataNRO-HSNR
-          path: Page/public
-      - name: Build page
-        run: |
-          cd Page
-          npm install
-          npm run build
-      - name: Copy index.html (Dirty trick)
-        run: |
-          cp Page/dist/index.html Page/dist/HSNR/index.html
-          cp Page/dist/index.html Page/dist/TeaMobi/index.html
-          cp Page/dist/index.html Page/dist/404.html
+          path: Page-oldUI
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: Page/dist
+          path: Page-oldUI
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Deploy to GitHub Pages

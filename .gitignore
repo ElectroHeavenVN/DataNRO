@@ -398,8 +398,8 @@ FodyWeavers.xsd
 *.sln.iml
 
 Output/*
-Page/TeaMobi/*
-Page/HSNR/*
-VueJS/public/TeaMobi/*
-VueJS/public/HSNR/* 
-VueJS/dist/*
+Page-oldUI/TeaMobi/*
+Page-oldUI/HSNR/*
+Page/public/TeaMobi/*
+Page/public/HSNR/* 
+Page/dist/*

@@ -1,7 +1,7 @@
 name: Update data and deploy to GitHub Pages
 on:
-  schedule:
-    - cron: "0 0 * * *"
+#   schedule:
+#     - cron: "0 0 * * *"
   workflow_dispatch:
     inputs:
       use-sample-data:
@@ -14,9 +14,9 @@ on:
         type: "string"
         required: false
         default: ""
-  push:
-    paths:
-      - "CLI/**"
+#   push:
+#     paths:
+#       - "CLI/**"
 permissions:
   contents: read
   pages: write
@@ -172,8 +172,8 @@ jobs:
           name: DataNRO-HSNR
           path: Output\Data
 
-  build-and-deploy-pages:
-    name: Build and deploy pages
+  create-pages:
+    name: Create pages
     needs: [update-data-TeaMobi, update-data-HSNR]
     runs-on: windows-latest
     steps:
@@ -188,7 +188,7 @@ jobs:
           workflow_conclusion: ""
           if_no_artifact_found: fail
           allow_forks: false
-          path: Page/public
+          path: Page-oldUI
       - name: Download artifact DataNRO-HSNR
         uses: dawidd6/action-download-artifact@v6
         with:
@@ -198,21 +198,20 @@ jobs:
           workflow_conclusion: ""
           if_no_artifact_found: fail
           allow_forks: false
-          path: Page/public
-      - name: Build page
-        run: |
-          cd Page
-          npm install
-          npm run build
-      - name: Copy index.html (Dirty trick)
-        run: |
-          cp Page/dist/index.html Page/dist/HSNR/index.html
-          cp Page/dist/index.html Page/dist/TeaMobi/index.html
-          cp Page/dist/index.html Page/dist/404.html
-      - name: Upload artifact
+          path: Page-oldUI
+      - name: Upload page artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: Page/dist
+          path: Page-oldUI
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: create-pages
+    steps:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Deploy to GitHub Pages
@@ -243,24 +242,14 @@ jobs:
         with:
           name: DataNRO-HSNR
           path: Output\Data2
-      - name: Move sample data to Page (TeaMobi)
-        run: Move-Item -Path Output\Data\TeaMobi -Destination Page/public -Force
-      - name: Move sample data to Page (HSNR)
-        run: Move-Item -Path Output\Data2\HSNR -Destination Page/public -Force
-      - name: Build page
-        run: |
-          cd Page
-          npm install
-          npm run build
-      - name: Copy index.html (Dirty trick)
-        run: |
-          cp Page/dist/index.html Page/dist/HSNR/index.html
-          cp Page/dist/index.html Page/dist/TeaMobi/index.html
-          cp Page/dist/index.html Page/dist/404.html
-      - name: Upload artifact
+      - name: Move sample data to Page-oldUI (TeaMobi)
+        run: Move-Item -Path Output\Data\TeaMobi -Destination Page-oldUI -Force
+      - name: Move sample data to Page-oldUI (HSNR)
+        run: Move-Item -Path Output\Data2\HSNR -Destination Page-oldUI -Force
+      - name: Upload page artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: Page/dist
+          path: Page-oldUI
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Deploy to GitHub Pages
