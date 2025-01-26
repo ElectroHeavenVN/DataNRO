@@ -146,4 +146,4 @@ Mã nguồn của dự án này, bao gồm module `DataNRO.TeaMobi`, được ph
 # Credit
 - [Mirco Bauer](https://github.com/meebey), tác giả dự án [StarkSoftProxy](https://github.com/meebey/starksoftproxy)
 - [James Newton-King](https://github.com/JamesNK), tác giả dự án [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
-- Lê Trường Giang (VNPAY), code UI cho web
+- ~~Lê Trường Giang (VNPAY), code UI cho web~~ (giao diện cũ)
