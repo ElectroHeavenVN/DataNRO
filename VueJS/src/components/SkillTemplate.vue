@@ -137,18 +137,6 @@ const formatPowerRequired = (powerRequired) => {
           <li>{{ t('skillRange') }}: {{ skill.dx }}x{{ skill.dy }}</li>
         </ul>
       </details>
-      <!-- <div v-for="skill in skills" :key="skill.skillId" class="skill">
-        <p>{{ t('level') }} {{ skill.point }}</p>
-        <p>{{ skill.moreInfo }}</p>
-        <ul>
-          <li>{{ t('skillId') }}: {{ skill.skillId }}</li>
-          <li>{{ t('mana') }}: {{ skill.manaUse + (manaUseType != 0 ? '%' : '') }} KI</li>
-          <li>{{ t('damage') }}: {{ skill.damage }}</li>
-          <li>{{ t('cooldown') }}: {{ formatCooldown(skill.coolDown) }}</li>
-          <li>{{ t('powerRequired') }}: {{ formatPowerRequired(skill.powRequire) }}</li>
-          <li>{{ t('skillRange') }}: {{ skill.dx }}x{{ skill.dy }}</li>
-        </ul>
-      </div> -->
     </div>
     <div class="more-info" @click="toggleMoreInfo">
       <span class="material-symbols-outlined">keyboard_arrow_down</span>
@@ -158,18 +146,6 @@ const formatPowerRequired = (powerRequired) => {
 </template>
 
 <script>
-/* 
-"point": 2,
-"manaUse": 10,
-"skillId": 92,
-"dx": 200,  //range x
-"dy": 200,  //range y
-"damage": 100,
-"coolDown": 310000,
-"powRequire": 350000000,
-"moreInfo": "(Biến hình 2)"
-*/
-
 export default {
   props: {
     classId: {

@@ -101,6 +101,10 @@
 	"cooldown": "Hồi chiêu",
 	"skillRange": "Tầm",
 
+	"typeImmovable": "Đứng yên",
+	"typeWalking": "Di chuyển",
+	"typeFlying": "Bay",
+
 	"manaType": "Mana",
 	"manaTypeKi": "KI",
 	"manaTypeKiPercent": "% KI",

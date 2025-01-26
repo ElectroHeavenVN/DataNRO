@@ -101,6 +101,10 @@
 	"cooldown": "Cooldown",
 	"skillRange": "Range",
 
+	"typeImmovable": "Immovable",
+	"typeWalking": "Walking",
+	"typeFlying": "Flying",
+
 	"manaType": "Mana type",
 	"manaTypeKi": "MP",
 	"manaTypeKiPercent": "% MP",
