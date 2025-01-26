@@ -83,7 +83,9 @@ export default {
           <img v-if="currentPath == ''" @click="goToHSNR" src="/DataHSNR.png" :alt="title">
         </div>
         <div class="content">
-          <div class="content links">
+          <div class= "links">
+            <a href="/">Home</a>
+            <a href="https://discord.gg/yzHjZbfuAR">Discord</a>
           </div>
         </div>
       </div>
@@ -192,7 +194,8 @@ nav .content {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px
+    gap: 10px;
+    font-weight: bold;
 }
 
 nav .content a {

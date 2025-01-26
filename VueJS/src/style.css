@@ -4,9 +4,8 @@
   font-style: normal;
   line-height: 1.5;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: rgb(43, 41, 52);
+  color-scheme: dark;
+  background-color: #2b2934;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,7 +14,6 @@
 }
 
 a {
-  font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
 }
