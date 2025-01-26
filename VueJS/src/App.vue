@@ -61,9 +61,9 @@ export default {
     <span @click="setPage('npcs')">{{ t("npcs") }}</span>
     <span @click="setPage('skills')">{{ t("skills") }}</span>
     <span @click="setPage('mobs')">{{ t("mobs") }}</span>
-    <span @click="setPage('itemOptions')">{{ t("itemOptions") }}</span>
+    <!-- <span @click="setPage('itemOptions')">{{ t("itemOptions") }}</span> -->
     <span @click="setPage('maps')">{{ t("maps") }}</span>
-    <span @click="setPage('parts')">{{ t("parts") }}</span>
+    <!-- <span @click="setPage('parts')">{{ t("parts") }}</span> -->
   </div>
   <header>
     <nav>
