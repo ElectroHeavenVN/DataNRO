@@ -95,6 +95,12 @@
 	"body": "Thân",
 	"legs": "Chân",
 
+	"skillID": "ID kỹ năng",
+	"mana": "KI",
+	"damage": "Sát thương",
+	"cooldown": "Hồi chiêu",
+	"skillRange": "Tầm",
+
 	"manaType": "Mana",
 	"manaTypeKi": "KI",
 	"manaTypeKiPercent": "% KI",

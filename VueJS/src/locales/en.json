@@ -95,6 +95,12 @@
 	"body": "Body",
 	"legs": "Legs",
 
+	"skillId": "Skill ID",
+	"mana": "MP",
+	"damage": "Damage",
+	"cooldown": "Cooldown",
+	"skillRange": "Range",
+
 	"manaType": "Mana type",
 	"manaTypeKi": "MP",
 	"manaTypeKiPercent": "% MP",

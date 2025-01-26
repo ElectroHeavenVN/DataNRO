@@ -18,10 +18,10 @@ const getClass = (c) => {
       return 'classNamekian';
     case 2:
       return 'classSaiyan';
-    case 3:
-      return 'classCommon';
     case 4:
       return 'classMonkey';
+    default:
+    return 'classCommon';
   }
 }
 
@@ -66,10 +66,34 @@ const getTypeStr = (type) => {
   }
   return "";
 }
+
+const formatCooldown = (coolDown) => {
+  if (coolDown < 1000) {
+    return coolDown + 'ms';
+  }
+  if (coolDown < 60000) {
+    return Math.round((coolDown / 1000) * 100) / 100 + 's';
+  }
+  if (coolDown < 3600000) {
+    return Math.round((coolDown / 60000) * 100) / 100 + 'm';
+  }
+  return Math.round((coolDown / 3600000) * 100) / 100 + 'h';
+}
+
+const formatPowerRequired = (powerRequired) => {
+  if (powerRequired < 1000)
+    return powerRequired.toString();
+  if (powerRequired < 1000000) 
+    return (powerRequired / 1000) + 'K';
+  if (powerRequired < 1000000000) 
+    return (powerRequired / 1000000) + 'M';
+  return (powerRequired / 1000000000) + 'B';
+}
+
 </script>
 
 <template>
-  <div class="skillTemplate">
+  <div class="skillTemplate" :style="{ width }">
     <div class="badges">
       <div class="badge id" @click="copyToClipboard(id);" @touchstart="copyToClipboard(id);" :title="t('clickToCopySkillID')">
         ID: {{ id }}
@@ -100,7 +124,33 @@ const getTypeStr = (type) => {
         {{ damInfo.substring(damInfo.indexOf('#') + 1) }}
       </div>
     </div>
-    <div class="more-info">
+    <div v-if="moreInfoShown" class="skills" >
+      <details v-for="skill in skills" :key="skill.skillId" class="skill" name="skill">
+        <summary>{{ t('level') }} {{ skill.point }}</summary>
+        <p>{{ skill.moreInfo }}</p>
+        <ul>
+          <li>{{ t('skillId') }}: {{ skill.skillId }}</li>
+          <li>{{ t('mana') }}: {{ skill.manaUse + (manaUseType != 0 ? '%' : '') }} KI</li>
+          <li>{{ t('damage') }}: {{ skill.damage }}</li>
+          <li>{{ t('cooldown') }}: {{ formatCooldown(skill.coolDown) }}</li>
+          <li>{{ t('powerRequired') }}: {{ formatPowerRequired(skill.powRequire) }}</li>
+          <li>{{ t('skillRange') }}: {{ skill.dx }}x{{ skill.dy }}</li>
+        </ul>
+      </details>
+      <!-- <div v-for="skill in skills" :key="skill.skillId" class="skill">
+        <p>{{ t('level') }} {{ skill.point }}</p>
+        <p>{{ skill.moreInfo }}</p>
+        <ul>
+          <li>{{ t('skillId') }}: {{ skill.skillId }}</li>
+          <li>{{ t('mana') }}: {{ skill.manaUse + (manaUseType != 0 ? '%' : '') }} KI</li>
+          <li>{{ t('damage') }}: {{ skill.damage }}</li>
+          <li>{{ t('cooldown') }}: {{ formatCooldown(skill.coolDown) }}</li>
+          <li>{{ t('powerRequired') }}: {{ formatPowerRequired(skill.powRequire) }}</li>
+          <li>{{ t('skillRange') }}: {{ skill.dx }}x{{ skill.dy }}</li>
+        </ul>
+      </div> -->
+    </div>
+    <div class="more-info" @click="toggleMoreInfo">
       <span class="material-symbols-outlined">keyboard_arrow_down</span>
       <p>{{ t('moreInfo') }}</p>
     </div>
@@ -108,6 +158,18 @@ const getTypeStr = (type) => {
 </template>
 
 <script>
+/* 
+"point": 2,
+"manaUse": 10,
+"skillId": 92,
+"dx": 200,  //range x
+"dy": 200,  //range y
+"damage": 100,
+"coolDown": 310000,
+"powRequire": 350000000,
+"moreInfo": "(Biến hình 2)"
+*/
+
 export default {
   props: {
     classId: {
@@ -155,6 +217,24 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      width: '500px',
+      moreInfoShown: false,
+    }
+  },
+  methods: {
+    toggleMoreInfo(e) {
+      this.moreInfoShown = !this.moreInfoShown;
+      if (this.moreInfoShown) {
+        //this.width = '1050px';
+        e.currentTarget.querySelector('span').style.transform = 'scaleY(-1)';
+      } else {
+        //this.width = '500px';
+        e.currentTarget.querySelector('span').style.transform = 'scaleY(1)';
+      }
+    }
+  }
 };
 </script>
 
@@ -169,6 +249,7 @@ export default {
   color: white;
   position: relative;
   width: 500px;
+  height: fit-content;
   min-height: 100px;
 }
 
@@ -271,8 +352,37 @@ export default {
   line-height: 0.9rem;
 }
 
+.skills {
+  display: flex;
+  /* flex-direction: row; */
+  flex-direction: column;
+  gap: 10px;
+  /* flex-wrap: wrap;
+  height: 300px; */
+  overflow-y: scroll;
+  font-size: 14px;
+  background-color: #221f2c;
+  padding: 10px;
+}
+
+.skill {
+  width: 240px;
+}
+
+.skill p {
+  font-weight: bold;
+  margin: 0;
+}
+
+.skill ul {
+  padding: 0;
+  padding-left: 20px;
+  margin: 0;
+}
+
 .more-info {
   display: flex;
+  user-select: none;
   flex-direction: row;
   align-items: center;
   justify-content: center;
