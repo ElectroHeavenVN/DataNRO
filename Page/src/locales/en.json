@@ -49,6 +49,7 @@
 	"typeSecretSkillsBooks": "Secret skills book",
 	"typeTitles": "Title",
 	"typeSkillBooks2": "Skill book 2",
+	"typePet": "Pet",
 	"typeUnknown": "Unknown",
 
 	"items": "Items",
@@ -76,9 +77,9 @@
 	"universe1": "Universe 1",
 	"naga": "Naga",
 
-	"server1HSNR": "Server 1",
-	"server2HSNR": "Server 2",
-	"server3HSNR": "Server 3",
+	"hsnr1": "Server 1",
+	"hsnr2": "Server 2",
+	"hsnr3": "Server 3",
 
 	"loadMore": "Load more",
 

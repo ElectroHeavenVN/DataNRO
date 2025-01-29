@@ -75,7 +75,7 @@ export default {
     <nav>
       <div class="wrapper">
         <div href="/" class="content head">
-          <span v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR'" style="font-size:30px; cursor:pointer; padding-right: 10px;" @click=openNav>&#9776;</span>
+          <span v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR'" style="font-size: 25px; cursor:pointer;" @click=openNav>&#9776;</span>
           <img v-if="currentPath == 'HSNR'" @click="goHome" src="/DataHSNR.png" :alt="title">
           <img v-else-if="currentPath == 'TeaMobi'" @click="goHome" src="/DataNRO.png" :alt="title">
           <h1 @click="goHome">{{ title }}</h1>
@@ -84,8 +84,15 @@ export default {
         </div>
         <div class="content">
           <div class= "links">
-            <a href="/">Home</a>
-            <a href="https://discord.gg/yzHjZbfuAR">Discord</a>
+            <a href="/">
+              <img src="./assets/Home-icon.svg" alt="Home" style="width: 25px;" >
+            </a>
+            <a href="https://discord.gg/yzHjZbfuAR">
+              <img src="./assets/discord-mark-white.svg" alt="Discord" style="width: 25px;" >
+            </a>
+            <a href="https://github.com/ElectroHeavenVN/DataNRO">
+              <img src="./assets/github-mark-white.svg" alt="GitHub" style="width: 25px;" >
+            </a>
           </div>
         </div>
       </div>
@@ -201,7 +208,6 @@ nav .content {
 nav .content a {
     color: #fff;
     text-decoration: none;
-    margin-left: 20px
 }
 
 nav .content a:hover {
@@ -213,6 +219,18 @@ nav .content a:hover {
     margin-top: 55px
 }
 
+.links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
@@ -226,7 +244,7 @@ nav .content a:hover {
 }
 
 @media screen and (max-width: 600px) {
-    nav .links {
+    nav .links a:first-child {
         display:none
     }
 }

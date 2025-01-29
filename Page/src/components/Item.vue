@@ -73,6 +73,8 @@ const getTypeString = (type) => {
       return t('typeRubble');
     case 16:
       return t('typeMagicBottle');
+    case 18:
+      return t('typePet');
     case 22:
       return t('typeSatellites');
     case 23:

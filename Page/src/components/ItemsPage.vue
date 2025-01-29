@@ -17,7 +17,7 @@ const { t } = useI18n();
       <div class="select-server">
         <span style="white-space: nowrap;">{{ t('selectServer') }}</span>
         <select @change="changeServer">
-          <option v-for = "server in servers" :value="server">{{ t(server.toLowerCase()) }}</option>
+          <option v-for = "server in servers" :value="server.id">{{ t(server.name.toLowerCase()) }}</option>
         </select>
       </div>
     </div>
@@ -57,7 +57,7 @@ export default {
       type: Array,
       required: true,
     },
-    defaultServer: {
+    defaultServerId: {
       type: String,
       default: "",
     },
@@ -70,20 +70,20 @@ export default {
       filteredItems: [],
       visibleItems: [],
       currentSort: 'id',
-      selectedServer: 1,
+      selectedServerIndex: 1,
       lastUpdated: '',
     }
   },
   methods: {
     async getItems() {
-      let response = await fetch(this.servers[this.selectedServer - 1] + '/ItemTemplates.json');
+      let response = await fetch(this.servers[this.selectedServerIndex - 1].id + '/ItemTemplates.json');
       let data = await response.json();
       this.items = data;
       this.filteredItems = [...data];
       if (this.reversed) 
         this.filteredItems.reverse();
       this.visibleItems = this.filteredItems.slice(0, 30);
-      response = await fetch(this.servers[this.selectedServer - 1] + '/LastUpdated');
+      response = await fetch(this.servers[this.selectedServerIndex - 1].id + '/LastUpdated');
       data = await response.text();
       let date = new Date(data);
       this.lastUpdated = date.toLocaleString() + ' (' + moment(date).fromNow() + ')';
@@ -145,19 +145,19 @@ export default {
         .replace(/ý|ỳ|ỷ|ỹ|ỵ/g, 'y');
     },
     changeServer(e) {
-      this.selectedServer = e.target.selectedIndex + 1;
+      this.selectedServerIndex = e.target.selectedIndex + 1;
       this.getItems();
     },
   },
   mounted() {
-    let index = this.servers.indexOf(this.defaultServer);
+    let index = this.servers.map(s => s.id).indexOf(this.defaultServerId);
     if (index !== -1) 
-      this.selectedServer = index + 1;
+      this.selectedServerIndex = index + 1;
     else 
-      this.selectedServer = 1;
+      this.selectedServerIndex = 1;
     moment.locale(navigator.language);
     this.getItems().then(() => {
-      document.querySelector(".select-server select").selectedIndex = this.selectedServer - 1;
+      document.querySelector(".select-server select").selectedIndex = this.selectedServerIndex - 1;
     });
   },
 };

@@ -13,9 +13,18 @@ export default {
   data() {
     return {
       servers : [
-        "Server1",
-        "Server2",
-        "Server3",
+        {
+          id: "Server1",
+          name: "hsnr1"
+        },
+        {
+          id: "Server2",
+          name: "hsnr2"
+        },
+        {
+          id: "Server3",
+          name: "hsnr3"
+        }
       ],
       currentPage: new URL(window.location.href).searchParams.get('page') || 'items'
     }

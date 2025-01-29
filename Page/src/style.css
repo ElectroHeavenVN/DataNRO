@@ -97,13 +97,73 @@ button:focus-visible {
   justify-content: flex-start
 }
 
+.back-to-top {
+  position: fixed;
+  z-index: 2;
+  right: -108px;
+  bottom: 0;
+  width: 108px;
+  height: 150px;
+  background: url("/back-to-top.png?v=1") no-repeat 0 0;
+  background-size: 108px 450px;
+  opacity: 0.6;
+  transition: opacity 0.3s, right 0.8s;
+  cursor: pointer;
+}
+
+
+.back-to-top:hover, .back-to-top:active {
+  background-position: 0 -150px;
+  opacity: 1;
+}
+
+.back-to-top::after {
+  content: "";
+  position: fixed;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  width: 108px;
+  height: 150px;
+  background: url("/back-to-top.png?v=1") no-repeat 0 0;
+  background-size: 108px 450px;
+  background-position: 0 -300px;
+  transition: opacity 0.3s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.back-to-top.load {
+  right: 0;
+}
+
+.back-to-top.ani-leave {
+  background-position: 0 -150px;
+  animation: ani-leave 390ms ease-in-out forwards;
+}
+
+.back-to-top.leaved,
+.back-to-top.ending {
+  pointer-events: none;
+}
+
+.back-to-top.leaved {
+  background: none;
+  transition: none;
+}
+
+.back-to-top.ending::after {
+  opacity: 1;
+  transition-delay: 0.35s;
+}
+
 footer {
   height: 60px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: 15px;
   background-color: #1c1a23;
   margin-top: 20px
 }
@@ -115,6 +175,16 @@ margin: 0;
 footer a {
   color: cyan;
   text-decoration: none
+}
+
+@keyframes ani-leave {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(108px);
+  }
 }
 
 *::-webkit-scrollbar {
@@ -129,4 +199,10 @@ footer a {
 
 *::-webkit-scrollbar-thumb:hover {
   background-color: #535353;
+}
+
+@media screen and (max-width: 600px) {
+  .back-to-top {
+    zoom: 0.5;
+  }
 }

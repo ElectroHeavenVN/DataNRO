@@ -13,22 +13,70 @@ export default {
   data() {
     return {
       servers : [
-        "Server1",
-        "Server2",
-        "Server3",
-        "Server4",
-        "Server5",
-        "Server6",
-        "Server7",
-        "Server8910",
-        "Server11",
-        "Server12",
-        "Server13",
-        "Server14",
-        "Super1",
-        "Super2",
-        "Universe1",
-        "Naga",
+        {
+          id: "Server1",
+          name: "server1"
+        },
+        {
+          id: "Server2",
+          name: "server2"
+        },
+        {
+          id: "Server3",
+          name: "server3"
+        },
+        {
+          id: "Server4",
+          name: "server4"
+        },
+        {
+          id: "Server5",
+          name: "server5"
+        },
+        {
+          id: "Server6",
+          name: "server6"
+        },
+        {
+          id: "Server7",
+          name: "server7"
+        },
+        {
+          id: "Server8910",
+          name: "server8910"
+        },
+        {
+          id: "Server11",
+          name: "server11"
+        },
+        {
+          id: "Server12",
+          name: "server12"
+        },
+        {
+          id: "Server13",
+          name: "server13"
+        },
+        {
+          id: "Server14",
+          name: "server14"
+        },
+        {
+          id: "Super1",
+          name: "super1"
+        },
+        {
+          id: "Super2",
+          name: "super2"
+        },
+        {
+          id: "Universe1",
+          name: "universe1"
+        },
+        {
+          id: "Naga",
+          name: "naga"
+        }
       ],
       currentPage: new URL(window.location.href).searchParams.get('page') || 'items'
     }
@@ -64,12 +112,12 @@ export default {
 <template>
   <div>
     <!-- <ItemPage v-if="currentPage === 'items'" :servers="servers" /> -->
-    <NpcsPage v-if="currentPage === 'npcs'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <SkillsPage v-else-if="currentPage === 'skills'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <MonstersPage v-else-if="currentPage === 'mobs'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <ItemOptionsPage v-else-if="currentPage === 'itemOptions'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <MapsPage v-else-if="currentPage === 'maps'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <PartsPage v-else-if="currentPage === 'parts'" :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <ItemsPage v-else :servers="servers" :defaultServer="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <NpcsPage v-if="currentPage === 'npcs'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <SkillsPage v-else-if="currentPage === 'skills'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <MonstersPage v-else-if="currentPage === 'mobs'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <ItemOptionsPage v-else-if="currentPage === 'itemOptions'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <MapsPage v-else-if="currentPage === 'maps'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <PartsPage v-else-if="currentPage === 'parts'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+    <ItemsPage v-else :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
   </div>
 </template>
