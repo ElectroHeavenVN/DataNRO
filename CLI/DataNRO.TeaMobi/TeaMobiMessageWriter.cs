@@ -154,6 +154,13 @@ namespace DataNRO.TeaMobi
             session.SendMessage(message);
         }
 
+        public void RequestMapTemplate(int mapTemplateID)
+        {
+            MessageSend messageSend = MessageNotMap(10);
+            messageSend.WriteByte((byte)mapTemplateID);
+            session.SendMessage(messageSend);
+        }
+
         MessageSend MessageNotMap(sbyte command)
         {
             MessageSend message = new MessageSend(-28);

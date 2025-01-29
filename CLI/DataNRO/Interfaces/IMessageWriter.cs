@@ -96,5 +96,11 @@
         /// </summary>
         /// <param name="mobTemplateID">ID template của quái cần lấy thông tin</param>
         void RequestMobTemplate(short mobTemplateID);
+
+        /// <summary>
+        /// Gửi yêu cầu thông tin map
+        /// </summary>
+        /// <param name="mapTemplateID">ID map cần lấy thông tin</param>
+        void RequestMapTemplate(int mapTemplateID);
     }
 }

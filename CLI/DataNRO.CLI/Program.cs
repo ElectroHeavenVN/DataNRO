@@ -164,9 +164,10 @@ namespace DataNRO.CLI
             Thread.Sleep(2000);
             if (session.Data.SaveIcon)
             {
-                if (!RequestIcons(session))
-                  return;
+                RequestMapsTemplate(session);
                 RequestMobsImg(session);
+                if (!RequestIcons(session))
+                    return;
             }
             TryGoOutsideIfAtHome(session);
             Console.WriteLine($"[{session.Host}:{session.Port}] Disconnect from {session.Host}:{session.Port} in 10s...");
@@ -335,6 +336,12 @@ namespace DataNRO.CLI
                 }
                 mobImg.Dispose();
             }
+
+            Console.WriteLine($"[{session.Host}:{session.Port}] Combining map images...");
+            for (int i = 0; i < session.Data.Maps.Count; i++)
+            {
+                int mapId = session.Data.Maps[i].id;
+            }
         }
 
         static bool RequestIcons(ISession session)
@@ -406,6 +413,7 @@ namespace DataNRO.CLI
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
                 }
             }
+            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
             //npc
             //while (session.Data.NpcTemplates == null)
             //{
@@ -470,6 +478,7 @@ namespace DataNRO.CLI
                     }
                 }
             }
+            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
             Console.WriteLine($"[{session.Host}:{session.Port}] Wait 10s...");
             Thread.Sleep(10000);
             return true;
@@ -480,7 +489,8 @@ namespace DataNRO.CLI
             IMessageWriter writer = session.MessageWriter;
             MobTemplate[] mobTemplates = session.Data.MobTemplates;
             int count = 0;
-            for (int templateID = 0; templateID < mobTemplates.Length; templateID++)
+            int templateID = 0;
+            for (; templateID < mobTemplates.Length; templateID++)
             {
                 writer.RequestMobTemplate((short)templateID);
                 count++;
@@ -492,6 +502,35 @@ namespace DataNRO.CLI
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {templateID} mob templates");
                 }
             }
+            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {templateID} mob templates");
+        }
+
+        static void RequestMapsTemplate(ISession session)
+        {
+            IMessageWriter writer = session.MessageWriter;
+            List<Map> maps = session.Data.Maps;
+            int count = 0;
+            int i = 0;
+            for (; i < maps.Count; i++)
+            {
+                Map map = maps[i];
+                session.Data.MapToReceiveTemplate = map;
+                writer.RequestMapTemplate(map.id);
+                count++;
+                do
+                {
+                    Thread.Sleep(1000 + random.Next(-200, 201));
+                }
+                while (session.Data.MapToReceiveTemplate != null);
+                if (count >= 10)
+                {
+                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    count = 0;
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} map templates");
+                }
+            }
+            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} map templates");
+            session.Data.MapToReceiveTemplate = null;
         }
 
         static void TryGoOutsideIfAtHome(ISession session)

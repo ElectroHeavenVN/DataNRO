@@ -39,6 +39,9 @@ namespace DataNRO.TeaMobi
                         case 8:
                             ReadItemData(message);
                             break;
+                        case 10:
+                            ReadMapTemplate(message);
+                            break;
                     }
                     break;
                 case -29:
@@ -54,6 +57,9 @@ namespace DataNRO.TeaMobi
                     break;
                 case -67:
                     ReadIcon(message);
+                    break;
+                case -82:
+                    ReadTileTypeAndIndex(message);
                     break;
                 case -87:
                     ReadCommonData(message);
@@ -214,6 +220,42 @@ namespace DataNRO.TeaMobi
             }
         }
 
+        void ReadMapTemplate(MessageReceive message)
+        {
+            Map map = session.Data.MapToReceiveTemplate;
+            if (map == null)
+                return;
+            map.mapTemplate = new MapTemplate();
+            map.mapTemplate.width = message.ReadByte();
+            map.mapTemplate.height = message.ReadByte();
+            int count = map.mapTemplate.width * map.mapTemplate.height;
+            map.mapTemplate.maps = new int[count];
+            for (int i = 0; i < count; i++)
+            {
+                map.mapTemplate.maps[i] = message.ReadByte();
+            }
+            session.Data.MapToReceiveTemplate = null;
+        }
+
+        void ReadTileTypeAndIndex(MessageReceive message)
+        {
+            MapTemplate.tileIndex = new int[message.ReadByte()][][];
+            MapTemplate.tileType = new int[MapTemplate.tileIndex.Length][];
+            for (int i = 0; i < MapTemplate.tileIndex.Length; i++)
+            {
+                byte length = message.ReadByte();
+                MapTemplate.tileType[i] = new int[length];
+                MapTemplate.tileIndex[i] = new int[length][];
+                for (int j = 0; j < length; j++)
+                {
+                    MapTemplate.tileType[i][j] = message.ReadInt();
+                    MapTemplate.tileIndex[i][j] = new int[message.ReadByte()];
+                    for (int k = 0; k < MapTemplate.tileIndex[i][j].Length; k++)
+                        MapTemplate.tileIndex[i][j][k] = message.ReadByte();
+                }
+            }
+        }
+
         void ReadCurrentMapInfo(MessageReceive message)
         {
             Player player = session.Player;
@@ -298,21 +340,29 @@ namespace DataNRO.TeaMobi
             switch (b)
             {
                 case 0:
+                    int resVersion = message.ReadInt();
                     break;
                 case 1:
-                    message.ReadShort();
+                    short nBig = message.ReadShort();
                     session.MessageWriter.GetResource(2);
                     break;
                 case 2:
                     string fileName = message.ReadString();
-                    if (!fileName.Contains("Big"))
-                        break;
-                    fileName = fileName.Substring(fileName.IndexOf("Big"));
-                    byte[] data = message.ReadBytes();
-                    session.FileWriter.WriteBigIcon(fileName, data);
+                    if (fileName.Contains("Big"))
+                    {
+                        fileName = fileName.Substring(fileName.IndexOf("Big"));
+                        byte[] data = message.ReadBytes();
+                        session.FileWriter.WriteBigIcon(fileName, data);
+                    }
+                    else
+                    {
+                        fileName = fileName.Split('/').Last();
+                        byte[] data = message.ReadBytes();
+                        session.FileWriter.WriteResource(fileName, data);
+                    }
                     break;
                 case 3:
-                    message.ReadInt();
+                    int resNewVersion = message.ReadInt();
                     session.Data.AllResourceLoaded = true;
                     break;
             }

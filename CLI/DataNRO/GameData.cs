@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DataNRO
@@ -81,6 +82,48 @@ namespace DataNRO
         {
             public int id;
             public string name;
+            public MapTemplate mapTemplate;
+        }
+
+        public class MapTemplate
+        {
+            //tmw
+            public int width;
+            //tmh
+            public int height;
+            public int[] maps;
+            public int[] types;
+
+            public static int[][] tileType;
+
+            public static int[][][] tileIndex;
+
+            public void setTile(int index, int[] mapsArr, int type)
+            {
+                for (int i = 0; i < mapsArr.Length; i++)
+                {
+                    if (maps[index] == mapsArr[i])
+                    {
+                        types[index] |= type;
+                        break;
+                    }
+                }
+            }
+
+            //TODO: figure out tile ID of each map
+            public void loadMap(int tileId)
+            {
+                int pixelHeight = height * 24;
+                int pixelWidth = width * 24;
+                int num = tileId - 1;
+                for (int i = 0; i < width * height; i++)
+                {
+                    for (int j = 0; j < tileType[num].Length; j++)
+                    {
+                        setTile(i, tileIndex[num][j], tileType[num][j]);
+                    }
+                }
+            }
         }
 
         public class PartImage
@@ -128,6 +171,7 @@ namespace DataNRO
         public ItemOptionTemplate[] ItemOptionTemplates { get; set; }
         public NClass[] NClasses { get; set; }
         public List<Map> Maps { get; set; } = new List<Map>();
+        public Map MapToReceiveTemplate { get; set; }
         public List<ItemTemplate> ItemTemplates { get; set; } = new List<ItemTemplate>();
         public Part[] Parts { get; set; }
         public bool AllResourceLoaded { get; set; }

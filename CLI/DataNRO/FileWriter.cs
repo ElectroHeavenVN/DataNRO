@@ -43,6 +43,14 @@ namespace DataNRO
             File.WriteAllBytes($"{path}\\{templateID}.png", data);
         }
 
+        public void WriteResource(string name, byte[] data)
+        {
+            string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Resources";
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            File.WriteAllBytes($"{path}\\{name}", data);
+        }
+
         public void DeleteTempFiles()
         {
 #if !DEBUG
@@ -50,6 +58,9 @@ namespace DataNRO
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
             path = $"{Path.GetDirectoryName(session.Data.Path)}\\MobImg";
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
+            path = $"{Path.GetDirectoryName(session.Data.Path)}\\Resources";
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
 #endif
