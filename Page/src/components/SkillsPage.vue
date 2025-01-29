@@ -23,11 +23,11 @@ const { t } = useI18n();
     </div>
     <div class="searching">
       <div class="search-bar">
-        <span class="material-symbols-outlined" style="font-size: 2rem;">search</span>
+        <span class="material-icons-round" style="font-size: 2rem;">search</span>
         <input type="text" :placeholder="t('searchSkill')" value="" @input="checkDeleteAll" @change="searchSkillTemplates" />
       </div>
       <div class="sort">
-        <span class="material-symbols-outlined" style="font-size: 2rem; transform: scale(1, -1); cursor: pointer;" @click="inverseSort">sort</span>
+        <span class="material-icons-round" style="font-size: 2rem; transform: scale(1, -1); cursor: pointer;" @click="inverseSort">sort</span>
           <select @change="changeSort">
             <option value="id" selected="">ID</option>
             <option value="name">{{ t('name') }}</option>
@@ -53,7 +53,7 @@ const { t } = useI18n();
       </div>
     </div>
     <div class="load-more hoverable" v-if="filteredSkillTemplates.length > 10 && visibleSkillTemplates.length < filteredSkillTemplates.length" @click="loadMore">
-      <span class="material-symbols-outlined" style="font-size: 2rem;">keyboard_arrow_down</span>
+      <span class="material-icons-round" style="font-size: 2rem;">keyboard_arrow_down</span>
       <p style="margin: 0; font-size: 1.5rem;">{{ t('loadMore') }}</p>
     </div>
   </div>
@@ -206,7 +206,7 @@ export default {
   font-size: 30px;
 }
 
-.material-symbols-outlined {
+.material-icons-round {
   user-select: none;
 }
 

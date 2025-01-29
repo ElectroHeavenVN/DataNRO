@@ -23,11 +23,11 @@ const { t } = useI18n();
     </div>
     <div class="searching">
       <div class="search-bar">
-        <span class="material-symbols-outlined" style="font-size: 2rem;">search</span>
+        <span class="material-icons-round" style="font-size: 2rem;">search</span>
         <input type="text" :placeholder="t('searchNPC')" value="" @input="checkDeleteAll" @change="searchNpc" />
       </div>
       <div class="sort">
-        <span class="material-symbols-outlined" style="font-size: 2rem; transform: scale(1, -1); cursor: pointer;" @click="inverseSort">sort</span>
+        <span class="material-icons-round" style="font-size: 2rem; transform: scale(1, -1); cursor: pointer;" @click="inverseSort">sort</span>
           <select @change="changeSort">
             <option value="id" selected="">ID</option>
             <option value="name">{{ t('name') }}</option>
@@ -38,7 +38,7 @@ const { t } = useI18n();
       <Npc v-for="npc in visibleNpcs" :name=npc.name :id=npc.npcTemplateId :head=npc.headId :body=npc.bodyId :legs=npc.legId class="hoverable" />
     </div>
     <div class="load-more hoverable" v-if="filteredNpcs.length > 30 && visibleNpcs.length < filteredNpcs.length" @click="loadMore">
-      <span class="material-symbols-outlined" style="font-size: 2rem;">keyboard_arrow_down</span>
+      <span class="material-icons-round" style="font-size: 2rem;">keyboard_arrow_down</span>
       <p style="margin: 0; font-size: 1.5rem;">{{ t('loadMore') }}</p>
     </div>
   </div>
@@ -169,7 +169,7 @@ export default {
   font-size: 30px;
 }
 
-.material-symbols-outlined {
+.material-icons-round {
   user-select: none;
 }
 

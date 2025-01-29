@@ -139,7 +139,7 @@ const formatPowerRequired = (powerRequired) => {
       </details>
     </div>
     <div class="more-info" @click="toggleMoreInfo">
-      <span class="material-symbols-outlined">keyboard_arrow_down</span>
+      <span class="material-icons-round">keyboard_arrow_down</span>
       <p>{{ t('moreInfo') }}</p>
     </div>
   </div>
