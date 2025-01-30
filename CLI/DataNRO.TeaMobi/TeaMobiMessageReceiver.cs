@@ -234,6 +234,7 @@ namespace DataNRO.TeaMobi
             {
                 map.mapTemplate.maps[i] = message.ReadByte();
             }
+            map.mapTemplate.types = new int[count];
             session.Data.MapToReceiveTemplate = null;
         }
 

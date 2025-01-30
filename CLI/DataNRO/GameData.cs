@@ -98,31 +98,36 @@ namespace DataNRO
 
             public static int[][][] tileIndex;
 
-            public void setTile(int index, int[] mapsArr, int type)
+            void SetTile(int index, int[] mapsArr, int type)
             {
                 for (int i = 0; i < mapsArr.Length; i++)
                 {
-                    if (maps[index] == mapsArr[i])
-                    {
-                        types[index] |= type;
-                        break;
-                    }
+                    if (maps[index] != mapsArr[i])
+                        continue;
+                    types[index] |= type;
+                    break;
                 }
             }
 
             //TODO: figure out tile ID of each map
-            public void loadMap(int tileId)
+            public void LoadMap(int tileId)
             {
-                int pixelHeight = height * 24;
-                int pixelWidth = width * 24;
                 int num = tileId - 1;
                 for (int i = 0; i < width * height; i++)
                 {
                     for (int j = 0; j < tileType[num].Length; j++)
-                    {
-                        setTile(i, tileIndex[num][j], tileType[num][j]);
-                    }
+                        SetTile(i, tileIndex[num][j], tileType[num][j]);
                 }
+            }
+
+            public int TileTypeAt(int x, int y)
+            {
+                try
+                {
+                    return types[y * width + x];
+                }
+                catch { }
+                return 1000;
             }
         }
 
