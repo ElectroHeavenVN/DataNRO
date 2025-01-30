@@ -126,5 +126,7 @@
 	"pageNotFoundDesc": "The page you are looking for does not exist or has been moved.",
 	"goBackToHomepage": "Go back to homepage",
 	"moreInfo": "More info",
-	"noName": "[No name]"
+	"noName": "[No name]",
+
+	"visits": "Website visits"
 }

@@ -78,7 +78,12 @@ export default {
           <span v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR'" style="font-size: 25px; cursor:pointer;" @click=openNav>&#9776;</span>
           <img v-if="currentPath == 'HSNR'" @click="goHome" src="/DataHSNR.png" :alt="title">
           <img v-else-if="currentPath == 'TeaMobi'" @click="goHome" src="/DataNRO.png" :alt="title">
-          <h1 @click="goHome">{{ title }}</h1>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <h1 @click="goHome" style="position: relative; top: 5px;">{{ title }}</h1>
+            <a href="https://hits.seeyoufarm.com" style="position: relative; top: -3px;">
+              <img :src="'https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Felectroheavenvn.github.io%2FDataNRO%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&edge_flat=false&title=' + encodeURIComponent(t('visits'))" style="width: auto; height: 15px;"/>
+            </a>
+          </div>
           <img v-if="currentPath == ''" @click="goToNRO" src="/DataNRO.png" :alt="title">
           <img v-if="currentPath == ''" @click="goToHSNR" src="/DataHSNR.png" :alt="title">
         </div>

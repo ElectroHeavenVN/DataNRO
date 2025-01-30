@@ -126,5 +126,7 @@
 	"pageNotFoundDesc": "Trang bạn đang tìm không tồn tại hoặc đã bị di chuyển.",
 	"goBackToHomepage": "Quay lại trang chủ",
 	"moreInfo": "Thông tin thêm",
-	"noName": "[Không tên]"
+	"noName": "[Không tên]",
+
+	"visits": "Lượt truy cập"
 }
