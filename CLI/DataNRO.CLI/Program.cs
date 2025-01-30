@@ -118,13 +118,13 @@ namespace DataNRO.CLI
             Thread.Sleep(1000);
             if (session.Data.SaveIcon)
             {
-                //Console.WriteLine($"[{session.Host}:{session.Port}] Downloading data...");
-                //writer.GetResource(1);
-                //do
-                //{
-                //    Thread.Sleep(1000);
-                //}
-                //while (!session.Data.AllResourceLoaded);
+                Console.WriteLine($"[{session.Host}:{session.Port}] Downloading data...");
+                writer.GetResource(1);
+                do
+                {
+                    Thread.Sleep(1000);
+                }
+                while (!session.Data.AllResourceLoaded);
             }
             if (!string.IsNullOrEmpty(unregisteredUser))
             {
@@ -165,138 +165,44 @@ namespace DataNRO.CLI
             if (session.Data.SaveIcon)
             {
                 RequestMapsTemplate(session);
-                //RequestMobsImg(session);
-                //if (!RequestIcons(session))
-                //    return;
+                RequestMobsImg(session);
+                if (!RequestIcons(session))
+                    return;
             }
-            //TryGoOutsideIfAtHome(session);
-            //Console.WriteLine($"[{session.Host}:{session.Port}] Disconnect from {session.Host}:{session.Port} in 10s...");
-            //writer.Chat("DataNRO by ElectroHeavenVN");
-            //Thread.Sleep(5000);
-            //writer.Chat("GitHub dot com slash ElectroHeavenVN slash DataNRO");
-            //Thread.Sleep(5000);
+            TryGoOutsideIfAtHome(session);
+            Console.WriteLine($"[{session.Host}:{session.Port}] Disconnect from {session.Host}:{session.Port} in 10s...");
+            writer.Chat("DataNRO by ElectroHeavenVN");
+            Thread.Sleep(5000);
+            writer.Chat("GitHub dot com slash ElectroHeavenVN slash DataNRO");
+            Thread.Sleep(5000);
             session.Disconnect();
 
             if (session.Data.SaveIcon)
                 ProcessImages(session);
 
-            //Console.WriteLine($"[{session.Host}:{session.Port}] Writing data to {session.Data.Path}\\...");
-            //Formatting formatting = Formatting.Indented;
-            //File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Maps)}.json", JsonConvert.SerializeObject(session.Data.Maps, formatting));
-            //File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NpcTemplates)}.json", JsonConvert.SerializeObject(session.Data.NpcTemplates, formatting));
-            //File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.MobTemplates)}.json", JsonConvert.SerializeObject(session.Data.MobTemplates, formatting));
-            //File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemOptionTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemOptionTemplates, formatting));
-            //File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NClasses)}.json", JsonConvert.SerializeObject(session.Data.NClasses, formatting));
-            //File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemTemplates, formatting));
-            //File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Parts)}.json", JsonConvert.SerializeObject(session.Data.Parts, formatting));
+            Console.WriteLine($"[{session.Host}:{session.Port}] Writing data to {session.Data.Path}\\...");
+            Formatting formatting = Formatting.Indented;
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Maps)}.json", JsonConvert.SerializeObject(session.Data.Maps, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NpcTemplates)}.json", JsonConvert.SerializeObject(session.Data.NpcTemplates, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.MobTemplates)}.json", JsonConvert.SerializeObject(session.Data.MobTemplates, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemOptionTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemOptionTemplates, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NClasses)}.json", JsonConvert.SerializeObject(session.Data.NClasses, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemTemplates, formatting));
+            File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Parts)}.json", JsonConvert.SerializeObject(session.Data.Parts, formatting));
             //if (session.Data.SaveIcon)
-            //    File.WriteAllText($"{Path.GetDirectoryName(session.Data.Path)}\\{nameof(GameData.MobTemplateEffectData)}.json", JsonConvert.SerializeObject(session.Data.MobTemplateEffectData, formatting));
-            //File.WriteAllText($"{session.Data.Path}\\LastUpdated", DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
-            //Thread.Sleep(3000);
+                //File.WriteAllText($"{Path.GetDirectoryName(session.Data.Path)}\\{nameof(GameData.MobTemplateEffectData)}.json", JsonConvert.SerializeObject(session.Data.MobTemplateEffectData, formatting));
+            File.WriteAllText($"{session.Data.Path}\\LastUpdated", DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+            Thread.Sleep(3000);
             session.FileWriter.DeleteTempFiles();
             session.Dispose();
         }
 
         static void ProcessImages(ISession session)
         {
-            //SplitBigImgs(session);
-            //CombineNPCImages(session);
-            //CombineMobImages(session);
-
-            Console.WriteLine($"[{session.Host}:{session.Port}] Combining map images...");
-            for (int i = 0; i < session.Data.Maps.Count; i++)
-            {
-                Map map = session.Data.Maps[i];
-                MapTemplate mapTemplate = map.mapTemplate;
-                if (mapTemplate == null)
-                    continue;
-                int mapId = map.id;
-                if (!session.MapTileIDs.ContainsKey(mapId) || session.MapTileIDs[mapId] == -1)
-                    continue;
-                int tileID = session.MapTileIDs[mapId];
-                int pixelWidth = (mapTemplate.width - 2) * 24 * session.Data.ZoomLevel;
-                int pixelHeight = (mapTemplate.height - 1) * 24 * session.Data.ZoomLevel;
-                Bitmap mapImg = new Bitmap(pixelWidth, pixelHeight);
-                Graphics mapImgG = Graphics.FromImage(mapImg);
-                if (tileID != 13)
-                    mapImgG.FillRectangle(Brushes.White, 0, 0, pixelWidth, pixelHeight);
-
-                void paintTile(int frame, int x, int y)
-                {
-                    x -= 24;
-                    x *= session.Data.ZoomLevel;
-                    y *= session.Data.ZoomLevel;
-                    Bitmap frameImg = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Resources\\{tileID}${frame + 1}");
-                    mapImgG.DrawImage(frameImg, x, y);
-                    frameImg.Dispose();
-                }
-
-                try
-                {
-                    mapTemplate.LoadMap(tileID);
-
-                    for (int x = 1; x < mapTemplate.width - 1; x++)
-                    {
-                        for (int y = 0; y < mapTemplate.height; y++)
-                        {
-                            int num = mapTemplate.maps[y * mapTemplate.width + x] - 1;
-                            if ((mapTemplate.TileTypeAt(x, y) & 0x100) == 256)
-                                continue;
-                            if ((mapTemplate.TileTypeAt(x, y) & 0x20) == 32)
-                                ;// g.drawRegion(imgWaterfall, 0, 24 * (GameCanvas.gameTick % 8 >> 1), 24, 24, 0, x * size, y * size, 0);
-                            else if ((mapTemplate.TileTypeAt(x, y) & 0x80) == 128)
-                            {
-                                //g.drawRegion(imgTopWaterfall, 0, 24 * (GameCanvas.gameTick % 8 >> 1), 24, 24, 0, x * size, y * size, 0);
-                            }
-                            else
-                            {
-                                if (tileID == 13 && num != -1)
-                                    continue;
-                                if (tileID == 2 && (mapTemplate.TileTypeAt(x, y) & 0x200) == 512 && num != -1)
-                                {
-                                    paintTile(num, x * 24, y * 24);
-                                    paintTile(num, x * 24, y * 24 + 1);
-                                }
-                                if (tileID == 3)
-                                {
-
-                                }
-                                if ((mapTemplate.TileTypeAt(x, y) & 0x10) == 16)
-                                {
-                                    //int bx = x * 24 - GameScr.cmx;
-                                    //int dbx = bx - GameScr.gW2;
-                                    //int dfx = (24 - 2) * dbx / 24;
-                                    //int fx = dfx + GameScr.gW2;
-                                    //paintTile(num, fx + GameScr.cmx, y * 24, 24, 24);
-                                }
-                                else if ((mapTemplate.TileTypeAt(x, y) & 0x200) == 512)
-                                {
-                                    if (num != -1)
-                                    {
-                                        paintTile(num, x * 24, y * 24);
-                                        paintTile(num, x * 24, y * 24 + 1);
-                                    }
-                                }
-                                else if (num != -1)
-                                {
-                                    paintTile(num, x * 24, y * 24);
-                                }
-                            }
-
-                        }
-                    }
-                    mapImgG.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
-                    Font font = new Font("Arial", 50);
-                    mapImgG.DrawString("© ElectroHeavenVN", font, Brushes.Black, 0, pixelHeight / 2);
-                    string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Maps";
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-                    mapImg.Save($"{path}\\{mapId}.png");
-                }
-                catch { }
-                mapImgG.Dispose();
-                mapImg.Dispose();
-            }
+            SplitBigImgs(session);
+            CombineNPCImages(session);
+            CombineMobImages(session);
+            CombineMapImages(session);
         }
 
         static void SplitBigImgs(ISession session)
@@ -443,6 +349,104 @@ namespace DataNRO.CLI
                     croppedImg.Dispose();
                 }
                 mobImg.Dispose();
+            }
+        }
+
+        static void CombineMapImages(ISession session)
+        {
+            Console.WriteLine($"[{session.Host}:{session.Port}] Combining map images...");
+            for (int i = 0; i < session.Data.Maps.Count; i++)
+            {
+                Map map = session.Data.Maps[i];
+                MapTemplate mapTemplate = map.mapTemplate;
+                if (mapTemplate == null)
+                    continue;
+                int mapId = map.id;
+                if (!session.MapTileIDs.ContainsKey(mapId) || session.MapTileIDs[mapId] == -1)
+                    continue;
+                int tileID = session.MapTileIDs[mapId];
+                int pixelWidth = (mapTemplate.width - 2) * 24 * session.Data.ZoomLevel;
+                int pixelHeight = (mapTemplate.height - 1) * 24 * session.Data.ZoomLevel;
+                Bitmap mapImg = new Bitmap(pixelWidth, pixelHeight);
+                Graphics mapImgG = Graphics.FromImage(mapImg);
+                if (tileID != 13)
+                    mapImgG.FillRectangle(Brushes.White, 0, 0, pixelWidth, pixelHeight);
+
+                void paintTile(int frame, int x, int y)
+                {
+                    x -= 24;
+                    x *= session.Data.ZoomLevel;
+                    y *= session.Data.ZoomLevel;
+                    Bitmap frameImg = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Resources\\{tileID}${frame + 1}");
+                    mapImgG.DrawImage(frameImg, x, y);
+                    frameImg.Dispose();
+                }
+
+                try
+                {
+                    mapTemplate.LoadMap(tileID);
+
+                    for (int x = 1; x < mapTemplate.width - 1; x++)
+                    {
+                        for (int y = 0; y < mapTemplate.height; y++)
+                        {
+                            int num = mapTemplate.maps[y * mapTemplate.width + x] - 1;
+                            if ((mapTemplate.TileTypeAt(x, y) & 0x100) == 256)
+                                continue;
+                            if ((mapTemplate.TileTypeAt(x, y) & 0x20) == 32)
+                                ;// g.drawRegion(imgWaterfall, 0, 24 * (GameCanvas.gameTick % 8 >> 1), 24, 24, 0, x * size, y * size, 0);
+                            else if ((mapTemplate.TileTypeAt(x, y) & 0x80) == 128)
+                            {
+                                //g.drawRegion(imgTopWaterfall, 0, 24 * (GameCanvas.gameTick % 8 >> 1), 24, 24, 0, x * size, y * size, 0);
+                            }
+                            else
+                            {
+                                if (tileID == 13 && num != -1)
+                                    continue;
+                                if (tileID == 2 && (mapTemplate.TileTypeAt(x, y) & 0x200) == 512 && num != -1)
+                                {
+                                    paintTile(num, x * 24, y * 24);
+                                    paintTile(num, x * 24, y * 24 + 1);
+                                }
+                                if (tileID == 3)
+                                {
+
+                                }
+                                if ((mapTemplate.TileTypeAt(x, y) & 0x10) == 16)
+                                {
+                                    //int bx = x * 24 - GameScr.cmx;
+                                    //int dbx = bx - GameScr.gW2;
+                                    //int dfx = (24 - 2) * dbx / 24;
+                                    //int fx = dfx + GameScr.gW2;
+                                    //paintTile(num, fx + GameScr.cmx, y * 24, 24, 24);
+                                }
+                                else if ((mapTemplate.TileTypeAt(x, y) & 0x200) == 512)
+                                {
+                                    if (num != -1)
+                                    {
+                                        paintTile(num, x * 24, y * 24);
+                                        paintTile(num, x * 24, y * 24 + 1);
+                                    }
+                                }
+                                else if (num != -1)
+                                {
+                                    paintTile(num, x * 24, y * 24);
+                                }
+                            }
+
+                        }
+                    }
+                    mapImgG.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+                    Font font = new Font("Arial", 50);
+                    mapImgG.DrawString("© ElectroHeavenVN", font, Brushes.Black, 0, pixelHeight / 2);
+                    string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Maps";
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    mapImg.Save($"{path}\\{mapId}.png");
+                }
+                catch { }
+                mapImgG.Dispose();
+                mapImg.Dispose();
             }
         }
 

@@ -84,11 +84,8 @@ namespace DataNRO.TeaMobi
             { 176, 3 }, { 177, 10 }, { 178, 23 },
 
             { 78, -1 },
-            
             { 164, -1 },
-            
             { 169, -1 },
-
             { 173, -1 }, { 174, -1 }, { 175, -1 },
         };
         public Dictionary<int, int> MapTileIDs => mapTileIDs;
