@@ -37,9 +37,11 @@ const { t } = useI18n();
     <div class="mobs">
       <Monster v-for="mob in visibleMobs" :name=mob.name :id=mob.mobTemplateId :range=mob.rangeMove :speed=mob.speed :type=mob.type :dartType=mob.dartType :hp=mob.hp class="hoverable" />
     </div>
-    <div class="load-more hoverable" v-if="filteredMobs.length > 30 && visibleMobs.length < filteredMobs.length" @click="loadMore">
-      <span class="material-icons-round" style="font-size: 2rem;">keyboard_arrow_down</span>
-      <p style="margin: 0; font-size: 1.5rem;">{{ t('loadMore') }}</p>
+    <div style="display: flex; justify-content: center; padding: 50px 50px 30px 50px;">
+      <div class="load-more hoverable" v-if="filteredMobs.length > 30 && visibleMobs.length < filteredMobs.length" @click="loadMore">
+        <span class="material-icons-round" style="font-size: 2rem;">keyboard_arrow_down</span>
+        <p style="margin: 0; font-size: 1.5rem;">{{ t('loadMore') }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -217,13 +219,13 @@ export default {
 .load-more {
   display: flex;
   justify-content: center;
-  margin: 50px 500px 30px 500px;
   cursor: pointer;
   font-size: 20px;
   flex-direction: row;
   gap: 10px;
   box-shadow: 0 0 10px 1px aqua;
   border-radius: 10px;
+  width: 50%;
 }
 
 .searching {
@@ -287,7 +289,8 @@ select {
   }
 
   .select-server select,
-  .sort select {
+  .sort select, 
+  .load-more {
     width: 100%;
   }
 }
