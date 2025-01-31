@@ -186,7 +186,7 @@ namespace DataNRO
         /// <summary>
         /// Thư viện chứa cặp ID map và ID tile tương ứng
         /// </summary>
-        public Dictionary<int, int> MapTileIDs { get; set; }
+        public Dictionary<int, int> MapTileIDs { get; set; } = new Dictionary<int, int>();
 
         /// <summary>
         /// Đặt lại dữ liệu của game
