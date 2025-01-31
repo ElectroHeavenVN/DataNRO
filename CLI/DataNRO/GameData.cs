@@ -184,6 +184,11 @@ namespace DataNRO
         public int[][] SmallImg { get; set; }
 
         /// <summary>
+        /// Thư viện chứa cặp ID map và ID tile tương ứng
+        /// </summary>
+        public Dictionary<int, int> MapTileIDs { get; set; }
+
+        /// <summary>
         /// Đặt lại dữ liệu của game
         /// </summary>
         public void Reset()

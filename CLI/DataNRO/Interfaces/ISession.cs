@@ -74,10 +74,5 @@ namespace DataNRO.Interfaces
         /// Đối tượng quản lý việc ghi dữ liệu vào file
         /// </summary>
         FileWriter FileWriter { get; }
-
-        /// <summary>
-        /// Thư viện chứa cặp ID map và ID tile tương ứng
-        /// </summary>
-        Dictionary<int, int> MapTileIDs { get; }
     }
 }
