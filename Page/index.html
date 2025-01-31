@@ -1,118 +1,157 @@
 <!doctype html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link id="favicon" href="/favicon.png" rel="icon" />
-    <meta name="description" content="Xem dữ liệu vật phẩm, quái, NPC, map,... của game Ngọc Rồng Online và Hồi sinh Ngọc Rồng. Dữ liệu được tự động cập nhật mỗi ngày. View items, monsters, NPCs, maps, and other information of the Dragon Ball Online and Hoi Sinh Ngoc Rong game series. Game information is automatically updated every day." />
-    <meta name="keywords" content="ElectroHeavenVN, EHVN, NRO, HSNR, DataNRO, data nro, data hsnr, Ngọc Rồng Online, Hồi sinh Ngọc Rồng, ID vật phẩm NRO, ID vật phẩm HSNR, chỉ số vật phẩm NRO, NPC NRO, map NRO" />
-    <meta name="author" content="ElectroHeavenVN" />
-    <meta content="#FFBB00" name="theme-color" />
-    <meta property="og:site_name" content="electroheavenvn.github.io/DataNRO" />
-    <meta property="og:image" content="/DataNRO.png"/>
-    <title>DataNRO by ElectroHeavenVN</title>
-    
-    <meta name="google-site-verification" content="vDFK5wlJpNwNDg3CV9fkEogvh1EX5LfkxBpS4rprkNg" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <style>
-      /* nunito-200 - latin_vietnamese */
-      @font-face {
-        font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-        font-family: 'Nunito';
-        font-style: normal;
-        font-weight: 200;
-        src: url('/fonts/nunito-v26-latin_vietnamese-200.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-      }
-      /* nunito-regular - latin_vietnamese */
-      @font-face {
-        font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-        font-family: 'Nunito';
-        font-style: normal;
-        font-weight: 400;
-        src: url('/fonts/nunito-v26-latin_vietnamese-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-      }
-      /* nunito-800 - latin_vietnamese */
-      @font-face {
-        font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-        font-family: 'Nunito';
-        font-style: normal;
-        font-weight: 700;
-        src: url('/fonts/nunito-v26-latin_vietnamese-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-      }
-      /* material-icons-round-regular - latin */
-      @font-face {
-        font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-        font-family: 'Material Icons Round';
-        font-style: normal;
-        font-weight: 400;
-        src: url('/fonts/material-icons-round-v108-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-      }
-      
-      .material-icons-round {
-        font-family: 'Material Icons Round';
-        font-weight: normal;
-        font-style: normal;
-        font-size: 24px;
-        line-height: 1;
-        letter-spacing: normal;
-        text-transform: none;
-        display: inline-block;
-        white-space: nowrap;
-        word-wrap: normal;
-        direction: ltr;
-        -webkit-font-feature-settings: 'liga';
-        font-feature-settings: "liga";
-        -webkit-font-smoothing: antialiased;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="app"></div>
-    <div class="back-to-top"></div>
-    <script type="module" src="/src/main.js"></script>
-    <script>
-      (() => {
-        let isShow = false, lock = false;
-        const btn = document.querySelector('.back-to-top');
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link id="favicon" href="/favicon.png" rel="icon" />
+  <meta name="description"
+    content="Xem dữ liệu vật phẩm, quái, NPC, map,... của game Ngọc Rồng Online và Hồi sinh Ngọc Rồng. Dữ liệu được tự động cập nhật mỗi ngày. View items, monsters, NPCs, maps, and other information of the Dragon Ball Online and Hoi Sinh Ngoc Rong game series. Game information is automatically updated every day." />
+  <meta name="keywords"
+    content="ElectroHeavenVN, EHVN, NRO, HSNR, DataNRO, data nro, data hsnr, Ngọc Rồng Online, Hồi sinh Ngọc Rồng, ID vật phẩm NRO, ID vật phẩm HSNR, chỉ số vật phẩm NRO, NPC NRO, map NRO" />
+  <meta name="author" content="ElectroHeavenVN" />
+  <meta content="#FFBB00" name="theme-color" />
+  <meta property="og:site_name" content="electroheavenvn.github.io/DataNRO" />
+  <meta property="og:image" content="/DataNRO.png" />
+  <title>DataNRO by ElectroHeavenVN</title>
 
-        const handleScroll = () => {
-          if (lock) return;
-          if (document.documentElement.scrollTop >= 200) {
-            if (!isShow) {
-              btn.classList.add('load');
-              isShow = true;
+  <meta name="google-site-verification" content="vDFK5wlJpNwNDg3CV9fkEogvh1EX5LfkxBpS4rprkNg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <style>
+    /* nunito-200 - latin_vietnamese */
+    @font-face {
+      font-display: swap;
+      /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+      font-family: 'Nunito';
+      font-style: normal;
+      font-weight: 200;
+      src: url('/fonts/nunito-v26-latin_vietnamese-200.woff2') format('woff2');
+      /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    }
+
+    /* nunito-regular - latin_vietnamese */
+    @font-face {
+      font-display: swap;
+      /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+      font-family: 'Nunito';
+      font-style: normal;
+      font-weight: 400;
+      src: url('/fonts/nunito-v26-latin_vietnamese-regular.woff2') format('woff2');
+      /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    }
+
+    /* nunito-800 - latin_vietnamese */
+    @font-face {
+      font-display: swap;
+      /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+      font-family: 'Nunito';
+      font-style: normal;
+      font-weight: 700;
+      src: url('/fonts/nunito-v26-latin_vietnamese-700.woff2') format('woff2');
+      /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    }
+
+    /* material-icons-round-regular - latin */
+    @font-face {
+      font-display: swap;
+      /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+      font-family: 'Material Icons Round';
+      font-style: normal;
+      font-weight: 400;
+      src: url('/fonts/material-icons-round-v108-latin-regular.woff2') format('woff2');
+      /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    }
+
+    .material-icons-round {
+      font-family: 'Material Icons Round';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      font-feature-settings: "liga";
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg"></div>
+  <div id="app"></div>
+  <div class="back-to-top arona"></div>
+  <div class="back-to-top plana"></div>
+  <script type="module" src="/src/main.js"></script>
+  <script>
+    (() => {
+      let isShowArona = false, isShowPlana = false, lock = false;
+      const btns = document.querySelectorAll('.back-to-top');
+
+      const handleScroll = () => {
+        if (lock) return;
+        btns.forEach(btn => {
+          if (btn.classList.contains('arona')) {
+            if (document.documentElement.scrollTop >= 200) {
+              if (!isShowArona) {
+                btn.classList.add('load');
+                isShowArona = true;
+              }
+            } else if (isShowArona) {
+              btn.classList.remove('load');
+              isShowArona = false;
             }
-          } else if (isShow) {
-            btn.classList.remove('load');
-            isShow = false;
           }
-        };
+          else if (btn.classList.contains('plana')) {
+            if (document.documentElement.scrollTop >= 200) {
+              if (!isShowPlana) {
+                btn.classList.add('load');
+                isShowPlana = true;
+              }
+            } else if (isShowPlana) {
+              btn.classList.remove('load');
+              isShowPlana = false;
+            }
+          }
+
+        });
+      };
+      window.addEventListener('scroll', handleScroll);
+
+      btns.forEach(btn => {
 
         const handleClick = () => {
           lock = true;
-          btn.classList.add('ani-leave');
+          btns.forEach(btn => btn.classList.add('ani-leave'));
           window.scrollTo({ top: 0, behavior: 'smooth' });
 
           setTimeout(() => {
-            btn.classList.remove('ani-leave');
-            btn.classList.add('leaved');
-          }, 390);
+            btns.forEach(btn => {
+              btn.classList.remove('ani-leave');
+              btn.classList.add('left');
+            });
+          }, 300);
 
-          setTimeout(() => btn.classList.add('ending'), 120);
-          setTimeout(() => btn.classList.remove('load'), 1500);
+          setTimeout(() => btns.forEach(btn => btn.classList.remove('load')), 1500);
 
           setTimeout(() => {
             lock = false;
-            isShow = false;
-            btn.classList.remove('leaved', 'ending');
+            isShowArona = false;
+            isShowPlana = false;
+            btns.forEach(btn => btn.classList.remove('left'));
           }, 2000);
         };
 
-        window.addEventListener('scroll', handleScroll);
         btn.addEventListener('click', handleClick);
-      })();
-    </script>
-  </body>
+      });
+    })();
+  </script>
+</body>
+
 </html>

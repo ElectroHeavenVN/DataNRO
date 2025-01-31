@@ -17,6 +17,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -40,9 +41,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -56,6 +59,20 @@ button:focus-visible {
   margin: 0;
   padding: 0;
   width: 100%;
+}
+
+.bg {
+  content : "";
+  display: block;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  opacity : 0.2;
+  z-index: -1;
+  background-image: url('/bgHorizontal.png');
+  background-size: cover;
 }
 
 @media (prefers-color-scheme: light) {
@@ -100,19 +117,19 @@ button:focus-visible {
 .back-to-top {
   position: fixed;
   z-index: 2;
-  right: -108px;
   bottom: 0;
-  width: 108px;
+  width: 100px;
   height: 150px;
-  background: url("/back-to-top.png?v=1") no-repeat 0 0;
-  background-size: 108px 450px;
+  background-size: 100px 300px;
   opacity: 0.6;
-  transition: opacity 0.3s, right 0.8s;
   cursor: pointer;
+  zoom: 0.6;
 }
 
-
-.back-to-top:hover, .back-to-top:active {
+.back-to-top.arona:hover, 
+.back-to-top.plana:hover, 
+.back-to-top.plana:active,
+.back-to-top.arona:active {
   background-position: 0 -150px;
   opacity: 1;
 }
@@ -123,38 +140,62 @@ button:focus-visible {
   z-index: 2;
   right: 0;
   bottom: 0;
-  width: 108px;
+  width: 100px;
   height: 150px;
-  background: url("/back-to-top.png?v=1") no-repeat 0 0;
-  background-size: 108px 450px;
-  background-position: 0 -300px;
   transition: opacity 0.3s;
   opacity: 0;
   pointer-events: none;
 }
 
-.back-to-top.load {
+.back-to-top.arona {
+  left: -100px;
+}
+
+.back-to-top.arona,
+.back-to-top.arona::after {
+  background: url("/BackToTop-Arona.png") no-repeat 0 0;
+  background-size: 100px 300px;
+  transition: opacity 0.3s, left 0.5s;
+}
+
+.back-to-top.plana {
+  right: -100px;
+  transition: opacity 0.3s, right 0.5s;
+}
+
+.back-to-top.plana,
+.back-to-top.plana::after {
+  background: url("/BackToTop-Plana.png") no-repeat 0 0;
+  background-size: 100px 300px;
+}
+
+.back-to-top.plana.load {
   right: 0;
+}
+
+.back-to-top.arona.load {
+  left: 0;
 }
 
 .back-to-top.ani-leave {
   background-position: 0 -150px;
-  animation: ani-leave 390ms ease-in-out forwards;
 }
 
-.back-to-top.leaved,
-.back-to-top.ending {
+.back-to-top.plana.ani-leave {
+  animation: ani-leave-right 300ms ease-in-out forwards;
+}
+
+.back-to-top.arona.ani-leave {
+  animation: ani-leave-left 300ms ease-in-out forwards;
+}
+
+.back-to-top.left {
   pointer-events: none;
 }
 
-.back-to-top.leaved {
+.back-to-top.left {
   background: none;
   transition: none;
-}
-
-.back-to-top.ending::after {
-  opacity: 1;
-  transition-delay: 0.35s;
 }
 
 footer {
@@ -177,13 +218,23 @@ footer a {
   text-decoration: none
 }
 
-@keyframes ani-leave {
+@keyframes ani-leave-right {
   0% {
     transform: translateX(0);
   }
 
   100% {
-    transform: translateX(108px);
+    transform: translateX(100px);
+  }
+}
+
+@keyframes ani-leave-left {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100px);
   }
 }
 
@@ -202,7 +253,31 @@ footer a {
 }
 
 @media screen and (max-width: 600px) {
+  .bg {
+    background-image: url('/bgVertical.png');
+  }
+}
+
+@media only screen and (min-width: 850px) and (min-height: 375px) {
   .back-to-top {
-    zoom: 0.5;
+    zoom: 0.7;
+  }
+}
+
+@media only screen and (min-width: 950px) and (min-height: 400px) {
+  .back-to-top {
+    zoom: 0.8;
+  }
+}
+
+@media only screen and (min-width: 1060px) and (min-height: 500px) {
+  .back-to-top {
+    zoom: 0.9;
+  }
+}
+
+@media only screen and (min-width: 1175px) and (min-height: 700px) {
+  .back-to-top {
+    zoom: 1;
   }
 }

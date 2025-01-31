@@ -217,11 +217,13 @@ export default {
 .load-more {
   display: flex;
   justify-content: center;
-  margin: 50px 50px 30px 50px;
+  margin: 50px 500px 30px 500px;
   cursor: pointer;
   font-size: 20px;
   flex-direction: row;
   gap: 10px;
+  box-shadow: 0 0 10px 1px aqua;
+  border-radius: 10px;
 }
 
 .searching {
