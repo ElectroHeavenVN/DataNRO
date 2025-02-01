@@ -5,7 +5,6 @@ const { t } = useI18n();
 
 <script>
 export default {
-  name: 'SelectGamePublisherPage',
   computed: {
     currentLang() {
       return navigator.language.split('-')[0];

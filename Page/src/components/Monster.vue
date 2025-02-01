@@ -2,6 +2,14 @@
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n();
 
+const copyToClipboard = (content) => {
+  try {
+    navigator.clipboard.writeText(content);
+  } catch (err) {
+    console.error('Failed to copy to clipboard', err);
+  }
+}
+
 const formatHP = (hp) => {
   if (hp < 1000)
     return hp.toString();
@@ -50,7 +58,6 @@ const getTypeString = (type) => t(getTypeClass(type));
 
 <script>
 export default {
-  name: 'Monster',
   props: {
     width: {
       type: String,

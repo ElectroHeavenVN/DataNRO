@@ -375,7 +375,9 @@ namespace DataNRO.CLI
                 }
                 try
                 {
-                    CombineMapImages(session, map, session.Data.MapTileIDs[map.id]);
+                    int tileID = session.Data.MapTileIDs[map.id];
+                    CombineMapImages(session, map, tileID);
+                    File.Copy($"{Path.GetDirectoryName(session.Data.Path)}\\Resources\\{tileID}$1", $"{Path.GetDirectoryName(session.Data.Path)}\\Maps\\{map.id}_tile.png", true);
                 }
                 catch (Exception ex)
                 {

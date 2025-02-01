@@ -2,10 +2,18 @@
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n();
 
+const copyToClipboard = (content) => {
+  try {
+    navigator.clipboard.writeText(content);
+  } catch (err) {
+    console.error('Failed to copy to clipboard', err);
+  }
+}
+
 </script>
 
 <template>
-  <div class="map" :style="{ width, height }">
+  <div class="map" :style="{ width }">
     <div class="badges">
       <div class="badge id" @click="copyToClipboard(id);" @touchstart="copyToClipboard(id);" :title="t('clickToCopy') + ' ID'">
         ID: {{ id }}
@@ -13,23 +21,22 @@ const { t } = useI18n();
       </div>
     </div>
     <div class="content">
-      <img class="icon" :src="'Maps/' + id + '.png'" :alt="'Map ' + id" :title="'Map ' + id" />
+      <img class="icon" :src="'Maps/' + id + '_tile.png'" :alt="'Map ' + id" :title="'Map ' + id" />
       <h2 class="name" :title="name.length == 0 ? t('noName') : name">{{ name.length == 0 ? t('noName') : name }}</h2>
+    </div>
+    <div class="more-info" @click="openMapImgNewTab">
+      <p>{{ t('viewMapImg') }}</p>
+      <span class="material-icons-round">open_in_new</span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Map',
   props: {
     width: {
       type: String,
       default: '350px',
-    },
-    height: {
-      type: String,
-      default: '75px',
     },
     name: {
       type: String,
@@ -39,7 +46,12 @@ export default {
       type: Number,
       required: true,
     },
-  }
+  },
+  methods: {
+    openMapImgNewTab() {
+      window.open(`Maps/${this.id}.png`, '_blank');
+    },
+  },
 }
 </script>
 
@@ -55,6 +67,7 @@ export default {
   position: relative;
   min-width: 275px;
   min-height: 75px;
+  height: fit-content;
 }
 
 .badges {
@@ -107,5 +120,20 @@ export default {
   padding-right: 10px;
   margin: 0;
   align-self: center;
+}
+
+.more-info {
+  display: flex;
+  user-select: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.more-info p {
+  margin: 0;
 }
 </style>
