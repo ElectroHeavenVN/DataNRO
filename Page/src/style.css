@@ -114,7 +114,7 @@ button:focus-visible {
   justify-content: flex-start
 }
 
-.goToTop {
+.go-fuck-ublock-origin-and-to-top {
   position: fixed;
   z-index: 2;
   bottom: 0;
@@ -126,15 +126,15 @@ button:focus-visible {
   zoom: 0.6;
 }
 
-.goToTop.arona:hover, 
-.goToTop.plana:hover, 
-.goToTop.plana:active,
-.goToTop.arona:active {
+.go-fuck-ublock-origin-and-to-top.arona:hover, 
+.go-fuck-ublock-origin-and-to-top.plana:hover, 
+.go-fuck-ublock-origin-and-to-top.plana:active,
+.go-fuck-ublock-origin-and-to-top.arona:active {
   background-position: 0 -150px;
   opacity: 1;
 }
 
-.goToTop::after {
+.go-fuck-ublock-origin-and-to-top::after {
   content: "";
   position: fixed;
   z-index: 2;
@@ -147,53 +147,53 @@ button:focus-visible {
   pointer-events: none;
 }
 
-.goToTop.arona {
+.go-fuck-ublock-origin-and-to-top.arona {
   left: -100px;
 }
 
-.goToTop.arona,
-.goToTop.arona::after {
+.go-fuck-ublock-origin-and-to-top.arona,
+.go-fuck-ublock-origin-and-to-top.arona::after {
   background: url("/BackToTop-Arona.png") no-repeat 0 0;
   background-size: 100px 300px;
   transition: opacity 0.3s, left 0.5s;
 }
 
-.goToTop.plana {
+.go-fuck-ublock-origin-and-to-top.plana {
   right: -100px;
   transition: opacity 0.3s, right 0.5s;
 }
 
-.goToTop.plana,
-.goToTop.plana::after {
+.go-fuck-ublock-origin-and-to-top.plana,
+.go-fuck-ublock-origin-and-to-top.plana::after {
   background: url("/BackToTop-Plana.png") no-repeat 0 0;
   background-size: 100px 300px;
 }
 
-.goToTop.plana.load {
+.go-fuck-ublock-origin-and-to-top.plana.load {
   right: 0;
 }
 
-.goToTop.arona.load {
+.go-fuck-ublock-origin-and-to-top.arona.load {
   left: 0;
 }
 
-.goToTop.ani-leave {
+.go-fuck-ublock-origin-and-to-top.ani-leave {
   background-position: 0 -150px;
 }
 
-.goToTop.plana.ani-leave {
+.go-fuck-ublock-origin-and-to-top.plana.ani-leave {
   animation: ani-leave-right 300ms ease-in-out forwards;
 }
 
-.goToTop.arona.ani-leave {
+.go-fuck-ublock-origin-and-to-top.arona.ani-leave {
   animation: ani-leave-left 300ms ease-in-out forwards;
 }
 
-.goToTop.left {
+.go-fuck-ublock-origin-and-to-top.left {
   pointer-events: none;
 }
 
-.goToTop.left {
+.go-fuck-ublock-origin-and-to-top.left {
   background: none;
   transition: none;
 }
@@ -259,25 +259,25 @@ footer a {
 }
 
 @media only screen and (min-width: 850px) and (min-height: 375px) {
-  .goToTop {
+  .go-fuck-ublock-origin-and-to-top {
     zoom: 0.7;
   }
 }
 
 @media only screen and (min-width: 950px) and (min-height: 400px) {
-  .goToTop {
+  .go-fuck-ublock-origin-and-to-top {
     zoom: 0.8;
   }
 }
 
 @media only screen and (min-width: 1060px) and (min-height: 500px) {
-  .goToTop {
+  .go-fuck-ublock-origin-and-to-top {
     zoom: 0.9;
   }
 }
 
 @media only screen and (min-width: 1175px) and (min-height: 700px) {
-  .goToTop {
+  .go-fuck-ublock-origin-and-to-top {
     zoom: 1;
   }
 }
