@@ -21,8 +21,6 @@
 
   <meta name="google-site-verification" content="vDFK5wlJpNwNDg3CV9fkEogvh1EX5LfkxBpS4rprkNg" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <style>
     /* nunito-200 - latin_vietnamese */
     @font-face {
@@ -142,14 +140,14 @@
             });
           }, 300);
 
-          setTimeout(() => btns.forEach(btn => btn.classList.remove('load')), 1500);
+          setTimeout(() => btns.forEach(btn => btn.classList.remove('load')), 500);
 
           setTimeout(() => {
             lock = false;
             isShowArona = false;
             isShowPlana = false;
             btns.forEach(btn => btn.classList.remove('left'));
-          }, 2000);
+          }, 1000);
         };
 
         btn.addEventListener('click', handleClick);

@@ -69,7 +69,7 @@ button:focus-visible {
   bottom: 0;
   width: 100%;
   height: 100%;
-  opacity : 0.2;
+  opacity : 0.5;
   z-index: -1;
   background-image: url('/bgHorizontal.png');
   background-size: cover;
@@ -121,7 +121,7 @@ button:focus-visible {
   width: 100px;
   height: 150px;
   background-size: 100px 300px;
-  opacity: 0.6;
+  opacity: 0.8;
   cursor: pointer;
   zoom: 0.6;
 }

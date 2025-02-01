@@ -2,47 +2,33 @@
 import { useI18n } from 'vue-i18n'
 import moment from 'moment/min/moment-with-locales';
 import Map from './Map.vue';
+import LoadMore from './LoadMore.vue';
+import Sort from './Sort.vue';
+import SearchBar from './SearchBar.vue';
+import SelectServer from './SelectServer.vue';
+import LoadingPage from './LoadingPage.vue';
 const { t } = useI18n();
 
 </script>
 
 <template>
-<div v-if="loading" class="loading">{{ t('loading') }}...</div>
+  <LoadingPage v-if="loading" />
   <div v-else>
     <div class="title">
       <div>
         <h1>{{ t('maps') }}</h1>
         <h5>{{ t('lastUpdated') }}: {{ lastUpdated }}</h5>
       </div>
-      <div class="select-server">
-        <span style="white-space: nowrap;">{{ t('selectServer') }}</span>
-        <select @change="changeServer">
-          <option v-for = "server in servers" :value="server.id">{{ t(server.name.toLowerCase()) }}</option>
-        </select>
-      </div>
+      <SelectServer :servers="servers" :defaultServerId="defaultServerId" @change-server="changeServer" />
     </div>
-    <div class="searching">
-      <div class="search-bar">
-        <span class="material-icons-round" style="font-size: 2rem;">search</span>
-        <input type="text" :placeholder="t('searchMap')" value="" @input="checkDeleteAll" @change="searchMap" />
-      </div>
-      <div class="sort">
-        <span class="material-icons-round" style="font-size: 2rem; transform: scale(1, -1); cursor: pointer;" @click="inverseSort">sort</span>
-          <select @change="changeSort">
-            <option value="id" selected="">ID</option>
-            <option value="name">{{ t('name') }}</option>
-          </select>
-        </div>
+    <div class="searchBar">
+      <SearchBar :placeholder="t('searchMap')" @input="checkDeleteAll" @search="searchMap" />
+      <Sort @change-sort="changeSort" @inverse-sort="inverseSort" />
     </div>
     <div class="maps">
       <Map v-for="map in visibleMaps" :name=map.name :id=map.id class="hoverable" />
     </div>
-    <div style="display: flex; justify-content: center; padding: 50px 50px 30px 50px;">
-      <div class="load-more hoverable" v-if="filteredMaps.length > 30 && visibleMaps.length < filteredMaps.length" @click="loadMore">
-        <span class="material-icons-round" style="font-size: 2rem;">keyboard_arrow_down</span>
-        <p style="margin: 0; font-size: 1.5rem;">{{ t('loadMore') }}</p>
-      </div>
-    </div>
+    <LoadMore v-if="filteredMaps.length > 30 && visibleMaps.length < filteredMaps.length" @load-more="loadMore" />
   </div>
 </template>
 
@@ -86,6 +72,7 @@ export default {
       data = await response.text();
       let date = new Date(data);
       this.lastUpdated = date.toLocaleString() + ' (' + moment(date).fromNow() + ')';
+      await new Promise(resolve => setTimeout(resolve, 500));
       this.loading = false;
     },
     loadMore() {
@@ -128,8 +115,7 @@ export default {
     inverseSort(e) {
       this.filteredMaps.reverse();
       this.visibleMaps = this.filteredMaps.slice(0, 30);
-      e.target.style.transform = e.target.style.transform === 'scale(1, -1)' ? 'scale(1, 1)' : 'scale(1, -1)';
-      this.reversed = e.target.style.transform === 'scale(1, 1)';
+      this.reversed = e.reversed;
     },
     replaceVietnameseChars(str) {
       return str.replace(/á|à|ả|ã|ạ|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/g, 'a')
@@ -152,28 +138,12 @@ export default {
     else 
       this.selectedServerIndex = 1;
     moment.locale(navigator.language);
-    this.getMaps().then(() => {
-      document.querySelector(".select-server select").selectedIndex = this.selectedServerIndex - 1;
-    });
+    this.getMaps();
   },
 };
 </script>
 
 <style scoped>
-.loading {
-  width: 100%;
-  left: 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: calc(50% - 50px);
-  font-size: 30px;
-}
-
-.material-icons-round {
-  user-select: none;
-}
 
 .title {
   display: flex;
@@ -190,25 +160,6 @@ export default {
   margin: 0;
 }
 
-.title span {
-  font-size: 1.25rem;
-  font-weight: bold;
-}
-
-.title select {
-  font-size: 1.25rem;
-  width: 200px;
-  padding: 10px;
-  height: fit-content;
-}
-
-.select-server {
-  display: flex; 
-  flex-direction: row;
-  gap: 20px;
-  align-items: center;
-}
-
 .maps {
   display: flex;
   flex-wrap: wrap;
@@ -216,49 +167,10 @@ export default {
   gap: 25px;
 }
 
-.load-more {
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 20px;
-  flex-direction: row;
-  gap: 10px;
-  box-shadow: 0 0 10px 1px aqua;
-  border-radius: 10px;
-  width: 50%;
-}
-
-.searching {
+.searchBar {
   display: flex;
   justify-content: space-between;
   padding-bottom: 30px;
-}
-
-.search-bar {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1rem;
-}
-
-.search-bar input {
-  width: 100%;
-  padding: 15px;
-  background-color: #1c1a23;
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  outline: none;
-  font-size: 1rem;
-}
-
-.sort {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-left: 15px;
 }
 
 select {
@@ -273,25 +185,9 @@ select {
 }
 
 @media screen and (max-width: 700px) {
-  .searching {
+  .searchBar {
     flex-wrap: wrap;
     gap: 20px;
-  }
-
-  .sort {
-    width: 100%;
-    justify-content: flex-start;
-    margin-left: 0px;
-  }
-
-  .select-server {
-    width: 100%;
-  }
-
-  .select-server select,
-  .sort select, 
-  .load-more {
-    width: 100%;
   }
 }
 
