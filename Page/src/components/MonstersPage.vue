@@ -72,7 +72,7 @@ export default {
       data = await response.text();
       let date = new Date(data);
       this.lastUpdated = date.toLocaleString() + ' (' + moment(date).fromNow() + ')';
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       this.loading = false;
     },
     loadMore() {
