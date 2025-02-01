@@ -29,7 +29,7 @@ export default {
       document.title = this.title + " by ElectroHeavenVN";
     },
     openNav() {
-      document.getElementById("mySidenav").style.width = "250px";
+      document.getElementById("mySidenav").style.width = "150px";
     },
     closeNav() {
       document.getElementById("mySidenav").style.width = "0";
@@ -47,6 +47,7 @@ export default {
     setPage(page)
     {
       window.history.pushState({}, '', window.location.origin + window.location.pathname + '?page=' + page);
+      this.closeNav();
     }
   },
   computed: {
