@@ -127,4 +127,10 @@ export default {
   margin: 0;
   align-self: center;
 }
+
+@media screen and (max-width: 1032px) {
+    .npc {
+        width: 100% !important;
+    }
+}
 </style>

@@ -397,7 +397,7 @@ export default {
 
 
 @media screen and (max-width: 1032px) {
-    .item {
+    .skillTemplate {
         width: 100% !important;
     }
 }

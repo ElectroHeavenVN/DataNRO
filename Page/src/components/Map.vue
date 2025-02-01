@@ -136,4 +136,10 @@ export default {
 .more-info p {
   margin: 0;
 }
+
+@media screen and (max-width: 1032px) {
+    .map {
+        width: 100% !important;
+    }
+}
 </style>

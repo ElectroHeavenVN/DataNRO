@@ -183,4 +183,9 @@ export default {
   color: #aaa;
 }
 
+@media screen and (max-width: 1032px) {
+    .mob {
+        width: 100% !important;
+    }
+}
 </style>
