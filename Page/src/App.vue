@@ -81,7 +81,7 @@ export default {
           <img v-else-if="currentPath == 'TeaMobi'" @click="goHome" src="/DataNRO.png" :alt="title">
           <div style="display: flex; flex-direction: column; align-items: center;">
             <h1 @click="goHome" style="position: relative; top: 5px;">{{ title }}</h1>
-            <a href="https://hits.seeyoufarm.com" style="position: relative; top: -3px;">
+            <a href="https://hits.seeyoufarm.com" style="position: relative; top: -3px;" target="_blank">
               <img :src="'https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Felectroheavenvn.github.io%2FDataNRO%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&edge_flat=false&title=' + encodeURIComponent(t('visits'))" style="width: auto; height: 15px;"/>
             </a>
           </div>
@@ -90,13 +90,13 @@ export default {
         </div>
         <div class="content">
           <div class= "links">
-            <a href="/">
+            <a href="/" target="_blank">
               <img src="./assets/Home-icon.svg" alt="Home" style="width: 25px;" >
             </a>
-            <a href="https://discord.gg/yzHjZbfuAR">
+            <a href="https://discord.gg/yzHjZbfuAR" target="_blank">
               <img src="./assets/discord-mark-white.svg" alt="Discord" style="width: 25px;" >
             </a>
-            <a href="https://github.com/ElectroHeavenVN/DataNRO">
+            <a href="https://github.com/ElectroHeavenVN/DataNRO" target="_blank">
               <img src="./assets/github-mark-white.svg" alt="GitHub" style="width: 25px;" >
             </a>
           </div>
