@@ -88,13 +88,13 @@
 <body>
   <div class="bg"></div>
   <div id="app"></div>
-  <div class="back-to-top arona"></div>
-  <div class="back-to-top plana"></div>
+  <div class="goToTop arona"></div>
+  <div class="goToTop plana"></div>
   <script type="module" src="/src/main.js"></script>
   <script>
     (() => {
       let isShowArona = false, isShowPlana = false, lock = false;
-      const btns = document.querySelectorAll('.back-to-top');
+      const btns = document.querySelectorAll('.goToTop');
 
       const handleScroll = () => {
         if (lock) return;

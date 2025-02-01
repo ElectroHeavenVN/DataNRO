@@ -114,7 +114,7 @@ button:focus-visible {
   justify-content: flex-start
 }
 
-.back-to-top {
+.goToTop {
   position: fixed;
   z-index: 2;
   bottom: 0;
@@ -126,15 +126,15 @@ button:focus-visible {
   zoom: 0.6;
 }
 
-.back-to-top.arona:hover, 
-.back-to-top.plana:hover, 
-.back-to-top.plana:active,
-.back-to-top.arona:active {
+.goToTop.arona:hover, 
+.goToTop.plana:hover, 
+.goToTop.plana:active,
+.goToTop.arona:active {
   background-position: 0 -150px;
   opacity: 1;
 }
 
-.back-to-top::after {
+.goToTop::after {
   content: "";
   position: fixed;
   z-index: 2;
@@ -147,53 +147,53 @@ button:focus-visible {
   pointer-events: none;
 }
 
-.back-to-top.arona {
+.goToTop.arona {
   left: -100px;
 }
 
-.back-to-top.arona,
-.back-to-top.arona::after {
+.goToTop.arona,
+.goToTop.arona::after {
   background: url("/BackToTop-Arona.png") no-repeat 0 0;
   background-size: 100px 300px;
   transition: opacity 0.3s, left 0.5s;
 }
 
-.back-to-top.plana {
+.goToTop.plana {
   right: -100px;
   transition: opacity 0.3s, right 0.5s;
 }
 
-.back-to-top.plana,
-.back-to-top.plana::after {
+.goToTop.plana,
+.goToTop.plana::after {
   background: url("/BackToTop-Plana.png") no-repeat 0 0;
   background-size: 100px 300px;
 }
 
-.back-to-top.plana.load {
+.goToTop.plana.load {
   right: 0;
 }
 
-.back-to-top.arona.load {
+.goToTop.arona.load {
   left: 0;
 }
 
-.back-to-top.ani-leave {
+.goToTop.ani-leave {
   background-position: 0 -150px;
 }
 
-.back-to-top.plana.ani-leave {
+.goToTop.plana.ani-leave {
   animation: ani-leave-right 300ms ease-in-out forwards;
 }
 
-.back-to-top.arona.ani-leave {
+.goToTop.arona.ani-leave {
   animation: ani-leave-left 300ms ease-in-out forwards;
 }
 
-.back-to-top.left {
+.goToTop.left {
   pointer-events: none;
 }
 
-.back-to-top.left {
+.goToTop.left {
   background: none;
   transition: none;
 }
@@ -259,25 +259,25 @@ footer a {
 }
 
 @media only screen and (min-width: 850px) and (min-height: 375px) {
-  .back-to-top {
+  .goToTop {
     zoom: 0.7;
   }
 }
 
 @media only screen and (min-width: 950px) and (min-height: 400px) {
-  .back-to-top {
+  .goToTop {
     zoom: 0.8;
   }
 }
 
 @media only screen and (min-width: 1060px) and (min-height: 500px) {
-  .back-to-top {
+  .goToTop {
     zoom: 0.9;
   }
 }
 
 @media only screen and (min-width: 1175px) and (min-height: 700px) {
-  .back-to-top {
+  .goToTop {
     zoom: 1;
   }
 }
