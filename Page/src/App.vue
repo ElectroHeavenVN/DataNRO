@@ -52,7 +52,12 @@ export default {
   },
   computed: {
     currentPath() {
-      return location.pathname.replace(/^\/+|\/+$/g, '').split('/')[1] ?? '';
+      let path = location.pathname.replace(/^\/+|\/+$/g, '').split('/');
+      if (path.length == 2)
+        return path[1];
+      if (path.length == 1)
+        return '';
+      return 'notFound';
     }
   },
   mounted() {

@@ -5,7 +5,7 @@ const { t } = useI18n();
 
 <template>
   <div style="display: flex; justify-content: center; padding: 50px 50px 30px 50px;">
-    <div class="load-more hoverable" @click="loadMore">
+    <div class="load-more" @click="loadMore">
       <span class="material-icons-round" style="font-size: 2rem;">keyboard_arrow_down</span>
       <p style="margin: 0; font-size: 1.5rem;">{{ t('loadMore') }}</p>
     </div>
@@ -31,10 +31,16 @@ export default {
   font-size: 20px;
   flex-direction: row;
   gap: 10px;
-  box-shadow: 0 0 10px 1px aqua;
+  background-color: #1c1a23;
   border-radius: 10px;
   width: 50%;
   user-select: none;
+  transition-duration: .2s;
+  padding: 10px;
+}
+
+.load-more:hover {
+  box-shadow: 0 0 10px 1px aqua;
 }
 
 @media screen and (max-width: 700px) {

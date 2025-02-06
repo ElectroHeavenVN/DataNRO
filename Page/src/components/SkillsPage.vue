@@ -15,8 +15,11 @@ const { t } = useI18n();
   <LoadingPage v-if="loading" />
   <div v-else>
     <div class="title">
-      <div>
-        <h1>{{ t('skills') }}</h1>
+      <div>        
+        <div style="display: flex; flex-direction: row; gap: 5px; align-items: center;">
+          <h1>{{ t('skills') }}</h1>
+          <a class="material-icons-round" :title="t('viewRaw')" :href="servers[selectedServerIndex - 1].id + '/NClasses.json'" target="_blank" style="color: unset !important;">open_in_new</a>
+        </div>
         <h5>{{ t('lastUpdated') }}: {{ lastUpdated }}</h5>
       </div>
       <SelectServer :servers="servers" :defaultServerId="defaultServerId" @change-server="changeServer" />

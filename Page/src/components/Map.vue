@@ -24,15 +24,20 @@ const copyToClipboard = (content) => {
       <img class="icon" :src="'Maps/' + id + '_tile.png'" :alt="'Map ' + id" :title="'Map ' + id" />
       <h2 class="name" :title="name.length == 0 ? t('noName') : name">{{ name.length == 0 ? t('noName') : name }}</h2>
     </div>
-    <div class="more-info" @click="openMapImgNewTab">
+    <a v-if="hasFullMapImg" class="more-info" :href="`Maps/${id}.png`" target="_blank" style="color: unset !important;">
       <p>{{ t('viewMapImg') }}</p>
       <span class="material-icons-round">open_in_new</span>
-    </div>
+    </a>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      hasFullMapImg: true,
+    }
+  },
   props: {
     width: {
       type: String,
@@ -47,11 +52,16 @@ export default {
       required: true,
     },
   },
-  methods: {
-    openMapImgNewTab() {
-      window.open(`Maps/${this.id}.png`, '_blank');
-    },
-  },
+  async mounted()
+  {
+    try {
+      let response = await fetch(`Maps/${this.id}.png`, {method: 'HEAD'});
+      this.hasFullMapImg = response.ok;
+    }
+    catch {
+      this.hasFullMapImg = false;
+    }
+  }
 }
 </script>
 

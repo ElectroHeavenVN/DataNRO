@@ -11,6 +11,14 @@ const {t} = useI18n();
   </div>
 </template>
 
+<script>
+export default {
+  mounted() {
+    document.querySelector('.bg').style.display = 'none';
+  }
+}
+</script>
+
 <style scoped>
 h1 {
   color: red;
