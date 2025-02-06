@@ -145,7 +145,7 @@ export default {
       }
     },
     searchSkillTemplates(e) {
-      const search =  this.replaceVietnameseChars(e.target.value.toLowerCase());
+      const search = this.replaceVietnameseChars(e.target.value.toLowerCase());
       this.filteredSkillTemplates = this.skillTemplates.filter(skillTemplate => this.replaceVietnameseChars((skillTemplate.name + '|' + skillTemplate.description + '|' + skillTemplate.damInfo + '|' + skillTemplate.id).toLowerCase()).includes(search));
       if (this.reversed) 
         this.filteredSkillTemplates.reverse();

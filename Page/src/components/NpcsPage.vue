@@ -109,7 +109,7 @@ export default {
       }
     },
     searchNpc(e) {
-      const search =  this.replaceVietnameseChars(e.target.value.toLowerCase());
+      const search = this.replaceVietnameseChars(e.target.value.toLowerCase());
       this.filteredNpcs = this.npcs.filter(npc => this.replaceVietnameseChars((npc.name + '|' + npc.id).toLowerCase()).includes(search));
       if (this.reversed) 
         this.filteredNpcs.reverse();

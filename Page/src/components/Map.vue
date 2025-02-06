@@ -54,15 +54,22 @@ export default {
       required: true,
     },
   },
-  async mounted()
-  {
-    try {
-      let response = await fetch(`Maps/${this.id}.png`, {method: 'HEAD'});
-      this.hasFullMapImg = response.ok;
+  methods: {
+    async fetchHeadFullMapImg() {
+      try {
+        let response = await fetch(`Maps/${this.id}.png`, {method: 'HEAD'});
+        this.hasFullMapImg = response.ok;
+      }
+      catch {
+        this.hasFullMapImg = false;
+      }
     }
-    catch {
-      this.hasFullMapImg = false;
-    }
+  },
+  updated() {
+    this.fetchHeadFullMapImg();
+  },
+  mounted() {
+    this.fetchHeadFullMapImg();
   }
 }
 </script>

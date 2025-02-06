@@ -109,7 +109,7 @@ export default {
       }
     },
     searchMob(e) {
-      const search =  this.replaceVietnameseChars(e.target.value.toLowerCase());
+      const search = this.replaceVietnameseChars(e.target.value.toLowerCase());
       this.filteredMobs = this.mobs.filter(mob => this.replaceVietnameseChars((mob.name + '|' + mob.id).toLowerCase()).includes(search));
       if (this.reversed) 
         this.filteredMobs.reverse();

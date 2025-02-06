@@ -109,7 +109,7 @@ export default {
       }
     },
     searchMap(e) {
-      const search =  this.replaceVietnameseChars(e.target.value.toLowerCase());
+      const search = this.replaceVietnameseChars(e.target.value.toLowerCase());
       this.filteredMaps = this.maps.filter(map => this.replaceVietnameseChars((map.name + '|' + map.id).toLowerCase()).includes(search));
       if (this.reversed) 
         this.filteredMaps.reverse();
