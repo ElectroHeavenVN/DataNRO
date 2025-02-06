@@ -22,10 +22,10 @@ const copyToClipboard = (content) => {
     </div>
     <div class="content">
       <img class="icon" :src="'Maps/' + id + '_tile.png'" :alt="'Map ' + id" :title="'Map ' + id" />
-      <div style="display: flex; flex-direction: column; align-items: start;">
+      <div style="display: flex; flex-direction: column; align-items: start; justify-content: center;">
         <h2 class="name" :title="name.length == 0 ? t('noName') : name">{{ name.length == 0 ? t('noName') : name }}</h2>
-        <div style="display: flex; flex-direction: row; gap: 5px;">
-          <a v-if="hasFullMapImg" class="more-info" :href="`Maps/${id}.png`" target="_blank">{{ t('viewMapImg') }}</a>
+        <div v-if="hasFullMapImg" class="linkFullMapImg">
+          <a class="viewMapImg" :href="`Maps/${id}.png`" target="_blank">{{ t('viewMapImg') }}</a>
           <span class="material-icons-round">open_in_new</span>
         </div>
       </div>
@@ -131,14 +131,19 @@ export default {
 .name {
   font-weight: bold;
   font-size: 25px;
-  flex: 1;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   margin: 0;
 }
 
-.more-info {
+.linkFullMapImg {
+  display: flex; 
+  flex-direction: row; 
+  gap: 5px;
+}
+
+.viewMapImg {
   display: flex;
   user-select: none;
   flex-direction: row;
@@ -149,7 +154,7 @@ export default {
   font-size: 18px;
 }
 
-.more-info p {
+.viewMapImg p {
   margin: 0;
 }
 
