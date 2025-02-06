@@ -37,7 +37,7 @@ const copyToClipboard = (content) => {
 export default {
   data() {
     return {
-      hasFullMapImg: true,
+      hasFullMapImg: false,
     }
   },
   props: {
