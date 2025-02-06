@@ -40,12 +40,14 @@ export default {
 }
 
 .search-bar input {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 2px;
   width: 100%;
   padding: 15px;
-  background-color: #1c1a23;
-  border: none;
+  background-color: var(--component-bg);
   border-radius: 10px;
-  color: #fff;
+  color: var(--component-color);
   outline: none;
   font-size: 1rem;
 }

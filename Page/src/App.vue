@@ -34,16 +34,6 @@ export default {
     closeNav() {
       document.getElementById("mySidenav").style.width = "0";
     },
-    goHome() {
-      if (location.pathname !== '/DataNRO/')
-        location.href = '/DataNRO/';
-    },
-    goToNRO() {
-      location.href = '/DataNRO/TeaMobi/';
-    },
-    goToHSNR() {
-      location.href = '/DataNRO/HSNR/';
-    },
     setPage(page)
     {
       window.history.pushState({}, '', window.location.origin + window.location.pathname + '?page=' + page);
@@ -69,29 +59,39 @@ export default {
 <template>
   <div v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR'" id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" @click=closeNav>&times;</a>
-    <span @click="setPage('items')">{{ t("items") }}</span>
-    <span @click="setPage('npcs')">{{ t("npcs") }}</span>
-    <span @click="setPage('skills')">{{ t("skills") }}</span>
-    <span @click="setPage('mobs')">{{ t("mobs") }}</span>
-    <!-- <span @click="setPage('itemOptions')">{{ t("itemOptions") }}</span> -->
-    <span @click="setPage('maps')">{{ t("maps") }}</span>
-    <!-- <span @click="setPage('parts')">{{ t("parts") }}</span> -->
+    <span class="hoverable" @click="setPage('items')">{{ t("items") }}</span>
+    <span class="hoverable" @click="setPage('npcs')">{{ t("npcs") }}</span>
+    <span class="hoverable" @click="setPage('skills')">{{ t("skills") }}</span>
+    <span class="hoverable" @click="setPage('mobs')">{{ t("mobs") }}</span>
+    <!-- <span class="hoverable" @click="setPage('itemOptions')">{{ t("itemOptions") }}</span> -->
+    <span class="hoverable" @click="setPage('maps')">{{ t("maps") }}</span>
+    <!-- <span class="hoverable" @click="setPage('parts')">{{ t("parts") }}</span> -->
   </div>
   <header>
     <nav>
       <div class="wrapper">
         <div href="/" class="content head">
-          <span v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR'" style="font-size: 25px; cursor:pointer;" @click=openNav>&#9776;</span>
-          <img v-if="currentPath == 'HSNR'" @click="goHome" src="/DataHSNR.png" :alt="title">
-          <img v-else-if="currentPath == 'TeaMobi'" @click="goHome" src="/DataNRO.png" :alt="title">
+          <span v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR'" style="font-size: 25px; cursor:pointer; position: relative; top:1px;" @click=openNav>&#9776;</span>
+          <a v-if="currentPath == 'HSNR'" href="/DataNRO/HSNR/">
+            <img src="/DataHSNR.png" alt="HSNR">
+          </a>
+          <a v-else-if="currentPath == 'TeaMobi'"  href="/DataNRO/TeaMobi/">
+          <img src="/DataNRO.png" alt="TeaMobi">
+          </a>
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <h1 @click="goHome" style="position: relative; top: 5px;">{{ title }}</h1>
-            <a href="https://hits.seeyoufarm.com" style="position: relative; top: -3px;" target="_blank">
+            <a href="/DataNRO/">
+              <h1>{{ title }}</h1>
+            </a>
+            <a href="https://hits.seeyoufarm.com" style="position: relative; top: -5px;" target="_blank">
               <img :src="'https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Felectroheavenvn.github.io%2FDataNRO%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&edge_flat=false&title=' + encodeURIComponent(t('visits'))" style="width: auto; height: 15px;"/>
             </a>
           </div>
-          <img v-if="currentPath == ''" @click="goToNRO" src="/DataNRO.png" :alt="title">
-          <img v-if="currentPath == ''" @click="goToHSNR" src="/DataHSNR.png" :alt="title">
+          <a v-if="currentPath == ''" href="/DataNRO/TeaMobi/">
+            <img src="/DataNRO.png" alt="TeaMobi">
+          </a>
+          <a v-if="currentPath == ''" href="/DataNRO/HSNR/">
+            <img src="/DataHSNR.png" alt="HSNR">
+          </a>
         </div>
         <div class="content">
           <div class= "links">
@@ -134,7 +134,8 @@ export default {
   z-index: 1001;
   top: 0;
   left: 0;
-  background-color: #111;
+  background-color: var(--component-bg);
+  color: var(--component-color);
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
@@ -146,16 +147,10 @@ export default {
   user-select: none;  
   cursor: pointer;
   padding: 8px 8px 8px 32px;
-  text-decoration: none;
   font-size: 20px;
-  color: #c9c9c9;
+  color: var(--component-color);
   display: block;
   transition: 0.3s;
-}
-
-.sidenav span:hover,
-.sidenav a:hover {
-  color: #f1f1f1;
 }
 
 .sidenav .closebtn {
@@ -169,14 +164,20 @@ export default {
 nav {
     width: 100%;
     height: 60px;
-    background-color: #1c1a23;
-    color: #fff;
+    background-color: var(--component-bg);
+    color: var(--component-color);
     display: flex;
     justify-content: center;
     font-weight: 700;
     position: fixed;
     top: 0;
     z-index: 1000
+}
+
+@media (prefers-color-scheme: light) {
+  nav .links img {
+    filter: invert(1);
+  }
 }
 
 .wrapper {
@@ -214,14 +215,21 @@ nav .content {
     justify-content: center;
     gap: 10px;
     font-weight: bold;
+    color: var(--component-color);
+    background-color: var(--component-bg);
 }
 
 nav .content a {
-    color: #fff;
     text-decoration: none;
+    color: inherit !important;
 }
 
-nav .content a:hover {
+nav .content a img {
+  display: flex; 
+  justify-content: center;
+}
+
+nav .content img:hover {
     opacity: .6
 }
 

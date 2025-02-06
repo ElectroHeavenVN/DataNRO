@@ -61,11 +61,13 @@ span {
 }
 
 select {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 2px;
   padding: 15px;
-  background-color: #1c1a23;
-  border: none;
+  background-color: var(--component-bg);
   border-radius: 10px;
-  color: #fff;
+  color: var(--component-color);
   outline: none;
   font-size: 1.25rem;
   width: 200px;

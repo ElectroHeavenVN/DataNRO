@@ -178,7 +178,7 @@ export default {
 
 select {
   padding: 15px;
-  background-color: #1c1a23;
+  background-color: var(--component-bg);
   border: none;
   border-radius: 10px;
   color: #fff;

@@ -2,24 +2,28 @@
   font-family: 'Nunito';
   font-weight: 400;    
   font-style: normal;
-  line-height: 1.5;
-
-  color-scheme: dark;
-  background-color: #2b2934;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: #646cff;
-  text-decoration: inherit;
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    background-color: #0a0a0a;
+    color: white;
+    --component-bg: #111;
+    --component-color: white;
+    --component-border: #666;
+  }
 }
 
-a:hover {
-  color: #535bf2;
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    background-color: white;
+    color: #2b2934;
+    --component-bg: white;
+    --component-color: #333;
+    --component-border: #ccc;
+  }
 }
 
 body {
@@ -30,30 +34,6 @@ body {
   min-height: 100vh;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  border-color: #646cff;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-.card {
-  padding: 2em;
-}
 
 #app {
   margin: 0;
@@ -73,19 +53,6 @@ button:focus-visible {
   z-index: -1;
   background-image: url('/bgHorizontal.png');
   background-size: cover;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }
 
 .material-icons-round {
@@ -205,17 +172,8 @@ footer {
   justify-content: center;
   align-items: center;
   font-size: 15px;
-  background-color: #1c1a23;
+  background-color: var(--component-bg);
   margin-top: 30px;
-}
-
-footer p {
-margin: 0;
-}
-
-footer a {
-  color: cyan;
-  text-decoration: none
 }
 
 @keyframes ani-leave-right {

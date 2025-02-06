@@ -22,12 +22,14 @@ const copyToClipboard = (content) => {
     </div>
     <div class="content">
       <img class="icon" :src="'Maps/' + id + '_tile.png'" :alt="'Map ' + id" :title="'Map ' + id" />
-      <h2 class="name" :title="name.length == 0 ? t('noName') : name">{{ name.length == 0 ? t('noName') : name }}</h2>
+      <div style="display: flex; flex-direction: column; align-items: start;">
+        <h2 class="name" :title="name.length == 0 ? t('noName') : name">{{ name.length == 0 ? t('noName') : name }}</h2>
+        <div style="display: flex; flex-direction: row; gap: 5px;">
+          <a v-if="hasFullMapImg" class="more-info" :href="`Maps/${id}.png`" target="_blank">{{ t('viewMapImg') }}</a>
+          <span class="material-icons-round">open_in_new</span>
+        </div>
+      </div>
     </div>
-    <a v-if="hasFullMapImg" class="more-info" :href="`Maps/${id}.png`" target="_blank" style="color: unset !important;">
-      <p>{{ t('viewMapImg') }}</p>
-      <span class="material-icons-round">open_in_new</span>
-    </a>
   </div>
 </template>
 
@@ -67,13 +69,16 @@ export default {
 
 <style scoped>
 .map {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 2px;
   display: flex;
   gap: 10px;
   flex-direction: column;
-  background-color: #1c1a23;
+  background-color: var(--component-bg);
   border-radius: 10px;
   padding: 15px;
-  color: white;
+  color: var(--component-color);
   position: relative;
   min-width: 275px;
   min-height: 75px;
@@ -94,6 +99,9 @@ export default {
 }
 
 .badge {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 1px;
   padding: 4px 8px;
   border-radius: 4px;
   cursor: default;
@@ -127,9 +135,7 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  padding-right: 10px;
   margin: 0;
-  align-self: center;
 }
 
 .more-info {

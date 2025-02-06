@@ -211,13 +211,16 @@ export default {
 
 <style scoped>
 .item {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 2px;
   display: flex;
   gap: 10px;
   flex-direction: column;
-  background-color: #1c1a23;
+  background-color: var(--component-bg);
   border-radius: 10px;
   padding: 15px;
-  color: white;
+  color: var(--component-color);
   position: relative;
   min-width: 275px;
   min-height: 75px;
@@ -237,6 +240,9 @@ export default {
 }
 
 .badge {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 1px;
   padding: 4px 8px;
   border-radius: 4px;
   cursor: default;

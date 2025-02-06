@@ -25,13 +25,16 @@ export default {
 <style scoped>
 
 .load-more {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 2px;
   display: flex;
   justify-content: center;
   cursor: pointer;
   font-size: 20px;
   flex-direction: row;
-  gap: 10px;
-  background-color: #1c1a23;
+  gap: 5px;
+  background-color: var(--component-bg);
   border-radius: 10px;
   width: 50%;
   user-select: none;
@@ -41,6 +44,11 @@ export default {
 
 .load-more:hover {
   box-shadow: 0 0 10px 1px aqua;
+}
+
+.load-more * {
+  position: relative;
+  left: -4px;
 }
 
 @media screen and (max-width: 700px) {

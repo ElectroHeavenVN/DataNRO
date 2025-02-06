@@ -38,17 +38,19 @@ export default {
 }
 
 select {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 2px;
+  background-color: var(--component-bg);
   padding: 15px;
-  background-color: #1c1a23;
-  border: none;
   border-radius: 10px;
-  color: #fff;
   outline: none;
   font-size: 1rem;
   width: 100px;
 }
 
 .sort {
+  color: var(--component-color);
   display: flex;
   align-items: center;
   gap: 10px;

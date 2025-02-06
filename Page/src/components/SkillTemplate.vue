@@ -125,7 +125,7 @@ const formatPowerRequired = (powerRequired) => {
       </div>
     </div>
     <div v-if="moreInfoShown" class="skills" >
-      <details v-for="skill in skills" :key="skill.skillId" class="skill" name="skill">
+      <details v-for="skill in skills" :key="skill.skillId" class="skill" :name="'skill ' + id">
         <summary>{{ t('level') }} {{ skill.point }}</summary>
         <p>{{ skill.moreInfo }}</p>
         <ul>
@@ -216,13 +216,16 @@ export default {
 
 <style scoped>
 .skillTemplate {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 2px;
   display: flex;
   gap: 10px;
   flex-direction: column;
-  background-color: #1c1a23;
+  background-color: var(--component-bg);
   border-radius: 10px;
   padding: 15px;
-  color: white;
+  color: var(--component-color);
   position: relative;
   width: 500px;
   height: fit-content;
@@ -243,6 +246,9 @@ export default {
 }
 
 .badge {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 1px;
   padding: 4px 8px;
   border-radius: 4px;
   cursor: default;
@@ -329,20 +335,17 @@ export default {
 }
 
 .skills {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 1px;
+  border-radius: 10px;
   display: flex;
-  /* flex-direction: row; */
   flex-direction: column;
   gap: 10px;
-  /* flex-wrap: wrap;
-  height: 300px; */
   overflow-y: scroll;
   font-size: 14px;
-  background-color: #221f2c;
+  background: color-mix(in srgb, var(--component-color) 5%, transparent);
   padding: 10px;
-}
-
-.skill {
-  width: 240px;
 }
 
 .skill p {

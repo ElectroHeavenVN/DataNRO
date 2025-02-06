@@ -50,7 +50,7 @@ export default {
   user-select: none;
   padding: 20px;
   border-radius: 10px;
-  background-color: #1c1a23;
+  background-color: var(--component-bg);
   color: #fff;
   text-align: center;
   margin: 10px;
