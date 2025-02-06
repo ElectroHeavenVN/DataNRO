@@ -22,7 +22,7 @@ const copyToClipboard = (content) => {
     </div>
     <div class="content">
       <img class="icon" :src="'Maps/' + id + '_tile.png'" :alt="'Map ' + id" :title="'Map ' + id" />
-      <div style="display: flex; flex-direction: column; align-items: start; justify-content: center;">
+      <div style="display: flex; flex-direction: column; justify-content: center; overflow: hidden;">
         <h2 class="name" :title="name.length == 0 ? t('noName') : name">{{ name.length == 0 ? t('noName') : name }}</h2>
         <div v-if="hasFullMapImg" class="linkFullMapImg">
           <a class="viewMapImg" :href="`Maps/${id}.png`" target="_blank">{{ t('viewMapImg') }}</a>
