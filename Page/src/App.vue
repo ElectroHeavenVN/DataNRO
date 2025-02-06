@@ -4,56 +4,10 @@ import HSNRPage from './views/HSNRPage.vue';
 import TeaMobiPage from './views/TeaMobiPage.vue';
 import SelectGamePublisherPage from './views/SelectGamePublisherPage.vue';
 import NotFound from './components/NotFound.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 const { t } = useI18n();
 
-</script>
-
-<script>
-export default {
-  data() {
-    return {
-      title: 'DataNRO',
-    }
-  },
-  methods: {
-    changeTitle() {
-      let title = location.pathname.replace(/^\/+|\/+$/g, '').split('/')[1];
-      if (title === 'DataNRO') 
-        this.title = 'DataNRO';
-      else if (title === 'HSNR')
-        this.title = 'DataHSNR';
-    if (location.pathname !== '/DataNRO/')
-      document.title = this.title + ' - Server ' + location.pathname.replace(/^\/+|\/+$/g, '').split('/')[1];
-    else 
-      document.title = this.title + " by ElectroHeavenVN";
-    },
-    openNav() {
-      document.getElementById("mySidenav").style.width = "150px";
-    },
-    closeNav() {
-      document.getElementById("mySidenav").style.width = "0";
-    },
-    setPage(page)
-    {
-      window.history.pushState({}, '', window.location.origin + window.location.pathname + '?page=' + page);
-      this.closeNav();
-    }
-  },
-  computed: {
-    currentPath() {
-      let path = location.pathname.replace(/^\/+|\/+$/g, '').split('/');
-      if (path.length == 2)
-        return path[1];
-      if (path.length == 1)
-        return '';
-      return 'notFound';
-    }
-  },
-  mounted() {
-    this.changeTitle();
-  }
-}
 </script>
 
 <template>
@@ -83,7 +37,7 @@ export default {
               <h1>{{ title }}</h1>
             </a>
             <a href="https://hits.seeyoufarm.com" style="position: relative; top: -5px;" target="_blank">
-              <img :src="'https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Felectroheavenvn.github.io%2FDataNRO%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&edge_flat=false&title=' + encodeURIComponent(t('visits'))" style="width: auto; height: 15px;"/>
+              <img :src="'https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Felectroheavenvn.github.io%2FDataNRO%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&edge_flat=false&title=' + encodeURIComponent(t('visits'))" style="width: auto; height: 12px;"/>
             </a>
           </div>
           <a v-if="currentPath == ''" href="/DataNRO/TeaMobi/">
@@ -94,6 +48,14 @@ export default {
           </a>
         </div>
         <div class="content">
+          <div>
+            <input type="checkbox" class="checkbox" @change="changeTheme" id="chk" />
+            <label class="label" for="chk">
+              <font-awesome-icon icon="fa-solid fa-sun" />
+              <font-awesome-icon icon="fa-solid fa-moon" />
+              <div class="ball"></div>
+            </label>
+          </div>
           <div class= "links">
             <a href="/" target="_blank">
               <img src="./assets/Home-icon.svg" alt="Home" style="width: 25px;" >
@@ -120,13 +82,114 @@ export default {
     </div>
   </div>
   <footer>
-    <p>Copyright &copy; 2025 ElectroHeavenVN.</p>
-    <p>&nbsp;</p>
-    <p>All rights reserved.</p>
+    <p>Copyright &copy; 2025 ElectroHeavenVN. All rights reserved.</p>
   </footer>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      title: 'DataNRO',
+    }
+  },
+  methods: {
+    changeTitle() {
+      let currentPath = this.currentPath;
+      if (location.pathname !== '/DataNRO/') {
+        if (currentPath !== 'pageNotFound')
+          document.title = 'DataNRO - Server ' + this.currentPath;
+        else 
+          document.title = "DataNRO - " + t(currentPath);
+      }
+      else 
+        document.title = "DataNRO by ElectroHeavenVN";
+    },
+    openNav() {
+      document.getElementById("mySidenav").style.width = "150px";
+    },
+    closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    },
+    setPage(page)
+    {
+      window.history.pushState({}, '', window.location.origin + window.location.pathname + '?page=' + page);
+      this.closeNav();
+    },
+    changeTheme() {
+      let theme = localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute('data-theme', theme === 'light' ? 'dark' : 'light');
+      localStorage.setItem("theme", theme === 'light' ? 'dark' : 'light');
+    }
+  },
+  computed: {
+    currentPath() {
+      let path = location.pathname.replace(/^\/+|\/+$/g, '').split('/');
+      if (path.length == 2)
+        return path[1];
+      if (path.length == 1)
+        return '';
+      return 'pageNotFound';
+    }
+  },
+  mounted() {
+    this.changeTitle();
+    if (!localStorage.getItem("theme")) 
+      localStorage.setItem("theme", (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+    let theme = localStorage.getItem("theme");
+    console.log(theme);
+    document.documentElement.setAttribute('data-theme', theme);
+    document.getElementById('chk').checked = theme === 'light';
+  }
+}
+</script>
+
 <style scoped>
+
+.checkbox {
+	opacity: 0;
+	position: absolute;
+}
+
+.label {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 1px;
+	background-color: var(--component-color);
+	border-radius: 20px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	/* justify-content: space-between; */
+	padding: 3px;
+	position: relative;
+	height: 20px;
+	width: 38px;
+  gap: 9px;
+}
+
+.label .ball {
+	background-color: var(--component-bg);
+	border-radius: 50%;
+	position: absolute;
+	height: 18px;
+	width: 18px;
+	transform: translateX(0px);
+	transition: transform 0.2s linear;
+}
+
+.checkbox:checked + .label .ball {
+	transform: translateX(20px);
+}
+
+.fa-moon {
+	color: #ffaa00;
+}
+
+.fa-sun {
+	color: #ff9900;
+}
+
 .sidenav {
   height: 100%;
   width: 0;
@@ -162,76 +225,11 @@ export default {
   text-decoration: none;
 }
 
-nav {
-    width: 100%;
-    height: 60px;
-    background-color: var(--component-bg);
-    color: var(--component-color);
-    display: flex;
-    justify-content: center;
-    font-weight: 700;
-    position: fixed;
-    top: 0;
-    z-index: 1000
-}
-
-@media (prefers-color-scheme: light) {
-  nav .links img {
-    filter: invert(1);
-  }
-}
-
 .wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: calc(100% - 60px);
-}
-
-nav .head {
-    cursor: pointer;
-    -webkit-user-select: none;
-    user-select: none
-}
-
-nav .head h1 {
-    font-size: 1.5rem;
-    margin: 0
-}
-
-nav .head span:hover,
-nav .head h1:hover {
-    opacity: .6
-}
-
-nav .head img {
-    width: 32px;
-    height: 32px;
-    border-radius: 5px;
-}
-
-nav .content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-weight: bold;
-    color: var(--component-color);
-    background-color: var(--component-bg);
-}
-
-nav .content a {
-    text-decoration: none;
-    color: inherit !important;
-}
-
-nav .content a img {
-  display: flex; 
-  justify-content: center;
-}
-
-nav .content img:hover {
-    opacity: .6
 }
 
 #main .content {
@@ -243,7 +241,7 @@ nav .content img:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .links a {
@@ -260,12 +258,6 @@ nav .content img:hover {
 @media screen and (max-width: 1390px) {
     .wrapper {
         padding: 0 20px
-    }
-}
-
-@media screen and (max-width: 600px) {
-    nav .links a:first-child {
-        display:none
     }
 }
 </style>

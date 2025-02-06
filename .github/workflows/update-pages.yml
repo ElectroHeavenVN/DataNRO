@@ -27,7 +27,7 @@ jobs:
         with:
           ref: main
       - name: Download artifact DataNRO-TeaMobi
-        uses: dawidd6/action-download-artifact@v6
+        uses: dawidd6/action-download-artifact@v8
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
@@ -38,7 +38,7 @@ jobs:
           name: DataNRO-TeaMobi
           path: Page/public
       - name: Download artifact DataNRO-HSNR
-        uses: dawidd6/action-download-artifact@v6
+        uses: dawidd6/action-download-artifact@v8
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
@@ -55,8 +55,8 @@ jobs:
           npm run build
       - name: Copy index.html (Dirty trick)
         run: |
-          cp Page/dist/index.html Page/dist/HSNR/index.html
-          cp Page/dist/index.html Page/dist/TeaMobi/index.html
+          # cp Page/dist/index.html Page/dist/HSNR/index.html
+          # cp Page/dist/index.html Page/dist/TeaMobi/index.html
           cp Page/dist/index.html Page/dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

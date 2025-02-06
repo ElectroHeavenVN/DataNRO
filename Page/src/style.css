@@ -26,6 +26,28 @@
   }
 }
 
+[data-theme="light"] {
+  color-scheme: light;
+  background-color: white;
+  color: #2b2934;
+  --component-bg: white;
+  --component-color: #333;
+  --component-border: #ccc;
+}
+
+[data-theme="light"] nav .links img {
+  filter: invert(1);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  background-color: #0a0a0a;
+  color: white;
+  --component-bg: #111;
+  --component-color: white;
+  --component-border: #666;
+}
+
 body {
   margin: 0;
   display: flex;
@@ -49,7 +71,7 @@ body {
   bottom: 0;
   width: 100%;
   height: 100%;
-  opacity : 0.5;
+  opacity : .5;
   z-index: -1;
   background-image: url('/bgHorizontal.png');
   background-size: cover;
@@ -77,7 +99,7 @@ body {
   align-items: center;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 90px);
+  min-height: calc(100vh - 70px);
   justify-content: flex-start
 }
 
@@ -85,19 +107,19 @@ body {
   position: fixed;
   z-index: 2;
   bottom: 0;
-  width: 100px;
-  height: 150px;
-  background-size: 100px 300px;
-  opacity: 0.8;
+  width: 80px;
+  height: 120px;
+  background-size: 80px 240px;
+  opacity: .25;
   cursor: pointer;
-  zoom: 0.6;
+  zoom: .6;
 }
 
 .go-fuck-ublock-origin-and-to-top.arona:hover, 
 .go-fuck-ublock-origin-and-to-top.plana:hover, 
 .go-fuck-ublock-origin-and-to-top.plana:active,
 .go-fuck-ublock-origin-and-to-top.arona:active {
-  background-position: 0 -150px;
+  background-position: 0 -120px;
   opacity: 1;
 }
 
@@ -107,33 +129,33 @@ body {
   z-index: 2;
   right: 0;
   bottom: 0;
-  width: 100px;
-  height: 150px;
-  transition: opacity 0.3s;
+  width: 80px;
+  height: 120px;
+  transition: opacity .3s;
   opacity: 0;
   pointer-events: none;
 }
 
 .go-fuck-ublock-origin-and-to-top.arona {
-  left: -100px;
+  left: -80px;
 }
 
 .go-fuck-ublock-origin-and-to-top.arona,
 .go-fuck-ublock-origin-and-to-top.arona::after {
   background: url("/BackToTop-Arona.png") no-repeat 0 0;
-  background-size: 100px 300px;
-  transition: opacity 0.3s, left 0.5s;
+  background-size: 80px 240px;
+  transition: opacity .3s, left .5s;
 }
 
 .go-fuck-ublock-origin-and-to-top.plana {
-  right: -100px;
-  transition: opacity 0.3s, right 0.5s;
+  right: -80px;
 }
 
 .go-fuck-ublock-origin-and-to-top.plana,
 .go-fuck-ublock-origin-and-to-top.plana::after {
   background: url("/BackToTop-Plana.png") no-repeat 0 0;
-  background-size: 100px 300px;
+  background-size: 80px 240px;
+  transition: opacity .3s, right .5s;
 }
 
 .go-fuck-ublock-origin-and-to-top.plana.load {
@@ -145,7 +167,7 @@ body {
 }
 
 .go-fuck-ublock-origin-and-to-top.ani-leave {
-  background-position: 0 -150px;
+  background-position: 0 -120px;
 }
 
 .go-fuck-ublock-origin-and-to-top.plana.ani-leave {
@@ -158,22 +180,103 @@ body {
 
 .go-fuck-ublock-origin-and-to-top.left {
   pointer-events: none;
-}
-
-.go-fuck-ublock-origin-and-to-top.left {
   background: none;
   transition: none;
 }
 
+[data-theme="light"] .arona {
+  opacity: .75;
+}
+
+[data-theme="dark"] .plana {
+  opacity: .75;
+}
+
+nav {
+  width: 100%;
+  height: 40px;
+  background-color: var(--component-bg);
+  color: var(--component-color);
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
+  position: fixed;
+  top: 0;
+  z-index: 1000
+}
+
+@media (prefers-color-scheme: light) {
+  nav .links img {
+    filter: invert(1);
+  }
+}
+
+nav .head {
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none
+}
+
+nav .head h1 {
+  font-size: 1.3rem;
+  margin: 0
+}
+
+nav .head span:hover,
+nav .head h1:hover {
+  opacity: .6
+}
+
+nav .head img {
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+nav .content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: bold;
+  color: var(--component-color);
+  background-color: var(--component-bg);
+}
+
+nav .content a {
+  text-decoration: none;
+  color: inherit !important;
+}
+
+nav .content a img {
+display: flex; 
+justify-content: center;
+}
+
+nav .content img:hover {
+  opacity: .6
+}
+
+@media screen and (max-width: 600px) {
+  nav .links a:first-child {
+      display:none
+  }
+}
+
 footer {
-  height: 60px;
+  height: 40px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  font-size: 15px;
+  font-size: 14px;
   background-color: var(--component-bg);
   margin-top: 30px;
+}
+
+footer p {
+  margin: 0;
+  text-align: center;
 }
 
 @keyframes ani-leave-right {
@@ -218,19 +321,19 @@ footer {
 
 @media only screen and (min-width: 850px) and (min-height: 375px) {
   .go-fuck-ublock-origin-and-to-top {
-    zoom: 0.7;
+    zoom: .7;
   }
 }
 
 @media only screen and (min-width: 950px) and (min-height: 400px) {
   .go-fuck-ublock-origin-and-to-top {
-    zoom: 0.8;
+    zoom: .8;
   }
 }
 
 @media only screen and (min-width: 1060px) and (min-height: 500px) {
   .go-fuck-ublock-origin-and-to-top {
-    zoom: 0.9;
+    zoom: .9;
   }
 }
 

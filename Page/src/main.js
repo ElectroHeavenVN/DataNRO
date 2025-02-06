@@ -2,6 +2,11 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import i18n from './i18n'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 let lang = navigator.language.split('-')[0];
 if (lang === 'vi')
@@ -77,6 +82,9 @@ window.history.pushState = new Proxy(window.history.pushState, {
     });
 })();
 
+library.add(fas, far, fab);
+
 createApp(App)
     .use(i18n)
+    .component('font-awesome-icon', FontAwesomeIcon)
     .mount('#app')

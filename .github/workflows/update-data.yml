@@ -91,7 +91,7 @@ jobs:
       - name: Build DataNRO.CLI
         run: msbuild $env:CLISolutionPath /t:rebuild /p:Configuration=Release
       - name: Download artifact DataNRO-TeaMobi
-        uses: dawidd6/action-download-artifact@v6
+        uses: dawidd6/action-download-artifact@v8
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
@@ -150,7 +150,7 @@ jobs:
       - name: Move DataNRO.HSNR to Output
         run: Move-Item -Path HSNR/Output/DataNRO.HSNR.dll -Destination Output/DataNRO.HSNR.dll -Force
       - name: Download artifact DataNRO-HSNR
-        uses: dawidd6/action-download-artifact@v6
+        uses: dawidd6/action-download-artifact@v8
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
@@ -182,7 +182,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Download artifact DataNRO-TeaMobi
-        uses: dawidd6/action-download-artifact@v6
+        uses: dawidd6/action-download-artifact@v8
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           name: DataNRO-TeaMobi
@@ -192,7 +192,7 @@ jobs:
           allow_forks: false
           path: Page/public
       - name: Download artifact DataNRO-HSNR
-        uses: dawidd6/action-download-artifact@v6
+        uses: dawidd6/action-download-artifact@v8
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           name: DataNRO-HSNR
@@ -208,8 +208,8 @@ jobs:
           npm run build
       - name: Copy index.html (Dirty trick)
         run: |
-          cp Page/dist/index.html Page/dist/HSNR/index.html
-          cp Page/dist/index.html Page/dist/TeaMobi/index.html
+          # cp Page/dist/index.html Page/dist/HSNR/index.html
+          # cp Page/dist/index.html Page/dist/TeaMobi/index.html
           cp Page/dist/index.html Page/dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -256,8 +256,8 @@ jobs:
           npm run build
       - name: Copy index.html (Dirty trick)
         run: |
-          cp Page/dist/index.html Page/dist/HSNR/index.html
-          cp Page/dist/index.html Page/dist/TeaMobi/index.html
+          # cp Page/dist/index.html Page/dist/HSNR/index.html
+          # cp Page/dist/index.html Page/dist/TeaMobi/index.html
           cp Page/dist/index.html Page/dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
