@@ -47,11 +47,14 @@ export default {
 }
 
 .publisher {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 2px;
   user-select: none;
   padding: 20px;
   border-radius: 10px;
   background-color: var(--component-bg);
-  color: #fff;
+  color: var(--component-color);
   text-align: center;
   margin: 10px;
   display: flex;
@@ -59,6 +62,7 @@ export default {
   width: 400px;
   height: 325px;
   justify-content: space-between;
+  text-decoration: none;
 }
 
 .publisher img {
