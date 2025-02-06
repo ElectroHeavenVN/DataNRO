@@ -99,6 +99,7 @@ export default {
           });
         });
       });
+      mappedData.sort((a, b) => a.id - b.id);
       this.skillTemplates = mappedData;
       this.filteredSkillTemplates = [...mappedData];
       if (this.reversed) 
