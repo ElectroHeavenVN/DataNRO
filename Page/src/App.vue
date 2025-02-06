@@ -137,7 +137,6 @@ export default {
     if (!localStorage.getItem("theme")) 
       localStorage.setItem("theme", (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
     let theme = localStorage.getItem("theme");
-    console.log(theme);
     document.documentElement.setAttribute('data-theme', theme);
     document.getElementById('chk').checked = theme === 'light';
   }
