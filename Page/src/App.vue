@@ -100,7 +100,7 @@ export default {
         if (currentPath !== 'pageNotFound')
           document.title = 'DataNRO - Server ' + this.currentPath;
         else 
-          document.title = "DataNRO - " + t(currentPath);
+          document.title = "DataNRO - " + useI18n().t(currentPath);
       }
       else 
         document.title = "DataNRO by ElectroHeavenVN";

@@ -208,8 +208,8 @@ jobs:
           npm run build
       - name: Copy index.html (Dirty trick)
         run: |
-          # cp Page/dist/index.html Page/dist/HSNR/index.html
-          # cp Page/dist/index.html Page/dist/TeaMobi/index.html
+          cp Page/dist/index.html Page/dist/HSNR/index.html
+          cp Page/dist/index.html Page/dist/TeaMobi/index.html
           cp Page/dist/index.html Page/dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -256,8 +256,8 @@ jobs:
           npm run build
       - name: Copy index.html (Dirty trick)
         run: |
-          # cp Page/dist/index.html Page/dist/HSNR/index.html
-          # cp Page/dist/index.html Page/dist/TeaMobi/index.html
+          cp Page/dist/index.html Page/dist/HSNR/index.html
+          cp Page/dist/index.html Page/dist/TeaMobi/index.html
           cp Page/dist/index.html Page/dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
