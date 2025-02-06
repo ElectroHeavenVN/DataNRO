@@ -45,7 +45,7 @@ const { t } = useI18n();
           class="hoverable" />
       </div>
     </div>
-    <LoadMore v-if="filteredSkillTemplates.length > 30 && visibleSkillTemplates.length < filteredSkillTemplates.length" @load-more="loadMore" />
+    <LoadMore v-if="filteredSkillTemplates.length > 10 && visibleSkillTemplates.length < filteredSkillTemplates.length" @load-more="loadMore" />
   </div>
 </template>
 
