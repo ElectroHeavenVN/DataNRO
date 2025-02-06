@@ -159,6 +159,7 @@ export default {
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
+  text-decoration: none;
 }
 
 nav {
