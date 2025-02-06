@@ -56,9 +56,11 @@ jobs:
       - name: Copy index.html (Dirty trick)
         run: |
           cp Page/dist/index.html Page/dist/HSNR/index.html
-          sed -i 's/Data NRO by ElectroHeavenVN/Data HSNR by ElectroHeavenVN/g' Page/dist/HSNR/index.html
+          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server HSNR/g' Page/dist/HSNR/index.html
           cp Page/dist/index.html Page/dist/TeaMobi/index.html
+          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server TeaMobi/g' Page/dist/TeaMobi/index.html
           cp Page/dist/index.html Page/dist/404.html
+          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Not found/g' Page/dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
