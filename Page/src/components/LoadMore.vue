@@ -23,7 +23,6 @@ export default {
 </script>
 
 <style scoped>
-
 .load-more {
   border-style: solid;
   border-color: var(--component-border);

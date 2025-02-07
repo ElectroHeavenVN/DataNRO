@@ -399,7 +399,7 @@ export default {
 }
 
 
-@media screen and (max-width: 1032px) {
+@media screen and (max-width: 1150px) {
     .skillTemplate {
         width: 100% !important;
     }

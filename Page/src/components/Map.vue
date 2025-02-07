@@ -165,7 +165,7 @@ export default {
   margin: 0;
 }
 
-@media screen and (max-width: 1032px) {
+@media screen and (max-width: 851px) {
     .map {
         width: 100% !important;
     }

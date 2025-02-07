@@ -27,6 +27,10 @@ export default {
         <span>🏴&zwj;☠️{{ t('hsnrName') }}</span>
       </a>
     </div>
+    <a class="ghStars" href="https://github.com/ElectroHeavenVN/DataNRO/" target="_blank">
+      Give me a star on GitHub!
+      <img src="https://img.shields.io/github/stars/ElectroHeavenVN/DataNRO?style=social" alt="GitHub stars">
+    </a>
   </div>
 </template>
 
@@ -63,6 +67,7 @@ export default {
   height: 325px;
   justify-content: space-between;
   text-decoration: none;
+  font-weight: bold;
 }
 
 .publisher img {
@@ -76,12 +81,50 @@ export default {
   margin-top: 10px;
 }
 
+.ghStars {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 2px;
+  background-color: var(--component-bg);
+  color: var(--component-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 20px;
+  flex-direction: row;
+  gap: 15px;
+  border-radius: 10px;
+  width: 50%;
+  min-width: 420px;
+  user-select: none;
+  transition-duration: .2s;
+  padding: 10px;
+  margin-top: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  flex-wrap: wrap;
+}
+
+.ghStars:hover {
+  box-shadow: 0 0 10px 1px orange;
+}
+
+.ghStars img {
+  height: 30px;
+}
+
 @media screen and (max-width: 600px) {
   .publisher {
     width: 100%;
   }
   .publisher span {
     font-size: 1rem;
+  }
+
+  .ghStars {
+    width: calc(100% - 40px);
+    margin-top: 20px;
   }
 }
 

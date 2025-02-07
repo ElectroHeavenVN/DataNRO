@@ -189,7 +189,7 @@ export default {
   font-size: 12px;
 }
 
-@media screen and (max-width: 1032px) {
+@media screen and (max-width: 851px) {
     .mob {
         width: 100% !important;
     }

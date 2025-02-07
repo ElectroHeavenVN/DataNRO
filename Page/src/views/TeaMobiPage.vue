@@ -110,14 +110,12 @@ export default {
 </script>
 
 <template>
-  <div>
-    <!-- <ItemPage v-if="currentPage === 'items'" :servers="servers" /> -->
-    <NpcsPage v-if="currentPage === 'npcs'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <SkillsPage v-else-if="currentPage === 'skills'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <MonstersPage v-else-if="currentPage === 'mobs'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <ItemOptionsPage v-else-if="currentPage === 'itemOptions'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <MapsPage v-else-if="currentPage === 'maps'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <PartsPage v-else-if="currentPage === 'parts'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-    <ItemsPage v-else :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
-  </div>
+  <!-- <ItemPage v-if="currentPage === 'items'" :servers="servers" /> -->
+  <NpcsPage v-if="currentPage === 'npcs'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+  <SkillsPage v-else-if="currentPage === 'skills'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+  <MonstersPage v-else-if="currentPage === 'mobs'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+  <ItemOptionsPage v-else-if="currentPage === 'itemOptions'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+  <MapsPage v-else-if="currentPage === 'maps'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+  <PartsPage v-else-if="currentPage === 'parts'" :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
+  <ItemsPage v-else :servers="servers" :defaultServerId="currentLang == 'vi' ? 'Server1' : 'Universe1'" />
 </template>

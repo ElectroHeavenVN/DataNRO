@@ -53,14 +53,12 @@ export default {
 </script>
 
 <template>
-  <div>
-    <!-- <ItemPage v-if="currentPage === 'items'" :servers="servers" /> -->
-    <NpcsPage v-if="currentPage === 'npcs'" :servers="servers" />
-    <SkillsPage v-else-if="currentPage === 'skills'" :servers="servers" />
-    <MonstersPage v-else-if="currentPage === 'mobs'" :servers="servers" />
-    <ItemOptionsPage v-else-if="currentPage === 'itemOptions'" :servers="servers" />
-    <MapsPage v-else-if="currentPage === 'maps'" :servers="servers" />
-    <PartsPage v-else-if="currentPage === 'parts'" :servers="servers" />
-    <ItemsPage v-else :servers="servers" />
-  </div>
+  <!-- <ItemPage v-if="currentPage === 'items'" :servers="servers" /> -->
+  <NpcsPage v-if="currentPage === 'npcs'" :servers="servers" />
+  <SkillsPage v-else-if="currentPage === 'skills'" :servers="servers" />
+  <MonstersPage v-else-if="currentPage === 'mobs'" :servers="servers" />
+  <ItemOptionsPage v-else-if="currentPage === 'itemOptions'" :servers="servers" />
+  <MapsPage v-else-if="currentPage === 'maps'" :servers="servers" />
+  <PartsPage v-else-if="currentPage === 'parts'" :servers="servers" />
+  <ItemsPage v-else :servers="servers" />
 </template>

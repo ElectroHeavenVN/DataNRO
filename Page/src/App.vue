@@ -59,7 +59,7 @@ const { t } = useI18n();
             <a href="/" target="_blank">
               <font-awesome-icon icon="fa-solid fa-house" fixed-width alt="Home" />  
             </a>
-            <a href="https://discord.gg/yzHjZbfuAR" target="_blank">
+            <a @click="showDiscordEmbed">
               <font-awesome-icon icon="fa-brands fa-discord" fixed-width alt="Discord" />
             </a>
             <a href="https://github.com/ElectroHeavenVN/DataNRO" target="_blank">
@@ -78,6 +78,7 @@ const { t } = useI18n();
         <SelectGamePublisherPage v-else-if="currentPath == ''" />
         <NotFound v-else />
       </div>
+      <iframe v-if="discordEmbedShown" class="discordEmbed" src="https://discord.com/widget?id=1115634791321190420&theme=dark" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
     </div>
   </div>
   <footer>
@@ -90,6 +91,7 @@ export default {
   data() {
     return {
       title: 'DataNRO',
+      discordEmbedShown: false
     }
   },
   methods: {
@@ -119,6 +121,9 @@ export default {
       let theme = localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
       document.documentElement.setAttribute('data-theme', theme === 'light' ? 'dark' : 'light');
       localStorage.setItem("theme", theme === 'light' ? 'dark' : 'light');
+    },
+    showDiscordEmbed() {
+      this.discordEmbedShown = !this.discordEmbedShown;
     }
   },
   computed: {
@@ -143,6 +148,20 @@ export default {
 </script>
 
 <style scoped>
+.discordEmbed {
+  border-style: solid;
+  border-color: var(--component-border);
+  border-width: 2px;
+  position: fixed;
+  top: 50px;
+  right: 10px;
+  z-index: 1000;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 350px;
+  height: calc(100vh - 60px);
+}
 
 .checkbox {
 	opacity: 0;
@@ -188,6 +207,16 @@ export default {
 	color: #ff9900;
 }
 
+.fa-discord {
+  color: #5865F2;
+  filter: 
+    drop-shadow(1px 1px 1px #00ffff) 
+    drop-shadow(-1px 1px 1px #00ffff) 
+    drop-shadow(1px -1px 1px #00ffff) 
+    /* drop-shadow(-1px -1px 1px #48c2ff)  */
+    !important;
+}
+
 .sidenav {
   height: 100%;
   width: 0;
@@ -227,12 +256,12 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: calc(100% - 20px);
+    width: calc(100% - 60px);
 }
 
 #main .content {
     width: 100%;
-    margin-top: 55px
+    margin-top: 20px;
 }
 
 .links {
@@ -240,6 +269,10 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 10px;
+}
+
+.links *:hover {
+  opacity: .8;
 }
 
 .links a {
@@ -256,8 +289,24 @@ export default {
   .sidenav {
     padding-top: 15px;
   }
+
   .sidenav a {
     font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .wrapper {
+    width: calc(100% - 20px);
+  }
+
+  #main .content {    
+    width: calc(100% - 20px);
+    margin-left: 10px;
+  }
+
+  .discordEmbed {
+    width: calc(100% - 20px);
   }
 }
 </style>
