@@ -114,6 +114,11 @@ export default {
   height: 30px;
 }
 
+@media screen and (max-width: 500px) {
+  .ghStars {
+    min-width: unset;
+  }
+}
 @media screen and (max-width: 600px) {
   .publisher {
     width: 100%;
