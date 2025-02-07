@@ -36,11 +36,16 @@ export default {
 
 <style scoped>
 .selectPublisher {
+  margin-top: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-grow: 1;
   flex-direction: column;
+}
+
+.selectPublisher h1 {
+  text-align: center;
 }
 
 .publishers {
