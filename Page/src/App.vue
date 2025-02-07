@@ -4,7 +4,6 @@ import HSNRPage from './views/HSNRPage.vue';
 import TeaMobiPage from './views/TeaMobiPage.vue';
 import SelectGamePublisherPage from './views/SelectGamePublisherPage.vue';
 import NotFound from './components/NotFound.vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 const { t } = useI18n();
 
@@ -58,13 +57,13 @@ const { t } = useI18n();
           </div>
           <div class= "links">
             <a href="/" target="_blank">
-              <img src="./assets/Home-icon.svg" alt="Home" style="width: 25px;" >
+              <font-awesome-icon icon="fa-solid fa-house" fixed-width alt="Home" />  
             </a>
             <a href="https://discord.gg/yzHjZbfuAR" target="_blank">
-              <img src="./assets/discord-mark-white.svg" alt="Discord" style="width: 25px;" >
+              <font-awesome-icon icon="fa-brands fa-discord" fixed-width alt="Discord" />
             </a>
             <a href="https://github.com/ElectroHeavenVN/DataNRO" target="_blank">
-              <img src="./assets/github-mark-white.svg" alt="GitHub" style="width: 25px;" >
+              <font-awesome-icon icon="fa-brands fa-github" fixed-width alt="GitHub" />
             </a>
           </div>
         </div>
@@ -155,16 +154,16 @@ export default {
   border-color: var(--component-border);
   border-width: 1px;
 	background-color: var(--component-color);
-	border-radius: 20px;
+	border-radius: 15px;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	/* justify-content: space-between; */
 	padding: 3px;
 	position: relative;
-	height: 20px;
-	width: 38px;
-  gap: 9px;
+	height: 15px;
+	width: 35px;
+  gap: 5px;
 }
 
 .label .ball {
@@ -178,7 +177,7 @@ export default {
 }
 
 .checkbox:checked + .label .ball {
-	transform: translateX(20px);
+	transform: translateX(17px);
 }
 
 .fa-moon {
@@ -228,7 +227,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: calc(100% - 60px);
+    width: calc(100% - 20px);
 }
 
 #main .content {
@@ -249,14 +248,16 @@ export default {
   justify-content: center;
 }
 
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+.links a * {
+  font-size: 20px;
 }
 
-@media screen and (max-width: 1390px) {
-    .wrapper {
-        padding: 0 20px
-    }
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
 }
 </style>

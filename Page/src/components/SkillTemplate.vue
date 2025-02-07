@@ -97,7 +97,7 @@ const formatPowerRequired = (powerRequired) => {
     <div class="badges">
       <div class="badge id" @click="copyToClipboard(id);" @touchstart="copyToClipboard(id);" :title="t('clickToCopySkillID')">
         ID: {{ id }}
-        <img src="../assets/Copy.svg" style="height: 10px;" alt="Copy" />
+        <font-awesome-icon icon="fa-solid fa-copy" alt="Copy"/>
       </div>
       <div style="display: flex; gap: 10px;">
         <div class="badge mana-type" :title="t('manaType') + ': ' + getManaTypeStr(manaUseType)">{{ t('manaType') + ': ' + getManaTypeStr(manaUseType) }}</div>

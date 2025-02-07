@@ -35,10 +35,6 @@
   --component-border: #ccc;
 }
 
-[data-theme="light"] nav .links img {
-  filter: invert(1);
-}
-
 [data-theme="dark"] {
   color-scheme: dark;
   background-color: #0a0a0a;

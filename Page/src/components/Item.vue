@@ -128,7 +128,7 @@ const breakMultiLine = (text) => {
     <div class="badges">
       <div class="badge id" @click="copyToClipboard(id);" @touchstart="copyToClipboard(id);" :title="t('clickToCopy') + ' ID'">
         ID: {{ id }}
-        <img src="../assets/Copy.svg" style="height: 10px;" alt="Copy" />
+        <font-awesome-icon icon="fa-solid fa-copy" alt="Copy"/>
       </div>
       <div style="display: flex; gap: 10px;">
         <div class="badge new-item" v-if="isNewItem" :title="t('thisIsNewItem')">{{ t('new') }}</div>
