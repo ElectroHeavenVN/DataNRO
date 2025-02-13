@@ -46,6 +46,16 @@ const { t } = useI18n();
             <img src="/DataHSNR.png" alt="HSNR">
           </a>
         </div>
+          <a v-if="currentWorkflowLink !== ''" class="workflowRunning content links" :href="currentWorkflowLink" target="_blank" :title="t('workflowCurrentlyUpdatingDesc')">
+          <span>
+            {{ t("workflowCurrentlyUpdating") }}
+          </span>
+          <svg width="20px" height="20px" fill="none" viewBox="0 0 16 16" class="anim-rotate" xmlns="http://www.w3.org/2000/svg">
+            <path fill="none" stroke="#DBAB0A" stroke-width="2" d="M3.05 3.05a7 7 0 1 1 9.9 9.9 7 7 0 0 1-9.9-9.9Z" opacity=".5"></path>
+            <path fill="#DBAB0A" fill-rule="evenodd" d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" clip-rule="evenodd"></path>
+            <path fill="#DBAB0A" d="M14 8a6 6 0 0 0-6-6V0a8 8 0 0 1 8 8h-2Z"></path>
+          </svg>
+        </a>
         <div class="content">
           <div>
             <input type="checkbox" class="checkbox" @change="changeTheme" id="chk" />
@@ -62,9 +72,11 @@ const { t } = useI18n();
             <a @click="showDiscordEmbed">
               <font-awesome-icon icon="fa-brands fa-discord" fixed-width alt="Discord" />
             </a>
-            <a href="https://github.com/ElectroHeavenVN/DataNRO" target="_blank">
-              <font-awesome-icon icon="fa-brands fa-github" fixed-width alt="GitHub" />
-            </a>
+            <div>
+              <a href="https://github.com/ElectroHeavenVN/DataNRO" target="_blank">
+                <font-awesome-icon icon="fa-brands fa-github" fixed-width alt="GitHub" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -91,7 +103,8 @@ export default {
   data() {
     return {
       title: 'DataNRO',
-      discordEmbedShown: false
+      discordEmbedShown: false,
+      currentWorkflowLink: ""
     }
   },
   methods: {
@@ -124,7 +137,14 @@ export default {
     },
     showDiscordEmbed() {
       this.discordEmbedShown = !this.discordEmbedShown;
-    }
+    },
+    async getWorkflowStatus() {
+      const response = await fetch('https://api.github.com/repos/ElectroHeavenVN/DataNRO/actions/runs');
+      const data = await response.json();
+      const workflowRuns = data.workflow_runs.filter(run => run.path === '.github/workflows/update-data.yml');
+      const latestRun = workflowRuns[0];
+      return latestRun;
+  }
   },
   computed: {
     currentPath() {
@@ -143,11 +163,33 @@ export default {
     let theme = localStorage.getItem("theme");
     document.documentElement.setAttribute('data-theme', theme);
     document.getElementById('chk').checked = theme === 'light';
+    this.getWorkflowStatus().then(data => {
+      if (data.status === "in_progress")
+        this.currentWorkflowLink = data.html_url;
+    });
   }
 }
 </script>
 
 <style scoped>
+
+.workflowRunning {
+  white-space: nowrap;
+}
+
+.anim-rotate {
+    animation: rotate-keyframes 1s linear infinite;
+}
+
+@keyframes rotate-keyframes {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .discordEmbed {
   border-style: solid;
   border-color: var(--component-border);
@@ -307,6 +349,12 @@ export default {
 
   .discordEmbed {
     width: calc(100% - 20px);
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .workflowRunning span {
+    display: none;
   }
 }
 </style>

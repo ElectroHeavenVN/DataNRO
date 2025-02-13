@@ -129,6 +129,8 @@
 	"noName": "[Không tên]",
 	"viewMapImg": "Xem ảnh map",
 	"viewRaw": "Xem dữ liệu thô",
+	"workflowCurrentlyUpdating": "Dữ liệu đang được update",
+	"workflowCurrentlyUpdatingDesc": "Dữ liệu game đang được cập nhật và sẽ khả dụng trong thời gian ngắn.\nNhấn để mở trang theo dõi quá trình cập nhật trên GitHub trong thẻ mới.",
 
 	"visits": "Lượt truy cập"
 }

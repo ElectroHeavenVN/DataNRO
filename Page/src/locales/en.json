@@ -129,6 +129,8 @@
 	"noName": "[No name]",
 	"viewMapImg": "View map image",
 	"viewRaw": "View raw data",
+	"workflowCurrentlyUpdating": "Data is being updated",
+	"workflowCurrentlyUpdatingDesc": "Game data is currently being updated and will be available soon.\nClick to open the workflow. on GitHub in a new tab.",
 
 	"visits": "Website visits"
 }
