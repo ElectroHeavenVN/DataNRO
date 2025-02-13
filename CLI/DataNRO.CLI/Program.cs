@@ -107,6 +107,11 @@ namespace DataNRO.CLI
             session.Data.Path = dataPath;
             session.Data.SaveIcon = requestAndSaveIcons;
             session.Data.OverwriteIconIDs = overwriteIconIDs;
+            foreach (int iconId in overwriteIconIDs)    //-1 will not delete all icons
+            {
+                if (File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{iconId}.png"))
+                    File.Delete($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{iconId}.png");
+            }
             Console.WriteLine($"Connecting to {session.Host}:{session.Port}...");
             if (!TryConnect(session))
                 return;
@@ -363,7 +368,7 @@ namespace DataNRO.CLI
                 Map map = session.Data.Maps[i];
                 if (!session.Data.MapTileIDs.ContainsKey(map.id) || session.Data.MapTileIDs[map.id] == -1)
                 {
-                    //for (int tileID = 1; tileID <= 32; tileID++)
+                    //for (int tileID = 1; tileID <= 33; tileID++)
                     //{
                     //    try
                     //    {

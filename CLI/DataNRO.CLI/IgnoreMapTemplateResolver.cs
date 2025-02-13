@@ -9,7 +9,7 @@ namespace DataNRO.CLI
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             var property = base.CreateProperty(member, memberSerialization);
-            if (property.DeclaringType == typeof(GameData) && property.PropertyName == nameof(GameData.Map.mapTemplate))
+            if (member.DeclaringType == typeof(GameData.Map) && member.Name == nameof(GameData.Map.mapTemplate))
                 property.ShouldSerialize = instance => false;
             return property;
         }
