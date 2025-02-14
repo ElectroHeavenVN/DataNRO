@@ -2,7 +2,7 @@
 Xem dữ liệu vật phẩm, quái, NPC, map,... của game [**Ngọc Rồng Online**](http://ngocrongonline.com/) và [**Hồi sinh Ngọc Rồng**](https://hoisinhngocrong.com/). Dữ liệu được tự động cập nhật mỗi ngày bằng [GitHub Actions](https://github.com/features/actions).
 
 ## Web
-- Web xem data chính thức: [Server TeaMobi](https://electroheavenvn.github.io/DataNRO/) | [Server Hồi sinh Ngọc Rồng](https://electroheavenvn.github.io/DataNRO/hsnr.html)
+- Web xem data chính thức: [DataNRO](https://electroheavenvn.github.io/DataNRO/) | [Server TeaMobi](https://electroheavenvn.github.io/DataNRO/TeaMobi/) | [Server Hồi sinh Ngọc Rồng](https://electroheavenvn.github.io/DataNRO/HSNR/)
 - Web của [ShopWibu (Cường)](https://shopwibu.net/): [Server TeaMobi](https://nro.shopwibu.net/tea-data/item) | [Server Hồi sinh Ngọc Rồng](https://nro.shopwibu.net/hsnr-data/item)
 
 Web khác ngoài 2 web trên có thể là [fork của repository này](../../network/members), của người khác làm dựa trên data được tạo từ các [Actions](../../actions), [__*của thằng nào đó ăn cắp*__](https://thanhlc.com/data/item/) hoặc [tự họ tạo data và làm web](https://bantool.net/tools/dataNRO). Tất cả đều không liên quan đến repository này, vui lòng không tạo issue mới về các web ngoài 2 địa chỉ trên.
@@ -14,6 +14,7 @@ API được tạo ra với mục đích dùng miễn phí, vui lòng không s�
 <br>**Định dạng API ảnh:** `Nhà phát hành`/Icons/`ID`.png
 - Ảnh NPC: `Nhà phát hành`/NCPs/`ID template NPC`.png
 - Ảnh quái: `Nhà phát hành`/Monsters/`ID template quái`.png
+- Ảnh map: `Nhà phát hành`/Maps/`ID map`.png
 ### Nhà phát hành / Server
 - `/TeaMobi`: Data game Ngọc Rồng Online
   + `/Server`*: Server 1-7 và 11-13
@@ -22,7 +23,7 @@ API được tạo ra với mục đích dùng miễn phí, vui lòng không s�
   + `/Universe1`: Server Quốc tế (Universe 1)
   + `/Naga`: Server Indonesia (Naga)
 - `/HSNR`: Data game Hồi sinh Ngọc Rồng
-  + `/Server`*: Server 1-3
+  + `/Server`*: Server 1-4
 ### Loại dữ liệu
 - `ItemOptionTemplates.json`: Dữ liệu loại thuộc tính vật phẩm
 ```json
