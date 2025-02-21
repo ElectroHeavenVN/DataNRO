@@ -52,8 +52,11 @@ const { t } = useI18n();
         <div v-if="lastWorkflowLink !== ''" class="lastWorkflow">
           <a v-if="lastWorkflowStatus === 'in_progress'" class="content links" :href="lastWorkflowLink" target="_blank"
             :title="t('workflowRunningDesc')">
-            <span>
+            <span class="lastWorkflowLongText">
               {{ t("workflowRunning") }}
+            </span>
+            <span class="lastWorkflowShortText">
+              {{ t("workflowRunningShort") }}
             </span>
             <svg width="20px" height="20px" fill="none" viewBox="0 0 16 16" class="anim-rotate"
               xmlns="http://www.w3.org/2000/svg">
@@ -65,8 +68,11 @@ const { t } = useI18n();
           </a>
           <a v-else-if="lastWorkflowStatus === 'success'" class="content links" :href="lastWorkflowLink" target="_blank"
             :title="t('workflowSuccessDesc')">
-            <span>
+            <span class="lastWorkflowLongText">
               {{ t("workflowSuccess") }}
+            </span>
+            <span class="lastWorkflowShortText">
+              {{ t("workflowSuccessShort") }}
             </span>
             <svg width="16" height="16" style="margin-top: 2px"
               class="octicon octicon-check-circle-fill color-fg-success" viewBox="0 0 16 16" version="1.1" role="img">
@@ -77,8 +83,11 @@ const { t } = useI18n();
           </a>
           <a v-else-if="lastWorkflowStatus === 'failure'" class="content links" :href="lastWorkflowLink" target="_blank"
             :title="t('workflowFailureDesc')">
-            <span>
+            <span class="lastWorkflowLongText">
               {{ t("workflowFailure") }}
+            </span>
+            <span class="lastWorkflowShortText">
+              {{ t("workflowFailureShort") }}
             </span>
             <svg width="16" height="16" style="margin-top: 2px" class="octicon octicon-x-circle-fill color-fg-danger" viewBox="0 0 16 16" version="1.1" role="img">
               <path fill="#FF9492"
@@ -87,8 +96,11 @@ const { t } = useI18n();
             </svg>
           </a>
           <a v-else class="content links" :href="lastWorkflowLink" target="_blank" :title="t('workflowCancelledDesc')">
-            <span>
+            <span class="lastWorkflowLongText">
               {{ t("workflowCancelled") }}
+            </span>
+            <span class="lastWorkflowShortText">
+              {{ t("workflowCancelledShort") }}
             </span>
             <svg width="16" height="16" style="margin-top: 2px" class="octicon octicon-stop neutral-check" viewBox="0 0 16 16" version="1.1" role="img">
               <path fill="#B7BDC8" d="M4.47.22A.749.749 0 0 1 5 0h6c.199 0 .389.079.53.22l4.25 4.25c.141.14.22.331.22.53v6a.749.749 0 0 1-.22.53l-4.25 4.25A.749.749 0 0 1 11 16H5a.749.749 0 0 1-.53-.22L.22 11.53A.749.749 0 0 1 0 11V5c0-.199.079-.389.22-.53Zm.84 1.28L1.5 5.31v5.38l3.81 3.81h5.38l3.81-3.81V5.31L10.69 1.5ZM8 4a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z">
@@ -97,13 +109,10 @@ const { t } = useI18n();
           </a>
         </div>
         <div class="content">
-          <div>
-            <input type="checkbox" class="checkbox" @change="changeTheme" id="chk" />
-            <label class="label" for="chk">
-              <font-awesome-icon icon="fa-solid fa-sun" />
-              <font-awesome-icon icon="fa-solid fa-moon" />
-              <div class="ball"></div>
-            </label>
+          <div class="themeSwitcher">
+            <input type="checkbox" @change="changeTheme" id="chk" />
+            <font-awesome-icon icon="fa-solid fa-sun" class="light" />
+            <font-awesome-icon icon="fa-solid fa-moon" class="dark" />
           </div>
           <div class="links">
             <a href="/" target="_blank">
@@ -112,11 +121,9 @@ const { t } = useI18n();
             <a @click="showDiscordEmbed">
               <font-awesome-icon icon="fa-brands fa-discord" fixed-width alt="Discord" />
             </a>
-            <div>
-              <a href="https://github.com/ElectroHeavenVN/DataNRO" target="_blank">
-                <font-awesome-icon icon="fa-brands fa-github" fixed-width alt="GitHub" />
-              </a>
-            </div>
+            <a href="https://github.com/ElectroHeavenVN/DataNRO" target="_blank">
+              <font-awesome-icon icon="fa-brands fa-github" fixed-width alt="GitHub" />
+            </a>
           </div>
         </div>
       </div>
@@ -221,6 +228,43 @@ export default {
   white-space: nowrap;
 }
 
+.lastWorkflow a {
+  gap: 5px;
+}
+
+.lastWorkflow .lastWorkflowLongText {
+  display: block;
+}
+
+.lastWorkflow .lastWorkflowShortText {
+  display: none;
+  font-size: 12px;
+}
+
+.themeSwitcher {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+}
+
+.themeSwitcher input {
+  opacity: 0;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+[data-theme="light"] .themeSwitcher .light {
+  display: none;
+}
+
+[data-theme="dark"] .themeSwitcher .dark {
+  display: none;
+}
+
 .anim-rotate {
   animation: rotate-keyframes 1s linear infinite;
 }
@@ -250,55 +294,13 @@ export default {
   height: calc(100vh - 60px);
 }
 
-.checkbox {
-  opacity: 0;
-  position: absolute;
-}
-
-.label {
-  border-style: solid;
-  border-color: var(--component-border);
-  border-width: 1px;
-  background-color: var(--component-color);
-  border-radius: 15px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  /* justify-content: space-between; */
-  padding: 3px;
-  position: relative;
-  height: 15px;
-  width: 35px;
-  gap: 5px;
-}
-
-.label .ball {
-  background-color: var(--component-bg);
-  border-radius: 50%;
-  position: absolute;
-  height: 18px;
-  width: 18px;
-  transform: translateX(0px);
-  transition: transform 0.2s linear;
-}
-
-.checkbox:checked+.label .ball {
-  transform: translateX(17px);
-}
-
-.fa-moon {
-  color: #ffaa00;
-}
-
-.fa-sun {
-  color: #ff9900;
-}
-
 .fa-discord {
   color: #5865F2;
   filter:
-    drop-shadow(1px 1px 1px #00ffff) drop-shadow(-1px 1px 1px #00ffff) drop-shadow(1px -1px 1px #00ffff)
-    /* drop-shadow(-1px -1px 1px #48c2ff)  */
+    drop-shadow(1px 1px 1px #00ffff)
+    drop-shadow(-1px 1px 1px #00ffff)
+    drop-shadow(1px -1px 1px #00ffff)
+    drop-shadow(-1px -1px 1px #00ffff) 
     !important;
 }
 
@@ -395,8 +397,22 @@ export default {
   }
 }
 
-@media screen and (max-width: 450px) {
-  .lastWorkflow span {
+@media screen and (max-width: 550px) {
+  .lastWorkflow .lastWorkflowLongText {
+    display: none;
+  }
+
+  .lastWorkflow .lastWorkflowShortText {
+    display: block;
+  }
+
+  .links {
+    gap: 5px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .lastWorkflow .lastWorkflowShortText {
     display: none;
   }
 }

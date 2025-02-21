@@ -337,3 +337,10 @@ footer p {
     zoom: 1;
   }
 }
+
+
+@media screen and (max-width: 550px) {
+  nav .content {
+    gap: 5px;
+  }
+}

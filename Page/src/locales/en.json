@@ -131,12 +131,16 @@
 	"viewRaw": "View raw data",
 
 	"workflowRunning": "Data is being updated",
+	"workflowRunningShort": "Updating...",
 	"workflowRunningDesc": "Game data is being updated.\nClick to open the workflow on GitHub in a new tab.",
 	"workflowSuccess": "Last update successful",
+	"workflowSuccessShort": "Updated",
 	"workflowSuccessDesc": "Last update was successful.\nClick to open the workflow on GitHub in a new tab.",
 	"workflowFailure": "Last update failed",
+	"workflowFailureShort": "Failed",
 	"workflowFailureDesc": "Last update failed.\nClick to open the workflow on GitHub in a new tab.",
 	"workflowCancelled": "Last update was cancelled",
+	"workflowCancelledShort": "Cancelled",
 	"workflowCancelledDesc": "Last update was cancelled.\nClick to open the workflow on GitHub in a new tab.",
 
 	"visits": "Website visits"
