@@ -77,9 +77,9 @@
 	"universe1": "Universe 1",
 	"naga": "Naga",
 
-	"hsnr1": "Server 1",
-	"hsnr2": "Server 2",
-	"hsnr3": "Server 3",
+	"server1HSNR": "Server 1",
+	"server2HSNR": "Server 2",
+	"server3HSNR": "Server 3",
 	
 	"loadMore": "Tải thêm",
 	
@@ -129,8 +129,15 @@
 	"noName": "[Không tên]",
 	"viewMapImg": "Xem ảnh map",
 	"viewRaw": "Xem dữ liệu thô",
-	"workflowCurrentlyUpdating": "Dữ liệu đang được update",
-	"workflowCurrentlyUpdatingDesc": "Dữ liệu game đang được cập nhật và sẽ khả dụng trong thời gian ngắn.\nNhấn để mở trang theo dõi quá trình cập nhật trên GitHub trong thẻ mới.",
+
+	"workflowRunning": "Dữ liệu đang được update",
+	"workflowRunningDesc": "Dữ liệu game đang được cập nhật.\nNhấn để mở trang theo dõi quá trình cập nhật trên GitHub trong thẻ mới.",
+	"workflowSuccess": "Update gần nhất thành công",
+	"workflowSuccessDesc": "Lần cập nhật dữ liệu game gần nhất thành công.\nNhấn để mở trang theo dõi quá trình cập nhật trên GitHub trong thẻ mới.",
+	"workflowFailure": "Update gần nhất thất bại",
+	"workflowFailureDesc": "Lần cập nhật dữ liệu game gần nhất thất bại.\nNhấn để mở trang theo dõi quá trình cập nhật trên GitHub trong thẻ mới.",
+	"workflowCancelled": "Update gần nhất bị hủy",
+	"workflowCancelledDesc": "Lần cập nhật dữ liệu game gần nhất bị hủy.\nNhấn để mở trang theo dõi quá trình cập nhật trên GitHub trong thẻ mới.",
 
 	"visits": "Lượt truy cập"
 }
