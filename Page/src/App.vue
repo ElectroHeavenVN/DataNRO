@@ -49,7 +49,7 @@ const { t } = useI18n();
             <img src="/DataHSNR.png" alt="HSNR">
           </a>
         </div>
-        <div class="lastWorkflow">
+        <div v-if="lastWorkflowLink !== ''" class="lastWorkflow">
           <a v-if="lastWorkflowStatus === 'in_progress'" class="content links" :href="lastWorkflowLink" target="_blank"
             :title="t('workflowRunningDesc')">
             <span>
