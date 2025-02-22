@@ -80,6 +80,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
       - name: Setup NuGet
@@ -234,6 +236,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
       - name: Decompress sample data (TeaMobi)
         run: Expand-Archive -Path SampleData\DataNRO-TeaMobi.zip -DestinationPath Output\Data
       - name: Upload artifact DataNRO-TeaMobi
