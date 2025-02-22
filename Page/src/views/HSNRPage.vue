@@ -24,6 +24,10 @@ export default {
         {
           id: "Server3",
           name: "hsnr3"
+        },
+        {
+          id: "Server4",
+          name: "hsnr4"
         }
       ],
       currentPage: new URL(window.location.href).searchParams.get('page') || 'items'

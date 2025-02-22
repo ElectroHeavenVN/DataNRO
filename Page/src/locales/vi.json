@@ -77,9 +77,10 @@
 	"universe1": "Universe 1",
 	"naga": "Naga",
 
-	"server1HSNR": "Server 1",
-	"server2HSNR": "Server 2",
-	"server3HSNR": "Server 3",
+	"hsnr1": "Server 1",
+	"hsnr2": "Server 2",
+	"hsnr3": "Server 3",
+	"hsnr4": "Server 4",
 	
 	"loadMore": "Tải thêm",
 	
