@@ -22,6 +22,8 @@ namespace DataNRO.CLI
         static Random random = new Random();
         static string proxyData = "";
         static int[] overwriteIconIDs = new int[0];
+        static int maxRunSeconds = 3600;
+        static bool forceProxy;
 
         [DllImport("msvcrt.dll")]
         public static extern int system(string cmd);
@@ -39,6 +41,12 @@ namespace DataNRO.CLI
             string overwriteIconsEnv = Environment.GetEnvironmentVariable("OVERWRITE_ICONS");
             if (!string.IsNullOrEmpty(overwriteIconsEnv))
                 overwriteIconIDs = overwriteIconsEnv.Split(',').Select(int.Parse).ToArray();
+            string maxRunSecondsEnv = Environment.GetEnvironmentVariable("MAX_RUN_SECONDS");
+            if (!string.IsNullOrEmpty(maxRunSecondsEnv))
+                maxRunSeconds = int.Parse(maxRunSecondsEnv);
+            string forceProxyEnv = Environment.GetEnvironmentVariable("FORCE_PROXY");
+            if (!string.IsNullOrEmpty(forceProxyEnv))
+                forceProxy = bool.Parse(forceProxyEnv);
 #if DEBUG
             Console.Write("DATA: ");
             string data = Console.ReadLine();
@@ -65,8 +73,8 @@ namespace DataNRO.CLI
 
         static void FailoverThread()
         {
-            Thread.Sleep(1000 * 60 * 60 * 2);
-            Console.WriteLine("DataNRO has been running for 2 hours, exiting...");
+            Thread.Sleep(1000 * maxRunSeconds);
+            Console.WriteLine($"DataNRO.CLI has been running for {maxRunSeconds} seconds, exiting...");
             Environment.Exit(1);
         }
 
@@ -720,7 +728,18 @@ namespace DataNRO.CLI
             int retryTimes = 0;
             try
             {
-                session.Connect();
+                if (forceProxy)
+                {
+                    if (string.IsNullOrEmpty(proxyData))
+                    {
+                        Console.WriteLine("No proxy data provided! Falling back to direct connection...");
+                        session.Connect();
+                    }
+                    else
+                        return TryConnectProxy(session);
+                }
+                else 
+                    session.Connect();
             }
             catch
             {
@@ -744,44 +763,10 @@ namespace DataNRO.CLI
                     if (!string.IsNullOrEmpty(proxyData))
                     {
                         string[] arrP = proxyData.Split(':');
-                        ProxyType proxyType = (ProxyType)Enum.Parse(typeof(ProxyType), arrP[0]);
                         string proxyHost = arrP[1];
                         ushort proxyPort = ushort.Parse(arrP[2]);
-                        string proxyUsername = "";
-                        string proxyPassword = "";
-                        if (arrP.Length > 3)
-                            proxyUsername = arrP[3];
-                        if (arrP.Length > 4)
-                            proxyPassword = arrP[4];
-                        retryTimes = 0;
                         Console.WriteLine($"Failed to connect to the server! Retry with proxy {Regex.Replace(proxyHost, "[0-9]", "*")}:{proxyPort}...");
-                        try
-                        {
-                            session.Connect(proxyHost, proxyPort, proxyUsername, proxyPassword, proxyType);
-                        }
-                        catch
-                        {
-                            while (!session.IsConnected)
-                            {
-                                try
-                                {
-                                    session.Connect(proxyHost, proxyPort, proxyUsername, proxyPassword, proxyType);
-                                }
-                                catch
-                                {
-                                    if (retryTimes >= 3)
-                                        break;
-                                    Console.WriteLine($"Retry {retryTimes + 1}...");
-                                    Thread.Sleep(1000);
-                                }
-                                retryTimes++;
-                            }
-                            if (!session.IsConnected)
-                            {
-                                Console.WriteLine("Failed to connect to the server through the provided proxy!");
-                                return false;
-                            }
-                        }
+                        return TryConnectProxy(session);
                     }
                     else
                     {
@@ -791,6 +776,51 @@ namespace DataNRO.CLI
                 }
             }
             return true;
+        }
+
+        static bool TryConnectProxy(ISession session)
+        {
+            string[] arrP = proxyData.Split(':');
+            ProxyType proxyType = (ProxyType)Enum.Parse(typeof(ProxyType), arrP[0]);
+            string proxyHost = arrP[1];
+            ushort proxyPort = ushort.Parse(arrP[2]);
+            string proxyUsername = "";
+            string proxyPassword = "";
+            if (arrP.Length > 3)
+                proxyUsername = arrP[3];
+            if (arrP.Length > 4)
+                proxyPassword = arrP[4];
+            int retryTimes = 0;
+            try
+            {
+                session.Connect(proxyHost, proxyPort, proxyUsername, proxyPassword, proxyType);
+                return true;
+            }
+            catch
+            {
+                while (!session.IsConnected)
+                {
+                    try
+                    {
+                        session.Connect(proxyHost, proxyPort, proxyUsername, proxyPassword, proxyType);
+                    }
+                    catch
+                    {
+                        if (retryTimes >= 3)
+                            break;
+                        Console.WriteLine($"Retry {retryTimes + 1}...");
+                        Thread.Sleep(1000);
+                    }
+                    retryTimes++;
+                }
+                if (!session.IsConnected)
+                {
+                    Console.WriteLine("Failed to connect to the server through the provided proxy!");
+                    return false;
+                }
+                else
+                    return true;
+            }
         }
 
         static Bitmap CropToContent(Bitmap source)
