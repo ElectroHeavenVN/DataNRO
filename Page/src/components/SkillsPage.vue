@@ -15,10 +15,12 @@ const { t } = useI18n();
   <LoadingPage v-if="loading" />
   <div v-else>
     <div class="title">
-      <div>        
+      <div>
         <div style="display: flex; flex-direction: row; gap: 5px; align-items: center;">
           <h1>{{ t('skills') }}</h1>
-          <a class="material-icons-round" :title="t('viewRaw')" :href="servers[selectedServerIndex - 1].id + '/NClasses.json'" target="_blank" style="color: unset !important;">open_in_new</a>
+          <a class="material-icons-round" :title="t('viewRaw')"
+            :href="servers[selectedServerIndex - 1].id + '/NClasses.json'" target="_blank"
+            style="color: unset !important;">open_in_new</a>
         </div>
         <h5>{{ t('lastUpdated') }}: {{ lastUpdated }}</h5>
       </div>
@@ -30,22 +32,15 @@ const { t } = useI18n();
     </div>
     <div>
       <div class="skillTemplates">
-        <SkillTemplate v-for="skillTemplates in visibleSkillTemplates" 
-          :classId=skillTemplates.classId
-          :className=skillTemplates.className
-          :id=skillTemplates.id 
-          :maxPoint=skillTemplates.maxPoint
-          :manaUseType=skillTemplates.manaUseType
-          :type=skillTemplates.type
-          :icon=skillTemplates.icon
-          :name=skillTemplates.name
-          :description=skillTemplates.description 
-          :damInfo=skillTemplates.damInfo
-          :skills=skillTemplates.skills 
-          class="hoverable" />
+        <SkillTemplate v-for="skillTemplates in visibleSkillTemplates" :classId=skillTemplates.classId
+          :className=skillTemplates.className :id=skillTemplates.id :maxPoint=skillTemplates.maxPoint
+          :manaUseType=skillTemplates.manaUseType :type=skillTemplates.type :icon=skillTemplates.icon
+          :name=skillTemplates.name :description=skillTemplates.description :damInfo=skillTemplates.damInfo
+          :skills=skillTemplates.skills class="hoverable" />
       </div>
     </div>
-    <LoadMore v-if="filteredSkillTemplates.length > 10 && visibleSkillTemplates.length < filteredSkillTemplates.length" @load-more="loadMore" />
+    <LoadMore v-if="filteredSkillTemplates.length > 10 && visibleSkillTemplates.length < filteredSkillTemplates.length"
+      @load-more="loadMore" @load-all="loadAll" />
   </div>
 </template>
 
@@ -102,7 +97,7 @@ export default {
       mappedData.sort((a, b) => a.id - b.id);
       this.skillTemplates = mappedData;
       this.filteredSkillTemplates = [...mappedData];
-      if (this.reversed) 
+      if (this.reversed)
         this.filteredSkillTemplates.reverse();
       this.visibleSkillTemplates = this.filteredSkillTemplates.slice(0, 10);
       response = await fetch(this.servers[this.selectedServerIndex - 1].id + '/LastUpdated');
@@ -114,6 +109,9 @@ export default {
     },
     loadMore() {
       this.visibleSkillTemplates = this.filteredSkillTemplates.slice(0, this.visibleSkillTemplates.length + 10);
+    },
+    loadAll() {
+      this.visibleSkillTemplates = this.filteredSkillTemplates;
     },
     changeSort(e) {
       this.currentSort = e.target.value;
@@ -131,7 +129,7 @@ export default {
           this.filteredSkillTemplates.sort((a, b) => a.icon - b.icon);
           break;
       }
-      if (this.reversed) 
+      if (this.reversed)
         this.filteredSkillTemplates.reverse();
       this.visibleSkillTemplates = this.filteredSkillTemplates.slice(0, 10);
     },
@@ -139,7 +137,7 @@ export default {
       const search = e.target.value.toLowerCase();
       if (search === '') {
         this.filteredSkillTemplates = [...this.skillTemplates];
-        if (this.reversed) 
+        if (this.reversed)
           this.filteredSkillTemplates.reverse();
         this.sortSkillTemplates();
         return;
@@ -148,7 +146,7 @@ export default {
     searchSkillTemplates(e) {
       const search = this.replaceVietnameseChars(e.target.value.toLowerCase());
       this.filteredSkillTemplates = this.skillTemplates.filter(skillTemplate => this.replaceVietnameseChars((skillTemplate.name + '|' + skillTemplate.description + '|' + skillTemplate.damInfo + '|' + skillTemplate.id).toLowerCase()).includes(search));
-      if (this.reversed) 
+      if (this.reversed)
         this.filteredSkillTemplates.reverse();
       this.visibleSkillTemplates = this.filteredSkillTemplates.slice(0, 10);
     },
@@ -174,9 +172,9 @@ export default {
   },
   mounted() {
     let index = this.servers.map(s => s.id).indexOf(this.defaultServerId);
-    if (index !== -1) 
+    if (index !== -1)
       this.selectedServerIndex = index + 1;
-    else 
+    else
       this.selectedServerIndex = 1;
     moment.locale(navigator.language);
     this.getSkillTemplates();
@@ -190,7 +188,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  margin-top: 30px; 
+  margin-top: 30px;
   margin-bottom: 20px;
   gap: 20px;
 }

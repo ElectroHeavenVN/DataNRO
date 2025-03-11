@@ -18,7 +18,9 @@ const { t } = useI18n();
       <div>
         <div style="display: flex; flex-direction: row; gap: 5px; align-items: center;">
           <h1>{{ t('maps') }}</h1>
-          <a class="material-icons-round" :title="t('viewRaw')" :href="servers[selectedServerIndex - 1].id + '/Maps.json'" target="_blank" style="color: unset !important;">open_in_new</a>
+          <a class="material-icons-round" :title="t('viewRaw')"
+            :href="servers[selectedServerIndex - 1].id + '/Maps.json'" target="_blank"
+            style="color: unset !important;">open_in_new</a>
         </div>
         <h5>{{ t('lastUpdated') }}: {{ lastUpdated }}</h5>
       </div>
@@ -31,7 +33,8 @@ const { t } = useI18n();
     <div class="maps">
       <Map v-for="map in visibleMaps" :name=map.name :id=map.id class="hoverable" />
     </div>
-    <LoadMore v-if="filteredMaps.length > 30 && visibleMaps.length < filteredMaps.length" @load-more="loadMore" />
+    <LoadMore v-if="filteredMaps.length > 30 && visibleMaps.length < filteredMaps.length" @load-more="loadMore"
+      @load-all="loadAll" />
   </div>
 </template>
 
@@ -68,7 +71,7 @@ export default {
       let data = await response.json();
       this.maps = data;
       this.filteredMaps = [...data];
-      if (this.reversed) 
+      if (this.reversed)
         this.filteredMaps.reverse();
       this.visibleMaps = this.filteredMaps.slice(0, 30);
       response = await fetch(this.servers[this.selectedServerIndex - 1].id + '/LastUpdated');
@@ -80,6 +83,9 @@ export default {
     },
     loadMore() {
       this.visibleMaps = this.filteredMaps.slice(0, this.visibleMaps.length + 30);
+    },
+    loadAll() {
+      this.visibleMaps = this.filteredMaps;
     },
     changeSort(e) {
       this.currentSort = e.target.value;
@@ -94,7 +100,7 @@ export default {
           this.filteredMaps.sort((a, b) => a.name.localeCompare(b.name));
           break;
       }
-      if (this.reversed) 
+      if (this.reversed)
         this.filteredMaps.reverse();
       this.visibleMaps = this.filteredMaps.slice(0, 30);
     },
@@ -102,7 +108,7 @@ export default {
       const search = e.target.value.toLowerCase();
       if (search === '') {
         this.filteredMaps = [...this.maps];
-        if (this.reversed) 
+        if (this.reversed)
           this.filteredMaps.reverse();
         this.sortMaps();
         return;
@@ -111,7 +117,7 @@ export default {
     searchMap(e) {
       const search = this.replaceVietnameseChars(e.target.value.toLowerCase());
       this.filteredMaps = this.maps.filter(map => this.replaceVietnameseChars((map.name + '|' + map.id).toLowerCase()).includes(search));
-      if (this.reversed) 
+      if (this.reversed)
         this.filteredMaps.reverse();
       this.visibleMaps = this.filteredMaps.slice(0, 30);
     },
@@ -136,9 +142,9 @@ export default {
   },
   mounted() {
     let index = this.servers.map(s => s.id).indexOf(this.defaultServerId);
-    if (index !== -1) 
+    if (index !== -1)
       this.selectedServerIndex = index + 1;
-    else 
+    else
       this.selectedServerIndex = 1;
     moment.locale(navigator.language);
     this.getMaps();
@@ -147,13 +153,12 @@ export default {
 </script>
 
 <style scoped>
-
 .title {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  margin-top: 30px; 
+  margin-top: 30px;
   margin-bottom: 20px;
   gap: 20px;
 }
@@ -193,5 +198,4 @@ select {
     gap: 20px;
   }
 }
-
 </style>

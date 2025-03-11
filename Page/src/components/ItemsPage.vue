@@ -18,7 +18,9 @@ const { t } = useI18n();
       <div>
         <div style="display: flex; flex-direction: row; gap: 5px; align-items: center;">
           <h1>{{ t('items') }}</h1>
-          <a class="material-icons-round" :title="t('viewRaw')" :href="servers[selectedServerIndex - 1].id + '/ItemTemplates.json'" target="_blank" style="color: unset !important;">open_in_new</a>
+          <a class="material-icons-round" :title="t('viewRaw')"
+            :href="servers[selectedServerIndex - 1].id + '/ItemTemplates.json'" target="_blank"
+            style="color: unset !important;">open_in_new</a>
         </div>
         <h5>{{ t('lastUpdated') }}: {{ lastUpdated }}</h5>
       </div>
@@ -29,11 +31,13 @@ const { t } = useI18n();
       <Sort @change-sort="changeSort" @inverse-sort="inverseSort" />
     </div>
     <div class="items">
-      <Item v-for="item in visibleItems" :icon=item.icon :name=item.name
-        :description=item.description :id=item.id :type=item.type :gender=item.gender :level=item.level
-        :isNewItem="items.map(i => i.id).indexOf(item.id) > items.length - 50" :powerRequired=item.strRequire class="hoverable" />
+      <Item v-for="item in visibleItems" :icon=item.icon :name=item.name :description=item.description :id=item.id
+        :type=item.type :gender=item.gender :level=item.level
+        :isNewItem="items.map(i => i.id).indexOf(item.id) > items.length - 50" :powerRequired=item.strRequire
+        class="hoverable" />
     </div>
-    <LoadMore v-if="filteredItems.length > 30 && visibleItems.length < filteredItems.length" @load-more="loadMore" />
+    <LoadMore v-if="filteredItems.length > 30 && visibleItems.length < filteredItems.length" @load-more="loadMore"
+      @load-all="loadAll" :warning="true" />
   </div>
 </template>
 
@@ -70,7 +74,7 @@ export default {
       let data = await response.json();
       this.items = data;
       this.filteredItems = [...data];
-      if (this.reversed) 
+      if (this.reversed)
         this.filteredItems.reverse();
       this.visibleItems = this.filteredItems.slice(0, 30);
       response = await fetch(this.servers[this.selectedServerIndex - 1].id + '/LastUpdated');
@@ -82,6 +86,9 @@ export default {
     },
     loadMore() {
       this.visibleItems = this.filteredItems.slice(0, this.visibleItems.length + 30);
+    },
+    loadAll() {
+      this.visibleItems = this.filteredItems;
     },
     changeSort(e) {
       this.currentSort = e.target.value;
@@ -99,7 +106,7 @@ export default {
           this.filteredItems.sort((a, b) => a.icon - b.icon);
           break;
       }
-      if (this.reversed) 
+      if (this.reversed)
         this.filteredItems.reverse();
       this.visibleItems = this.filteredItems.slice(0, 30);
     },
@@ -107,7 +114,7 @@ export default {
       const search = e.target.value.toLowerCase();
       if (search === '') {
         this.filteredItems = [...this.items];
-        if (this.reversed) 
+        if (this.reversed)
           this.filteredItems.reverse();
         this.sortItems();
         return;
@@ -116,7 +123,7 @@ export default {
     searchItem(e) {
       const search = this.replaceVietnameseChars(e.target.value.toLowerCase());
       this.filteredItems = this.items.filter(item => this.replaceVietnameseChars((item.name + '|' + item.description + '|' + item.id).toLowerCase()).includes(search));
-      if (this.reversed) 
+      if (this.reversed)
         this.filteredItems.reverse();
       this.visibleItems = this.filteredItems.slice(0, 30);
     },
@@ -141,9 +148,9 @@ export default {
   },
   mounted() {
     let index = this.servers.map(s => s.id).indexOf(this.defaultServerId);
-    if (index !== -1) 
+    if (index !== -1)
       this.selectedServerIndex = index + 1;
-    else 
+    else
       this.selectedServerIndex = 1;
     moment.locale(navigator.language);
     this.getItems();
@@ -157,7 +164,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  margin-top: 30px; 
+  margin-top: 30px;
   margin-bottom: 20px;
   gap: 20px;
 }
@@ -186,5 +193,4 @@ export default {
     gap: 20px;
   }
 }
-
 </style>
