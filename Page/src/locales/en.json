@@ -83,6 +83,8 @@
 	"hsnr4": "Server 4",
 
 	"loadMore": "Load more",
+	"loadMoreHold": "Hold to load all",
+	"loadMoreWarning": "Your browser WILL lag",
 
 	"selectServer": "Select server",
 	"search": "Search",
