@@ -226,6 +226,7 @@ export default {
 <style scoped>
 .lastWorkflow {
   white-space: nowrap;
+  padding-right: 40px;
 }
 
 .lastWorkflow a {
