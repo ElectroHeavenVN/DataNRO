@@ -9,6 +9,11 @@ on:
         type: "boolean"
         required: false
         default: false
+      use-sample-data-HSNR:
+        description: "Use sample data (HSNR only)"
+        type: "boolean"
+        required: false
+        default: false
       overwrite-icons:
         description: "ID icons to overwrite, separated by comma, -1 to overwrite all"
         type: "string"
@@ -57,6 +62,7 @@ jobs:
     runs-on: windows-latest
     outputs:
       use-sample-data: ${{ steps.check-sample-data.outputs.run }}
+      use-sample-data-HSNR: ${{ steps.check-sample-data-HSNR.outputs.run }}
       data-teamobi: ${{ steps.update-data-TeaMobi.outputs.run }}
       data-hsnr: ${{ steps.update-data-HSNR.outputs.run }}
     steps:
@@ -64,6 +70,14 @@ jobs:
         id: check-sample-data
         run: |
           if ('${{ github.event.inputs.use-sample-data }}' -eq 'true') {
+            echo run=true | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
+          } else {
+            echo run=false | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
+          }
+      - name: Check if sample data should be used (HSNR)
+        id: check-sample-data-HSNR
+        run: |
+          if ('${{ github.event.inputs.use-sample-data-HSNR }}' -eq 'true') {
             echo run=true | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
           } else {
             echo run=false | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
@@ -209,7 +223,7 @@ jobs:
           workflow_conclusion: ""
           if_no_artifact_found: fail
           allow_forks: false
-          path: Page/public
+          path: Page\public
       - name: Download artifact DataNRO-HSNR
         uses: dawidd6/action-download-artifact@v8
         with:
@@ -219,7 +233,7 @@ jobs:
           workflow_conclusion: ""
           if_no_artifact_found: fail
           allow_forks: false
-          path: Page/public
+          path: Page\public
       - name: Build page
         run: |
           cd Page
@@ -268,9 +282,67 @@ jobs:
           name: DataNRO-HSNR
           path: Output\Data2
       - name: Move sample data to Page (TeaMobi)
-        run: Move-Item -Path Output\Data\TeaMobi -Destination Page/public -Force
+        run: Move-Item -Path Output\Data\TeaMobi -Destination Page\public -Force
       - name: Move sample data to Page (HSNR)
-        run: Move-Item -Path Output\Data2\HSNR -Destination Page/public -Force
+        run: Move-Item -Path Output\Data2\HSNR -Destination Page\public -Force
+      - name: Build page
+        run: |
+          cd Page
+          npm install
+          npm run build
+      - name: Copy index.html (Dirty trick)
+        run: |
+          cp Page/dist/index.html Page/dist/HSNR/index.html
+          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server HSNR/g' Page/dist/HSNR/index.html
+          cp Page/dist/index.html Page/dist/TeaMobi/index.html
+          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server TeaMobi/g' Page/dist/TeaMobi/index.html
+          cp Page/dist/index.html Page/dist/404.html
+          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Not found/g' Page/dist/404.html
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: Page/dist
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  update-data-sample-HSNR:
+    name: Update data and deploy using sample data (HSNR only)
+    needs: check-data
+    if: needs.check-data.outputs.use-sample-data-HSNR == 'true'
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download artifact DataNRO-TeaMobi
+        uses: dawidd6/action-download-artifact@v8
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow_search: true
+          workflow_conclusion: success
+          if_no_artifact_found: fail
+          allow_forks: false
+          workflow: update-data.yml
+          name: DataNRO-TeaMobi
+          path: Output\Data
+      - name: Upload artifact DataNRO-TeaMobi
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataNRO-TeaMobi
+          path: Output\Data
+      - name: Decompress sample data (HSNR)
+        run: Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Output\Data2
+      - name: Upload artifact DataNRO-HSNR
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataNRO-HSNR
+          path: Output\Data2
+      - name: Move sample data to Page (TeaMobi)
+        run: Move-Item -Path Output\Data\TeaMobi -Destination Page\public -Force
+      - name: Move sample data to Page (HSNR)
+        run: Move-Item -Path Output\Data2\HSNR -Destination Page\public -Force
       - name: Build page
         run: |
           cd Page
