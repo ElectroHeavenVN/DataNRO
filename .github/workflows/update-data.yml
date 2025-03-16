@@ -57,52 +57,9 @@ jobs:
 
   # ----------------------------------------------------
 
-  check-data:
-    name: Check data
-    runs-on: windows-latest
-    outputs:
-      use-sample-data: ${{ steps.check-sample-data.outputs.run }}
-      use-sample-data-HSNR: ${{ steps.check-sample-data-HSNR.outputs.run }}
-      data-teamobi: ${{ steps.update-data-TeaMobi.outputs.run }}
-      data-hsnr: ${{ steps.update-data-HSNR.outputs.run }}
-    steps:
-      - name: Check if sample data should be used
-        id: check-sample-data
-        run: |
-          if ('${{ github.event.inputs.use-sample-data }}' -eq 'true') {
-            echo run=true | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
-          } else {
-            echo run=false | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
-          }
-      - name: Check if sample data should be used (HSNR)
-        id: check-sample-data-HSNR
-        run: |
-          if ('${{ github.event.inputs.use-sample-data-HSNR }}' -eq 'true') {
-            echo run=true | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
-          } else {
-            echo run=false | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
-          }
-      - name: Chech if data should be updated (TeaMobi)
-        id: update-data-TeaMobi
-        run: |
-          if ('${{ github.event.inputs.use-sample-data }}' -eq 'true') {
-            echo run=false | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
-          } else {
-            echo run=true | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
-          }
-      - name: Chech if data should be updated (HSNR)
-        id: update-data-HSNR
-        run: |
-          if ('${{ github.event.inputs.use-sample-data }}' -eq 'true' -or '${{ secrets.PAT_TOKEN }}' -eq '') {
-            echo run=false | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
-          } else {
-            echo run=true | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
-          }
-
   update-data-TeaMobi:
     name: Update data (TeaMobi)
-    needs: check-data
-    if: needs.check-data.outputs.data-teamobi == 'true'
+    if: github.event.inputs.use-sample-data != 'true'
     runs-on: windows-latest
     env:
       CLISolutionPath: CLI/DataNRO.sln
@@ -148,8 +105,7 @@ jobs:
 
   update-data-HSNR:
     name: Update data (HSNR)
-    needs: check-data
-    if: needs.check-data.outputs.data-hsnr == 'true'
+    if: github.event.inputs.use-sample-data != 'true'
     runs-on: windows-latest
     env:
       CLISolutionPath: CLI/DataNRO.sln
@@ -261,8 +217,7 @@ jobs:
 
   update-data-sample:
     name: Update data and deploy using sample data
-    needs: check-data
-    if: needs.check-data.outputs.use-sample-data == 'true'
+    if: github.event.inputs.use-sample-data == 'true'
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -310,8 +265,7 @@ jobs:
 
   update-data-sample-HSNR:
     name: Update data and deploy using sample data (HSNR only)
-    needs: check-data
-    if: needs.check-data.outputs.use-sample-data-HSNR == 'true'
+    if: github.event.inputs.use-sample-data-HSNR == 'true'
     runs-on: windows-latest
     steps:
       - name: Checkout
