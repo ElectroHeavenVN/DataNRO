@@ -51,6 +51,10 @@
 	"typeSkillBooks2": "Skill book 2",
 	"typePet": "Pet",
 	"typeUnknown": "Unknown",
+	"typeTitlesHSNR": "HSNR Title",
+	"typeBeastsHSNR": "HSNR Mythical Beast",
+	"typeHalosHSNR": "HSNR Halo",
+	"typeJadeHSNR": "HSNR Jade",
 
 	"items": "Items",
 	"npcs": "NPCs",

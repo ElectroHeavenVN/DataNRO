@@ -27,7 +27,7 @@ const { t } = useI18n();
       <SelectServer :servers="servers" :defaultServerId="defaultServerId" @change-server="changeServer" />
     </div>
     <div class="searchBar">
-      <SearchBar :placeholder="t('searchSkill')" @input="checkDeleteAll" @search="searchSkillTemplates" />
+      <SearchBar :placeholder="t('searchSkill')" @inputText="checkDeleteAll" @search="searchSkillTemplates" />
       <Sort @change-sort="changeSort" @inverse-sort="inverseSort" />
     </div>
     <div>
@@ -137,8 +137,6 @@ export default {
       const search = e.target.value.toLowerCase();
       if (search === '') {
         this.filteredSkillTemplates = [...this.skillTemplates];
-        if (this.reversed)
-          this.filteredSkillTemplates.reverse();
         this.sortSkillTemplates();
         return;
       }
@@ -153,8 +151,7 @@ export default {
     inverseSort(e) {
       this.filteredSkillTemplates.reverse();
       this.visibleSkillTemplates = this.filteredSkillTemplates.slice(0, 10);
-      e.target.style.transform = e.target.style.transform === 'scale(1, -1)' ? 'scale(1, 1)' : 'scale(1, -1)';
-      this.reversed = e.target.style.transform === 'scale(1, 1)';
+      this.reversed = e.reversed;
     },
     replaceVietnameseChars(str) {
       return str.replace(/á|à|ả|ã|ạ|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/g, 'a')

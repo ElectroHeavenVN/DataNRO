@@ -27,7 +27,7 @@ const { t } = useI18n();
       <SelectServer :servers="servers" :defaultServerId="defaultServerId" @change-server="changeServer" />
     </div>
     <div class="searchBar">
-      <SearchBar :placeholder="t('searchMob')" @input="checkDeleteAll" @search="searchMob" />
+      <SearchBar :placeholder="t('searchMob')" @inputText="checkDeleteAll" @search="searchMob" />
       <Sort @change-sort="changeSort" @inverse-sort="inverseSort" />
     </div>
     <div class="mobs">
@@ -109,8 +109,6 @@ export default {
       const search = e.target.value.toLowerCase();
       if (search === '') {
         this.filteredMobs = [...this.mobs];
-        if (this.reversed)
-          this.filteredMobs.reverse();
         this.sortMobs();
         return;
       }
@@ -125,8 +123,7 @@ export default {
     inverseSort(e) {
       this.filteredMobs.reverse();
       this.visibleMobs = this.filteredMobs.slice(0, 30);
-      e.target.style.transform = e.target.style.transform === 'scale(1, -1)' ? 'scale(1, 1)' : 'scale(1, -1)';
-      this.reversed = e.target.style.transform === 'scale(1, 1)';
+      this.reversed = e.reversed;
     },
     replaceVietnameseChars(str) {
       return str.replace(/á|à|ả|ã|ạ|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/g, 'a')

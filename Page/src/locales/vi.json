@@ -51,6 +51,10 @@
 	"typeSkillBooks2": "Sách kỹ năng 2",
 	"typePet": "Pet",
 	"typeUnknown": "Chưa biết",
+	"typeTitlesHSNR": "Danh hiệu HSNR",
+	"typeBeastsHSNR": "Linh thú HSNR",
+	"typeHalosHSNR": "Hào quang HSNR",
+	"typeJadeHSNR": "Ngọc bội HSNR",
 	
 	"items": "Vật phẩm",
 	"npcs": "NPC",
