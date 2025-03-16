@@ -24,8 +24,8 @@ export default {
       this.$emit('change-sort', e);
     },
     inverseSort(e) {
-      e.target.parentElement.style.transform = e.target.parentElement.style.transform === 'scale(1, -1)' ? 'scale(1, 1)' : 'scale(1, -1)';
-      this.$emit('inverse-sort', {reversed: e.target.parentElement.style.transform === 'scale(1, 1)'});
+      e.target.parentElement.style.transform = e.target.parentElement.style.transform === 'scale(1, -1)' ? 'none' : 'scale(1, -1)';
+      this.$emit('inverse-sort', {reversed: e.target.parentElement.style.transform === 'scale(1, -1)'});
     }
   }
 }

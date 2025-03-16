@@ -108,8 +108,6 @@ export default {
       const search = e.target.value.toLowerCase();
       if (search === '') {
         this.filteredMaps = [...this.maps];
-        if (this.reversed)
-          this.filteredMaps.reverse();
         this.sortMaps();
         return;
       }

@@ -6,7 +6,7 @@ const { t } = useI18n();
 <template>
   <div class="search-bar">
     <span class="material-icons-round" style="font-size: 2rem;">search</span>
-    <input type="text" :placeholder="placeholder" value="" @input="onInput" @change="onSearch" />
+    <input type="search" :placeholder="placeholder" @input="onInput" @change="onSearch" />
   </div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     onInput(event) {
-      this.$emit('input', event);
+      this.$emit('inputText', event);
     },
     onSearch(event) {
       this.$emit('search', event);

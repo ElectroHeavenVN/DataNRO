@@ -27,7 +27,7 @@ const { t } = useI18n();
       <SelectServer :servers="servers" :defaultServerId="defaultServerId" @change-server="changeServer" />
     </div>
     <div class="searchBar">
-      <SearchBar :placeholder="t('searchItem')" @input="checkDeleteAll" @search="searchItem" />
+      <SearchBar :placeholder="t('searchItem')" @inputText="checkDeleteAll" @search="searchItem" />
       <Sort @change-sort="changeSort" @inverse-sort="inverseSort" />
     </div>
     <div class="items">
@@ -114,8 +114,6 @@ export default {
       const search = e.target.value.toLowerCase();
       if (search === '') {
         this.filteredItems = [...this.items];
-        if (this.reversed)
-          this.filteredItems.reverse();
         this.sortItems();
         return;
       }

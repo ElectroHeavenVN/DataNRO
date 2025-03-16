@@ -105,8 +105,18 @@ const getTypeString = (type) => {
       return t('typeTitles');
     case 37:
       return t('typeSkillBooks2');
+
+    case 17:
+      return t('typeTitlesHSNR');
+    case 19:
+      return t('typeBeastsHSNR');
+    case 21:
+      return t('typeHalosHSNR');
+    case 26:
+      return t('typeJadeHSNR');
+
     default:
-      return  t('typeUnknown') + ' (' + type + ')';
+      return t('typeUnknown');
   }
 }
 
@@ -147,7 +157,7 @@ const breakMultiLine = (text) => {
     <div class="info">
       <div>
         <span>{{ t('type') }}: </span>
-        <span class="type">{{ getTypeString(type) }}</span>
+        <span class="type">{{ getTypeString(type) }} [{{type}}]</span>
       </div>
       <!-- <span class="level">{{ level }}</span> -->
       <div v-if="formatPowerRequired(powerRequired) !== ''">
