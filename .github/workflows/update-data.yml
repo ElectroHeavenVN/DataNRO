@@ -59,7 +59,7 @@ jobs:
 
   update-data-TeaMobi:
     name: Update data (TeaMobi)
-    if: github.event.inputs.use-sample-data != 'true'
+    if: github.event.inputs.use-sample-data != 'true' && github.event.inputs.use-sample-data-HSNR != 'true'
     runs-on: windows-latest
     env:
       CLISolutionPath: CLI/DataNRO.sln
@@ -105,7 +105,7 @@ jobs:
 
   update-data-HSNR:
     name: Update data (HSNR)
-    if: github.event.inputs.use-sample-data != 'true'
+    if: github.event.inputs.use-sample-data != 'true' && github.event.inputs.use-sample-data-HSNR != 'true'
     runs-on: windows-latest
     env:
       CLISolutionPath: CLI/DataNRO.sln
@@ -217,7 +217,7 @@ jobs:
 
   update-data-sample:
     name: Update data and deploy using sample data
-    if: github.event.inputs.use-sample-data == 'true'
+    if: github.event.inputs.use-sample-data == 'true' && github.event.inputs.use-sample-data-HSNR != 'true'
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -265,7 +265,7 @@ jobs:
 
   update-data-sample-HSNR:
     name: Update data and deploy using sample data (HSNR only)
-    if: github.event.inputs.use-sample-data-HSNR == 'true'
+    if: github.event.inputs.use-sample-data-HSNR == 'true' && github.event.inputs.use-sample-data != 'true'
     runs-on: windows-latest
     steps:
       - name: Checkout
