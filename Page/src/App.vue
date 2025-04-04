@@ -33,14 +33,10 @@ const { t } = useI18n();
             <img src="/DataNRO.png" alt="TeaMobi">
           </a>
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <a href="/DataNRO/">
+            <a href="/DataNRO/" style="position: relative; top: 3px">
               <h1>{{ title }}</h1>
             </a>
-            <a href="https://hits.seeyoufarm.com" style="position: relative; top: -5px;" target="_blank">
-              <img
-                :src="'https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Felectroheavenvn.github.io%2FDataNRO%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&edge_flat=false&title=' + encodeURIComponent(t('visits'))"
-                style="width: auto; height: 12px;" />
-            </a>
+            <span style="font-size: 10px; position: relative; top: -3px">by ElectroHeavenVN</span>
           </div>
           <a v-if="currentPath == ''" href="/DataNRO/TeaMobi/">
             <img src="/DataNRO.png" alt="TeaMobi">
