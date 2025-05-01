@@ -1,7 +1,15 @@
 {
+	"ghStars": "Give me a star on GitHub!",
+
 	"selectPublisher": "Select publisher",
 	"teaMobiName": "TeaMobi (Dragon Ball Online)",
 	"hsnrName": "Koi Octiiu957 (Revive DBO)",
+	"nroBlueFakeName": "Ngoc Rong Blue (nroblue.vn)",
+	"iLoveNROName": "Toi Yeu Ngoc Rong",
+
+	"privateServer": "Private server",
+	"privateAndScamServer": "Private and scam server",
+	"officialServer": "Official server",
 
 	"loading": "Loading",
 	"lastUpdated": "Last updated",

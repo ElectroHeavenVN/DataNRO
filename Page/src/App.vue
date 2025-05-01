@@ -4,6 +4,8 @@ import HSNRPage from './views/HSNRPage.vue';
 import TeaMobiPage from './views/TeaMobiPage.vue';
 import SelectGamePublisherPage from './views/SelectGamePublisherPage.vue';
 import NotFound from './components/NotFound.vue';
+import BlueFakePage from './views/BlueFakePage.vue';
+import ILoveNROPage from './views/ILoveNROPage.vue';
 
 const { t } = useI18n();
 
@@ -26,13 +28,7 @@ const { t } = useI18n();
         <div href="/" class="content head">
           <span v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR'"
             style="font-size: 25px; cursor:pointer; position: relative; top:1px;" @click=openNav>&#9776;</span>
-          <a v-if="currentPath == 'HSNR'" href="/DataNRO/HSNR/">
-            <img src="/DataHSNR.png" alt="HSNR">
-          </a>
-          <a v-else-if="currentPath == 'TeaMobi'" href="/DataNRO/TeaMobi/">
-            <img src="/DataNRO.png" alt="TeaMobi">
-          </a>
-          <div style="display: flex; flex-direction: column; align-items: center;">
+          <div style="display: flex; flex-direction: column; align-items: center; max-height: 40px;">
             <a href="/DataNRO/" style="position: relative; top: 3px">
               <h1>{{ title }}</h1>
             </a>
@@ -40,9 +36,6 @@ const { t } = useI18n();
           </div>
           <a v-if="currentPath == ''" href="/DataNRO/TeaMobi/">
             <img src="/DataNRO.png" alt="TeaMobi">
-          </a>
-          <a v-if="currentPath == ''" href="/DataNRO/HSNR/">
-            <img src="/DataHSNR.png" alt="HSNR">
           </a>
         </div>
         <div v-if="lastWorkflowLink !== ''" class="lastWorkflow">
@@ -130,6 +123,8 @@ const { t } = useI18n();
       <div class="content">
         <TeaMobiPage v-if="currentPath == 'TeaMobi'" />
         <HSNRPage v-else-if="currentPath == 'HSNR'" />
+        <BlueFakePage v-else-if="currentPath == 'BlueFake'" />
+        <ILoveNROPage v-else-if="currentPath == 'ILoveNRO'" />
         <SelectGamePublisherPage v-else-if="currentPath == ''" />
         <NotFound v-else />
       </div>
