@@ -172,7 +172,7 @@ jobs:
         run: |
           mv -f Output/Data2/HSNR Page/public/
           mv -f Output/Data3/BlueFake Page/public/
-          mv -f Output/Data4/ILoveNRO Page/public/
+          # mv -f Output/Data4/ILoveNRO Page/public/
       - name: Build page
         run: |
           cd Page
