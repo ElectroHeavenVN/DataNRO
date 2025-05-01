@@ -114,9 +114,9 @@ jobs:
           path: Page\public
       - name: Decompress sample data (Private servers)
         run: |
-          Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Page\public
-          Expand-Archive -Path SampleData\DataNRO-BlueFake.zip -DestinationPath Page\public
-          Expand-Archive -Path SampleData\DataNRO-ILoveNRO.zip -DestinationPath Page\public
+          Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Page\public -Force
+          Expand-Archive -Path SampleData\DataNRO-BlueFake.zip -DestinationPath Page\public -Force
+          # Expand-Archive -Path SampleData\DataNRO-ILoveNRO.zip -DestinationPath Page\public -Force
       - name: Build page
         run: |
           cd Page
@@ -155,7 +155,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Decompress sample data (TeaMobi)
-        run: Expand-Archive -Path SampleData\DataNRO-TeaMobi.zip -DestinationPath Output\Data
+        run: Expand-Archive -Path SampleData\DataNRO-TeaMobi.zip -DestinationPath Output\Data -Force
       - name: Upload artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
@@ -163,9 +163,9 @@ jobs:
           path: Output\Data
       - name: Decompress sample data (Private servers)
         run: |
-          Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Output\Data2
-          Expand-Archive -Path SampleData\DataNRO-BlueFake.zip -DestinationPath Output\Data3
-          Expand-Archive -Path SampleData\DataNRO-ILoveNRO.zip -DestinationPath Output\Data4
+          Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Output\Data2 -Force
+          Expand-Archive -Path SampleData\DataNRO-BlueFake.zip -DestinationPath Output\Data3 -Force
+          # Expand-Archive -Path SampleData\DataNRO-ILoveNRO.zip -DestinationPath Output\Data4 -Force
       - name: Move sample data to Page (TeaMobi)
         run: Move-Item -Path Output\Data\TeaMobi -Destination Page\public -Force
       - name: Move sample data to Page (Private servers)
