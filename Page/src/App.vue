@@ -150,15 +150,28 @@ export default {
   },
   methods: {
     changeTitle() {
-      let currentPath = this.currentPath;
       if (location.pathname !== '/DataNRO/') {
-        if (currentPath !== 'pageNotFound')
-          document.title = 'DataNRO - Server ' + this.currentPath;
+        let currentServer = this.getCurrentServer();
+        if (currentServer !== "")
+          document.title = 'DataNRO - Server ' + currentServer;
         else
-          document.title = "DataNRO - " + useI18n().t(currentPath);
+          document.title = "DataNRO - " + useI18n().t('pageNotFound');
       }
       else
         document.title = "DataNRO by ElectroHeavenVN";
+    },
+    getCurrentServer() {
+      let currentPath = this.currentPath;
+      if (currentPath === 'TeaMobi')
+        return 'TeaMobi'; 
+      else if (currentPath === 'HSNR')
+        return 'HSNR';
+      else if (currentPath === 'BlueFake')
+        return 'NRO Blue';
+      else if (currentPath === 'ILoveNRO')
+        return useI18n().t('ilovenro');
+      else
+        return "";
     },
     openNav() {
       document.getElementById("mySidenav").style.width = "150px";

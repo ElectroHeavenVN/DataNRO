@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DataNRO.Interfaces;
+using Newtonsoft.Json;
+using Starksoft.Net.Proxy;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
@@ -10,9 +13,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using DataNRO.Interfaces;
-using Newtonsoft.Json;
-using Starksoft.Net.Proxy;
 using static DataNRO.GameData;
 
 namespace DataNRO.CLI
@@ -47,12 +47,18 @@ namespace DataNRO.CLI
             string forceProxyEnv = Environment.GetEnvironmentVariable("FORCE_PROXY");
             if (!string.IsNullOrEmpty(forceProxyEnv))
                 forceProxy = bool.Parse(forceProxyEnv);
-#if DEBUG
-            Console.Write("DATA: ");
-            string data = Console.ReadLine();
-#else
             string data = Environment.GetEnvironmentVariable("DATA");
+            if (string.IsNullOrEmpty(data))
+            {
+#if DEBUG
+                Console.Write("DATA: ");
+                data = Console.ReadLine();
+#else
+                Console.WriteLine("DATA environment variable is not set!");
+                Environment.Exit(1);
+                return;
 #endif
+            }
             string[] datas = data.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             foreach (string d in datas)
             {
@@ -96,7 +102,7 @@ namespace DataNRO.CLI
             try
             {
                 Console.WriteLine($"Creating session type \"{type}\" from assembly \"DataNRO.{type}.dll\"...");
-                Assembly assembly = Assembly.LoadFrom($"DataNRO.{type}.dll");
+                Assembly assembly = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), $"DataNRO.{type}.dll"));
                 Console.WriteLine($"Loaded assembly: {assembly.FullName}");
                 Console.WriteLine($"Assembly name: {assembly.GetCustomAttribute<AssemblyTitleAttribute>().Title}");
                 Console.WriteLine($"Assembly description: {assembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description}");
@@ -266,68 +272,74 @@ namespace DataNRO.CLI
             Console.WriteLine($"[{session.Host}:{session.Port}] Combining NPC images...");
             for (int i = 0; i < session.Data.NpcTemplates.Length; i++)
             {
-                NpcTemplate npc = session.Data.NpcTemplates[i];
-                if (Constants.EXCLUDED_NPCS.Contains(npc.npcTemplateId))
-                    continue;
-                Part partHead = npc.headId == -1 ? null : session.Data.Parts[npc.headId];
-                Part partBody = npc.bodyId == -1 ? null : session.Data.Parts[npc.bodyId];
-                Part partLeg = npc.legId == -1 ? null : session.Data.Parts[npc.legId];
-                if (partHead == null && partBody == null && partLeg == null)
-                    continue;
-                Bitmap imgHead = null, imgBody = null, imgLeg = null;
-                if (partHead != null)
-                    imgHead = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partHead.pi[0].id}.png");
-                if (partBody != null)
-                    imgBody = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partBody.pi[1].id}.png");
-                if (partLeg != null)
-                    imgLeg = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partLeg.pi[1].id}.png");
-                int maxWidth = 0, maxHeight = 0;
-                if (imgHead != null)
+                try
                 {
-                    maxWidth = imgHead.Width;
-                    maxHeight = imgHead.Height;
-                }
-                if (imgBody != null)
-                {
-                    maxWidth += imgBody.Width;
-                    maxHeight += imgBody.Height;
-                }
-                if (imgLeg != null)
-                {
-                    maxWidth += imgLeg.Width;
-                    maxHeight += imgLeg.Height;
-                }
-                using (Bitmap imgNpc = new Bitmap(maxWidth * 3, maxHeight * 3))
-                {
-                    using (Graphics g = Graphics.FromImage(imgNpc))
+                    NpcTemplate npc = session.Data.NpcTemplates[i];
+                    if (Constants.EXCLUDED_NPCS.Contains(npc.npcTemplateId))
+                        continue;
+                    Part partHead = npc.headId == -1 ? null : session.Data.Parts[npc.headId];
+                    Part partBody = npc.bodyId == -1 ? null : session.Data.Parts[npc.bodyId];
+                    Part partLeg = npc.legId == -1 ? null : session.Data.Parts[npc.legId];
+                    if (partHead == null && partBody == null && partLeg == null)
+                        continue;
+                    Bitmap imgHead = null, imgBody = null, imgLeg = null;
+                    if (partHead != null && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partHead.pi[0].id}.png"))
+                        imgHead = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partHead.pi[0].id}.png");
+                    if (partBody != null && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partBody.pi[1].id}.png"))
+                        imgBody = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partBody.pi[1].id}.png");
+                    if (partLeg != null && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partLeg.pi[1].id}.png"))
+                        imgLeg = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partLeg.pi[1].id}.png");
+                    int maxWidth = 0, maxHeight = 0;
+                    if (imgHead != null)
                     {
-                        g.FillRectangle(Brushes.Transparent, 0, 0, imgNpc.Width, imgNpc.Height);
-                        float cx = imgNpc.Width / 2f / session.Data.ZoomLevel;
-                        float cy = imgNpc.Height / 2f / session.Data.ZoomLevel;
-                        if (imgHead != null)
-                            g.DrawImage(imgHead, (cx + -13 + partHead.pi[0].dx) * session.Data.ZoomLevel, (cy - 34 + partHead.pi[0].dy) * session.Data.ZoomLevel, imgHead.Width, imgHead.Height);
-                        if (imgLeg != null)
-                            g.DrawImage(imgLeg, (cx + -8 + partLeg.pi[1].dx) * session.Data.ZoomLevel, (cy - 10 + partLeg.pi[1].dy) * session.Data.ZoomLevel, imgLeg.Width, imgLeg.Height);
-                        if (imgBody != null)
-                            g.DrawImage(imgBody, (cx + -9 + partBody.pi[1].dx) * session.Data.ZoomLevel, (cy - 16 + partBody.pi[1].dy) * session.Data.ZoomLevel, imgBody.Width, imgBody.Height);
+                        maxWidth = imgHead.Width;
+                        maxHeight = imgHead.Height;
                     }
-                    string path = $"{Path.GetDirectoryName(session.Data.Path)}\\NPCs";
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-                    Bitmap croppedImg = CropToContent(imgNpc);
-                    using (Graphics g = Graphics.FromImage(croppedImg))
+                    if (imgBody != null)
                     {
-                        g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
-                        Font font = new Font("Arial", 8);
-                        g.DrawString("© ElectroHeavenVN", font, Brushes.Black, 0, 30);
+                        maxWidth += imgBody.Width;
+                        maxHeight += imgBody.Height;
                     }
-                    croppedImg.Save($"{path}\\{npc.npcTemplateId}.png");
-                    croppedImg.Dispose();
-                    imgNpc.Dispose();
+                    if (imgLeg != null)
+                    {
+                        maxWidth += imgLeg.Width;
+                        maxHeight += imgLeg.Height;
+                    }
+                    if (maxWidth == 0 || maxHeight == 0)
+                        continue;
+                    using (Bitmap imgNpc = new Bitmap(maxWidth * 3, maxHeight * 3))
+                    {
+                        using (Graphics g = Graphics.FromImage(imgNpc))
+                        {
+                            g.FillRectangle(Brushes.Transparent, 0, 0, imgNpc.Width, imgNpc.Height);
+                            float cx = imgNpc.Width / 2f / session.Data.ZoomLevel;
+                            float cy = imgNpc.Height / 2f / session.Data.ZoomLevel;
+                            if (imgHead != null)
+                                g.DrawImage(imgHead, (cx + -13 + partHead.pi[0].dx) * session.Data.ZoomLevel, (cy - 34 + partHead.pi[0].dy) * session.Data.ZoomLevel, imgHead.Width, imgHead.Height);
+                            if (imgLeg != null)
+                                g.DrawImage(imgLeg, (cx + -8 + partLeg.pi[1].dx) * session.Data.ZoomLevel, (cy - 10 + partLeg.pi[1].dy) * session.Data.ZoomLevel, imgLeg.Width, imgLeg.Height);
+                            if (imgBody != null)
+                                g.DrawImage(imgBody, (cx + -9 + partBody.pi[1].dx) * session.Data.ZoomLevel, (cy - 16 + partBody.pi[1].dy) * session.Data.ZoomLevel, imgBody.Width, imgBody.Height);
+                        }
+                        string path = $"{Path.GetDirectoryName(session.Data.Path)}\\NPCs";
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+                        Bitmap croppedImg = CropToContent(imgNpc);
+                        using (Graphics g = Graphics.FromImage(croppedImg))
+                        {
+                            g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+                            Font font = new Font("Arial", 8);
+                            g.DrawString("© ElectroHeavenVN", font, Brushes.Black, 0, 30);
+                        }
+                        croppedImg.Save($"{path}\\{npc.npcTemplateId}.png");
+                        croppedImg.Dispose();
+                        imgNpc.Dispose();
+                    }
+                    imgHead?.Dispose();
+                    imgBody?.Dispose();
+                    imgLeg?.Dispose();
                 }
-                imgHead?.Dispose();
-                imgBody?.Dispose();
-                imgLeg?.Dispose();
+                catch { }
             }
         }
 
@@ -380,16 +392,20 @@ namespace DataNRO.CLI
         static void CombineMapImages(ISession session)
         {
             Console.WriteLine($"[{session.Host}:{session.Port}] Combining map images...");
+            string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Maps";
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
             for (int i = 0; i < session.Data.Maps.Count; i++)
             {
                 Map map = session.Data.Maps[i];
                 if (!session.Data.MapTileIDs.ContainsKey(map.id) || session.Data.MapTileIDs[map.id] == -1)
                 {
-                    //for (int tileID = 1; tileID <= 33; tileID++)
+                    //Combine maps with all tileIDs then manually check them later
+                    //for (int tileID = 1; tileID <= 42; tileID++)
                     //{
                     //    try
                     //    {
-                    //        CombineMapImages(session, map, tileID);
+                    //        CombineMapImages(session, map, tileID, true); 
                     //    }
                     //    catch (Exception ex)
                     //    {
@@ -411,7 +427,7 @@ namespace DataNRO.CLI
             }
         }
 
-        static void CombineMapImages(ISession session, Map map, int tileID)
+        static void CombineMapImages(ISession session, Map map, int tileID, bool includeTileID = false)
         {
             MapTemplate mapTemplate = map.mapTemplate;
             if (mapTemplate == null)
@@ -479,13 +495,11 @@ namespace DataNRO.CLI
             mapImgG.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
             Font font = new Font("Arial", 50);
             for (int i = 0; i < 3; i++)
-            {
                 mapImgG.DrawString("© ElectroHeavenVN", font, Brushes.Black, random.Next(0, pixelWidth - 500), random.Next(0, pixelHeight - 100));
-            }
-            string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Maps";
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-            mapImg.Save($"{path}\\{mapID}.png");
+            if (includeTileID)
+                mapImg.Save($"{$"{Path.GetDirectoryName(session.Data.Path)}\\Maps"}\\{mapID}-{tileID}.png");
+            else 
+                mapImg.Save($"{$"{Path.GetDirectoryName(session.Data.Path)}\\Maps"}\\{mapID}.png");
             mapImgG.Dispose();
             mapImg.Dispose();
             imgWaterfall.Dispose();
@@ -561,7 +575,6 @@ namespace DataNRO.CLI
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
                 }
             }
-            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
             //npc
             //while (session.Data.NpcTemplates == null)
             //{
@@ -588,6 +601,8 @@ namespace DataNRO.CLI
             {
                 Part part = parts[random.Next(0, parts.Count)];
                 parts.Remove(part);
+                if (part is null)
+                    continue;
                 int index = 0;
                 if (part.type == 1 || part.type == 2) //body, leg
                     index = 1;
@@ -626,7 +641,7 @@ namespace DataNRO.CLI
                     }
                 }
             }
-            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
+            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons.");
             Console.WriteLine($"[{session.Host}:{session.Port}] Wait 10s...");
             Thread.Sleep(10000);
             return true;
@@ -650,7 +665,7 @@ namespace DataNRO.CLI
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {templateID} mob templates");
                 }
             }
-            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {templateID} mob templates");
+            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {templateID} mob templates.");
         }
 
         static void RequestMapsTemplate(ISession session)
@@ -684,7 +699,7 @@ namespace DataNRO.CLI
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} map templates");
                 }
             }
-            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} map templates");
+            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} map templates.");
             session.Data.MapToReceiveTemplate = null;
         }
 

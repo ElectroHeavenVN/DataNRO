@@ -41,7 +41,7 @@ jobs:
         run: |
           unzip -o SampleData/DataNRO-HSNR.zip -d Page/public
           unzip -o SampleData/DataNRO-BlueFake.zip -d Page/public
-          # unzip -o SampleData/DataNRO-ILoveNRO.zip -d Page/public
+          unzip -o SampleData/DataNRO-ILoveNRO.zip -d Page/public
       - name: Build page
         run: |
           cd Page
@@ -55,8 +55,8 @@ jobs:
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server HSNR/g' Page/dist/HSNR/index.html
           cp Page/dist/index.html Page/dist/BlueFake/index.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server NRO Blue/g' Page/dist/BlueFake/index.html
-          # cp Page/dist/index.html Page/dist/ILoveNRO/index.html
-          # sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server ILoveNRO/g' Page/dist/ILoveNRO/index.html
+          cp Page/dist/index.html Page/dist/ILoveNRO/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server ILoveNRO/g' Page/dist/ILoveNRO/index.html
           cp Page/dist/index.html Page/dist/404.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Not found/g' Page/dist/404.html
       - name: Upload artifact

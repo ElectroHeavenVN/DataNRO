@@ -130,8 +130,8 @@ jobs:
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server HSNR/g' Page/dist/HSNR/index.html
           cp Page/dist/index.html Page/dist/BlueFake/index.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server NRO Blue/g' Page/dist/BlueFake/index.html
-          # cp Page/dist/index.html Page/dist/ILoveNRO/index.html
-          # sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server ILoveNRO/g' Page/dist/ILoveNRO/index.html
+          cp Page/dist/index.html Page/dist/ILoveNRO/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server ILoveNRO/g' Page/dist/ILoveNRO/index.html
           cp Page/dist/index.html Page/dist/404.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Not found/g' Page/dist/404.html
       - name: Upload artifact
@@ -165,14 +165,14 @@ jobs:
         run: |
           unzip -o SampleData/DataNRO-HSNR.zip -d Output\Data2
           unzip -o SampleData/DataNRO-BlueFake.zip -d Output\Data3
-          # unzip -o SampleData/DataNRO-ILoveNRO.zip -d Output\Data4
+          unzip -o SampleData/DataNRO-ILoveNRO.zip -d Output\Data4
       - name: Move sample data to Page (TeaMobi)
         run: mv -f Output/Data/TeaMobi Page/public/
       - name: Move sample data to Page (Private servers)
         run: |
           mv -f Output/Data2/HSNR Page/public/
           mv -f Output/Data3/BlueFake Page/public/
-          # mv -f Output/Data4/ILoveNRO Page/public/
+          mv -f Output/Data4/ILoveNRO Page/public/
       - name: Build page
         run: |
           cd Page
@@ -186,8 +186,8 @@ jobs:
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server HSNR/g' Page/dist/HSNR/index.html
           cp Page/dist/index.html Page/dist/BlueFake/index.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server NRO Blue/g' Page/dist/BlueFake/index.html
-          # cp Page/dist/index.html Page/dist/ILoveNRO/index.html
-          # sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server ILoveNRO/g' Page/dist/ILoveNRO/index.html
+          cp Page/dist/index.html Page/dist/ILoveNRO/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server ILoveNRO/g' Page/dist/ILoveNRO/index.html
           cp Page/dist/index.html Page/dist/404.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Not found/g' Page/dist/404.html
       - name: Upload artifact
