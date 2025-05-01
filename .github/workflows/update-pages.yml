@@ -39,9 +39,9 @@ jobs:
           path: Page/public
       - name: Decompress sample data (Private servers)
         run: |
-          # Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Page\public -Force
-          Expand-Archive -Path SampleData\DataNRO-BlueFake.zip -DestinationPath Page\public -Force
-          # Expand-Archive -Path SampleData\DataNRO-ILoveNRO.zip -DestinationPath Page\public -Force
+          unzip -o SampleData/DataNRO-HSNR.zip -d Page/public
+          unzip -o SampleData/DataNRO-BlueFake.zip -d Page/public
+          # unzip -o SampleData/DataNRO-ILoveNRO.zip -d Page/public
       - name: Build page
         run: |
           cd Page

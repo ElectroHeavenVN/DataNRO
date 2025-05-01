@@ -150,12 +150,12 @@ jobs:
     name: Update data and deploy using sample data
     needs: cronjob-based-github-action
     if: github.event.inputs.use-sample-data == 'true'
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Decompress sample data (TeaMobi)
-        run: Expand-Archive -Path SampleData\DataNRO-TeaMobi.zip -DestinationPath Output\Data -Force
+        run: unzip -o SampleData\DataNRO-TeaMobi.zip -d Output\Data
       - name: Upload artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
@@ -163,16 +163,16 @@ jobs:
           path: Output\Data
       - name: Decompress sample data (Private servers)
         run: |
-          Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Output\Data2 -Force
-          Expand-Archive -Path SampleData\DataNRO-BlueFake.zip -DestinationPath Output\Data3 -Force
-          # Expand-Archive -Path SampleData\DataNRO-ILoveNRO.zip -DestinationPath Output\Data4 -Force
+          unzip -o SampleData/DataNRO-HSNR.zip -d Output\Data2
+          unzip -o SampleData/DataNRO-BlueFake.zip -d Output\Data3
+          # unzip -o SampleData/DataNRO-ILoveNRO.zip -d Output\Data4
       - name: Move sample data to Page (TeaMobi)
-        run: Move-Item -Path Output\Data\TeaMobi -Destination Page\public -Force
+        run: mv -f Output/Data/TeaMobi Page/public/
       - name: Move sample data to Page (Private servers)
         run: |
-          Move-Item -Path Output\Data2\HSNR -Destination Page\public -Force
-          Move-Item -Path Output\Data3\BlueFake -Destination Page\public -Force
-          # Move-Item -Path Output\Data4\ILoveNRO -Destination Page\public -Force
+          mv -f Output/Data2/HSNR Page/public/
+          mv -f Output/Data3/BlueFake Page/public/
+          mv -f Output/Data4/ILoveNRO Page/public/
       - name: Build page
         run: |
           cd Page
