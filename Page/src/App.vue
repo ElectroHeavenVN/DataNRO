@@ -12,7 +12,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR'" id="mySidenav" class="sidenav">
+  <div v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR' || currentPath == 'BlueFake' || currentPath == 'ILoveNRO'" id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" @click=closeNav>&times;</a>
     <span class="hoverable" @click="setPage('items')">{{ t("items") }}</span>
     <span class="hoverable" @click="setPage('npcs')">{{ t("npcs") }}</span>
@@ -26,7 +26,7 @@ const { t } = useI18n();
     <nav>
       <div class="wrapper">
         <div href="/" class="content head">
-          <span v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR'"
+          <span v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR' || currentPath == 'BlueFake' || currentPath == 'ILoveNRO'"
             style="font-size: 25px; cursor:pointer; position: relative; top:1px;" @click=openNav>&#9776;</span>
           <div style="display: flex; flex-direction: column; align-items: center; max-height: 40px;">
             <a href="/DataNRO/" style="position: relative; top: 3px">
