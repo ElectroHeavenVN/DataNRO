@@ -172,7 +172,7 @@ jobs:
         run: |
           Move-Item -Path Output\Data2\HSNR -Destination Page\public -Force
           Move-Item -Path Output\Data3\BlueFake -Destination Page\public -Force
-          Move-Item -Path Output\Data4\ILoveNRO -Destination Page\public -Force
+          # Move-Item -Path Output\Data4\ILoveNRO -Destination Page\public -Force
       - name: Build page
         run: |
           cd Page
