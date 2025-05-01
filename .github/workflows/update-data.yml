@@ -125,15 +125,15 @@ jobs:
       - name: Copy index.html (Dirty trick)
         run: |
           cp Page/dist/index.html Page/dist/TeaMobi/index.html
-          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server TeaMobi/g' Page/dist/TeaMobi/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server TeaMobi/g' Page/dist/TeaMobi/index.html
           cp Page/dist/index.html Page/dist/HSNR/index.html
-          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server HSNR/g' Page/dist/HSNR/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server HSNR/g' Page/dist/HSNR/index.html
           cp Page/dist/index.html Page/dist/BlueFake/index.html
-          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server NRO Blue/g' Page/dist/BlueFake/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server NRO Blue/g' Page/dist/BlueFake/index.html
           cp Page/dist/index.html Page/dist/ILoveNRO/index.html
-          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server ILoveNRO/g' Page/dist/ILoveNRO/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server ILoveNRO/g' Page/dist/ILoveNRO/index.html
           cp Page/dist/index.html Page/dist/404.html
-          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Not found/g' Page/dist/404.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Not found/g' Page/dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -181,15 +181,15 @@ jobs:
       - name: Copy index.html (Dirty trick)
         run: |
           cp Page/dist/index.html Page/dist/TeaMobi/index.html
-          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server TeaMobi/g' Page/dist/TeaMobi/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server TeaMobi/g' Page/dist/TeaMobi/index.html
           cp Page/dist/index.html Page/dist/HSNR/index.html
-          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server HSNR/g' Page/dist/HSNR/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server HSNR/g' Page/dist/HSNR/index.html
           cp Page/dist/index.html Page/dist/BlueFake/index.html
-          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server NRO Blue/g' Page/dist/BlueFake/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server NRO Blue/g' Page/dist/BlueFake/index.html
           cp Page/dist/index.html Page/dist/ILoveNRO/index.html
-          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Server ILoveNRO/g' Page/dist/ILoveNRO/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server ILoveNRO/g' Page/dist/ILoveNRO/index.html
           cp Page/dist/index.html Page/dist/404.html
-          sed -i 's/Data NRO by ElectroHeavenVN/Data NRO - Not found/g' Page/dist/404.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Not found/g' Page/dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
