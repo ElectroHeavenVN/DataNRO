@@ -1,11 +1,10 @@
 # DataNRO
-Xem dữ liệu vật phẩm, quái, NPC, map,... của game [**Ngọc Rồng Online**](http://ngocrongonline.com/) và [**Hồi sinh Ngọc Rồng**](https://hoisinhngocrong.com/). Dữ liệu được tự động cập nhật mỗi ngày bằng [GitHub Actions](https://github.com/features/actions).
+Xem dữ liệu vật phẩm, quái, NPC, map,... của game [**Ngọc Rồng Online**](http://ngocrongonline.com/) và một số máy chủ lậu khác. Dữ liệu được tự động cập nhật mỗi ngày bằng [GitHub Actions](https://github.com/features/actions).
+<br>Dữ liệu của các server lậu được thêm vào không được cập nhật tự động.
 
-## Web
-- Web xem data chính thức: [DataNRO](https://electroheavenvn.github.io/DataNRO/) | [Server TeaMobi](https://electroheavenvn.github.io/DataNRO/TeaMobi/) | [Server Hồi sinh Ngọc Rồng](https://electroheavenvn.github.io/DataNRO/HSNR/)
-- Web của [ShopWibu (Cường)](https://shopwibu.net/): [Server TeaMobi](https://nro.shopwibu.net/tea-data/item) | [Server Hồi sinh Ngọc Rồng](https://nro.shopwibu.net/hsnr-data/item)
-
-Web khác ngoài 2 web trên có thể là [fork của repository này](../../network/members), của người khác làm dựa trên data được tạo từ các [Actions](../../actions), [__*của thằng nào đó ăn cắp*__](https://thanhlc.com/data/item/) hoặc [tự họ tạo data và làm web](https://bantool.net/tools/dataNRO). Tất cả đều không liên quan đến repository này, vui lòng không tạo issue mới về các web ngoài 2 địa chỉ trên.
+## Link
+- Web xem data chính thức: [DataNRO](https://electroheavenvn.github.io/DataNRO/)
+- Web của [chủ shop ShopWibu (Cường)](https://shopwibu.net/)
 
 ## API
 API được tạo ra với mục đích dùng miễn phí, vui lòng không sử dụng API cho mục đích kiếm tiền, lừa đảo hay các mục đích xấu khác.
@@ -16,14 +15,18 @@ API được tạo ra với mục đích dùng miễn phí, vui lòng không s�
 - Ảnh quái: `Nhà phát hành`/Monsters/`ID template quái`.png
 - Ảnh map: `Nhà phát hành`/Maps/`ID map`.png
 ### Nhà phát hành / Server
-- `/TeaMobi`: Data game Ngọc Rồng Online
+- `/TeaMobi`: Data Ngọc Rồng Online
   + `/Server`*: Server 1-7 và 11-13
   + `/Server8910`: Server gộp (server 8, 9, 10)
   + `/Super`*: Server Super 1 và Super 2
   + `/Universe1`: Server Quốc tế (Universe 1)
   + `/Naga`: Server Indonesia (Naga)
-- `/HSNR`: Data game Hồi sinh Ngọc Rồng
+- `/HSNR`: Data Hồi sinh Ngọc Rồng
   + `/Server`*: Server 1-4
+- `/BlueFake`: Data NRO Blue
+  + `/Server1`*: Server Blue 1
+- `/ILoveNRO`: Data Tôi yêu Ngọc Rồng
+  + `/Server1`*: Server 1
 ### Loại dữ liệu
 - `ItemOptionTemplates.json`: Dữ liệu loại thuộc tính vật phẩm
 ```json
@@ -139,7 +142,7 @@ API được tạo ra với mục đích dùng miễn phí, vui lòng không s�
 - **Không phải tất cả ảnh đều có sẵn.** API chỉ chứa những ảnh quan trọng (ảnh vật phẩm, kỹ năng, ảnh NPC) để hiển thị trên trang web.
 - **Một số ảnh có thể không tồn tại trên API, kém chất lượng hoặc khác với ứng dụng khách** do máy chủ không trả về ảnh, trả về ảnh rỗng hoặc kém chất lượng, hoặc ảnh chỉ có sẵn trên ứng dụng khách.
 - **Dữ liệu của một số server TeaMobi có thể bị chậm** do TeaMobi chặn địa chỉ IP nước ngoài truy cập game.
-- Mã nguồn của phần lấy dữ liệu từ game __Hồi sinh Ngọc Rồng__ (module `DataNRO.HSNR`) là __độc quyền__ và __không có trong kho mã nguồn này__.
+- Mã nguồn của phần lấy dữ liệu từ các server lậu là __độc quyền__ và __không có trong kho mã nguồn này__.
 
 # Giấy phép
 Mã nguồn của dự án này, bao gồm module `DataNRO.TeaMobi`, được phát hành dưới giấy phép [GNU AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html).
