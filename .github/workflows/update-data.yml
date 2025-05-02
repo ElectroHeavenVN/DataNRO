@@ -116,7 +116,7 @@ jobs:
         run: |
           Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Page\public -Force
           Expand-Archive -Path SampleData\DataNRO-BlueFake.zip -DestinationPath Page\public -Force
-          # Expand-Archive -Path SampleData\DataNRO-ILoveNRO.zip -DestinationPath Page\public -Force
+          Expand-Archive -Path SampleData\DataNRO-ILoveNRO.zip -DestinationPath Page\public -Force
       - name: Build page
         run: |
           cd Page
