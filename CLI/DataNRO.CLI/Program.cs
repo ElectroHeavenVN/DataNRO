@@ -529,11 +529,9 @@ namespace DataNRO.CLI
                 writer.RequestIcon(id);
                 requestedIcons.Add(id);
                 Thread.Sleep(1000 + random.Next(-200, 201));
-                count++;
-                if (count >= 10)
+                if (requestedIcons.Count % 10 == 0)
                 {
                     writer.RequestChangeZone(session.Player.location.zoneId);
-                    count = 0;
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
                 }
             }
@@ -573,11 +571,9 @@ namespace DataNRO.CLI
                 writer.RequestIcon(item.icon);
                 requestedIcons.Add(item.icon);
                 Thread.Sleep(1000 + random.Next(-200, 201));
-                count++;
-                if (count >= 10)
+                if (requestedIcons.Count % 10 == 0)
                 {
                     writer.RequestChangeZone(session.Player.location.zoneId);
-                    count = 0;
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
                 }
             }
@@ -638,11 +634,9 @@ namespace DataNRO.CLI
                     writer.RequestIcon(skillTemplate.icon);
                     requestedIcons.Add(skillTemplate.icon);
                     Thread.Sleep(1000 + random.Next(-200, 201));
-                    count++;
-                    if (count >= 10)
+                    if (requestedIcons.Count % 10 == 0)
                     {
                         writer.RequestChangeZone(session.Player.location.zoneId);
-                        count = 0;
                         Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
                     }
                 }
@@ -657,17 +651,14 @@ namespace DataNRO.CLI
         {
             IMessageWriter writer = session.MessageWriter;
             MobTemplate[] mobTemplates = session.Data.MobTemplates;
-            int count = 0;
             int templateID = 0;
             for (; templateID < mobTemplates.Length; templateID++)
             {
                 writer.RequestMobTemplate((short)templateID);
-                count++;
                 Thread.Sleep(1000 + random.Next(-200, 201));
-                if (count >= 10)
+                if (templateID % 10 == 0)
                 {
                     writer.RequestChangeZone(session.Player.location.zoneId);
-                    count = 0;
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {templateID} mob templates");
                 }
             }
@@ -678,30 +669,27 @@ namespace DataNRO.CLI
         {
             IMessageWriter writer = session.MessageWriter;
             List<Map> maps = session.Data.Maps;
-            int count = 0;
             int i = 0;
             for (; i < maps.Count; i++)
             {
                 Map map = maps[i];
                 session.Data.MapToReceiveTemplate = map;
                 writer.RequestMapTemplate(map.id);
-                count++;
-                int count2 = 0;
+                int count = 0;
                 do
                 {
                     Thread.Sleep(1000 + random.Next(-200, 201));
-                    count2++;
-                    if (count2 >= 5)
+                    count++;
+                    if (count >= 5)
                     {
                         Console.WriteLine($"[{session.Host}:{session.Port}] Failed to get map template {map.id}!");
                         break;
                     }
                 }
                 while (session.Data.MapToReceiveTemplate != null);
-                if (count >= 10)
+                if (i % 10 == 0)
                 {
                     writer.RequestChangeZone(session.Player.location.zoneId);
-                    count = 0;
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} map templates");
                 }
             }
