@@ -561,7 +561,7 @@ namespace DataNRO.CLI
                     count = 0;
                 }
             }
-            List<ItemTemplate> items = session.Data.ItemTemplates;
+            List<ItemTemplate> items = new List<ItemTemplate>(session.Data.ItemTemplates);
             while (items.Count > 0)
             {
                 ItemTemplate item = items[random.Next(0, items.Count)];
