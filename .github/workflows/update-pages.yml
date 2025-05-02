@@ -56,7 +56,7 @@ jobs:
           cp Page/dist/index.html Page/dist/BlueFake/index.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server NRO Blue/g' Page/dist/BlueFake/index.html
           cp Page/dist/index.html Page/dist/ILoveNRO/index.html
-          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server ILoveNRO/g' Page/dist/ILoveNRO/index.html
+          sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server Tôi yêu Ngọc Rồng/g' Page/dist/ILoveNRO/index.html
           cp Page/dist/index.html Page/dist/404.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Not found/g' Page/dist/404.html
       - name: Upload artifact
