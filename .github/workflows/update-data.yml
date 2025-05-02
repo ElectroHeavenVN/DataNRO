@@ -24,11 +24,11 @@ on:
         type: "boolean"
         required: false
         default: false
-  push:
-    branches:
-      - main
-    paths:
-      - "CLI/**"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "CLI/**"
 permissions:
   contents: read
   pages: write
