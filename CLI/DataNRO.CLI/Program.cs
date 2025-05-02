@@ -183,7 +183,10 @@ namespace DataNRO.CLI
             Thread.Sleep(2000);
             if (session.Data.SaveIcon)
             {
-                RequestMapsTemplate(session);
+                if (session.Data.MapTileIDs.Count == 0)
+                    Console.WriteLine($"[{session.Host}:{session.Port}] No map tile IDs found, skipping map templates...");
+                else
+                    RequestMapsTemplate(session);
                 RequestMobsImg(session);
                 if (!RequestIcons(session))
                     return;
@@ -233,7 +236,10 @@ namespace DataNRO.CLI
             SplitBigImgs(session);
             CombineNPCImages(session);
             CombineMobImages(session);
-            CombineMapImages(session);
+            if (session.Data.MapTileIDs.Count == 0)
+                Console.WriteLine($"[{session.Host}:{session.Port}] No map tile IDs found, skipping map images...");
+            else
+                CombineMapImages(session);
         }
 
         static void SplitBigImgs(ISession session)
@@ -447,8 +453,8 @@ namespace DataNRO.CLI
                 x -= 24;
                 x *= session.Data.ZoomLevel;
                 y *= session.Data.ZoomLevel;
-                try 
-                { 
+                try
+                {
                     Bitmap frameImg = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Resources\\{tileID}${frame + 1}");
                     mapImgG.DrawImage(frameImg, x, y);
                     frameImg.Dispose();
@@ -498,7 +504,7 @@ namespace DataNRO.CLI
                 mapImgG.DrawString("© ElectroHeavenVN", font, Brushes.Black, random.Next(0, pixelWidth - 500), random.Next(0, pixelHeight - 100));
             if (includeTileID)
                 mapImg.Save($"{$"{Path.GetDirectoryName(session.Data.Path)}\\Maps"}\\{mapID}-{tileID}.png");
-            else 
+            else
                 mapImg.Save($"{$"{Path.GetDirectoryName(session.Data.Path)}\\Maps"}\\{mapID}.png");
             mapImgG.Dispose();
             mapImg.Dispose();
@@ -753,7 +759,7 @@ namespace DataNRO.CLI
                     else
                         return TryConnectProxy(session);
                 }
-                else 
+                else
                     session.Connect();
             }
             catch
