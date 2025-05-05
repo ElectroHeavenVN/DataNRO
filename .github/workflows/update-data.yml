@@ -81,7 +81,7 @@ jobs:
           skip_unpack: true
           path: Output
       - name: Decompress password-protected artifact (TeaMobi)
-        run: if (Test-Path -Path DataNRO-TeaMobi.zip) { 7z x DataNRO-TeaMobi.zip -oOutput\ -p${{ secrets.ZIP_PASSWORD }} -y } else { mkdir -Path Output }
+        run: if (Test-Path -Path DataNRO-TeaMobi.zip) { 7z x DataNRO-TeaMobi.zip -oOutput\ -p${{ secrets.ZIP_PASSWORD }} -y } else if (!(Test-Path -Path Output)) { mkdir -Path Output }
       - name: Run headless client
         run: |
           cd Output
