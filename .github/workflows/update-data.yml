@@ -78,7 +78,10 @@ jobs:
           allow_forks: false
           workflow: update-data.yml
           name: DataNRO-TeaMobi
-          path: Output\Data
+          skip_unpack: true
+          path: Output
+      - name: Decompress password-protected artifact (TeaMobi)
+        run: 7z x SampleData\DataNRO-TeaMobi.zip -oPage\public\ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Run headless client
         run: |
           cd Output
@@ -89,11 +92,13 @@ jobs:
           OVERWRITE_ICONS: ${{ github.event.inputs.overwrite-icons }}
           MAX_RUN_SECONDS: ${{ github.event.inputs.max-run-seconds }}
           FORCE_PROXY:  ${{ github.event.inputs.force-proxy }}
-      - name: Upload artifact DataNRO-TeaMobi
+      - name: Create password-protected zip file (TeaMobi)
+        run: 7z a -p${{ secrets.ZIP_PASSWORD }} -mx=5 -y Output\DataNRO-TeaMobi.zip Output\Data\*.*
+      - name: Upload password-protected artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
           name: DataNRO-TeaMobi
-          path: Output\Data
+          path: Output\DataNRO-TeaMobi.zip
 
   build-and-deploy-pages:
     name: Build and deploy pages
@@ -112,11 +117,11 @@ jobs:
           if_no_artifact_found: fail
           allow_forks: false
           path: Page\public
-      - name: Decompress sample data (Private servers)
+      - name: Decompress password-protected sample data (private servers)
         run: |
-          Expand-Archive -Path SampleData\DataNRO-HSNR.zip -DestinationPath Page\public -Force
-          Expand-Archive -Path SampleData\DataNRO-BlueFake.zip -DestinationPath Page\public -Force
-          Expand-Archive -Path SampleData\DataNRO-ILoveNRO.zip -DestinationPath Page\public -Force
+          7z x SampleData\DataNRO-HSNR.zip -oPage\public\ -p${{ secrets.ZIP_PASSWORD }} -y
+          7z x SampleData\DataNRO-BlueFake.zip -oPage\public\ -p${{ secrets.ZIP_PASSWORD }} -y
+          7z x SampleData\DataNRO-ILoveNRO.zip -oPage\public\ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Build page
         run: |
           cd Page
@@ -155,17 +160,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Decompress sample data (TeaMobi)
-        run: unzip -o SampleData\DataNRO-TeaMobi.zip -d Output\Data
+        # run: unzip -o SampleData\DataNRO-TeaMobi.zip -d Output\Data
+        run: 7z x SampleData\DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Upload artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
           name: DataNRO-TeaMobi
           path: Output\Data
       - name: Decompress sample data (Private servers)
+      # unzip -o SampleData/DataNRO-HSNR.zip -d Output\Data2
+      # unzip -o SampleData/DataNRO-BlueFake.zip -d Output\Data3
+      # unzip -o SampleData/DataNRO-ILoveNRO.zip -d Output\Data4
         run: |
-          unzip -o SampleData/DataNRO-HSNR.zip -d Output\Data2
-          unzip -o SampleData/DataNRO-BlueFake.zip -d Output\Data3
-          unzip -o SampleData/DataNRO-ILoveNRO.zip -d Output\Data4
+          7z x SampleData\DataNRO-HSNR.zip -oOutput\Data2\ -p${{ secrets.ZIP_PASSWORD }} -y
+          7z x SampleData\DataNRO-BlueFake.zip -oOutput\Data3\ -p${{ secrets.ZIP_PASSWORD }} -y
+          7z x SampleData\DataNRO-ILoveNRO.zip -oOutput\Data4\ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Move sample data to Page (TeaMobi)
         run: mv -f Output/Data/TeaMobi Page/public/
       - name: Move sample data to Page (Private servers)
@@ -190,12 +199,17 @@ jobs:
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server Tôi yêu Ngọc Rồng/g' Page/dist/ILoveNRO/index.html
           cp Page/dist/index.html Page/dist/404.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Not found/g' Page/dist/404.html
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: Page/dist
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: Page/dist
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: Page/dist
+      # - name: Configure GitHub Pages
+      #   uses: actions/configure-pages@v5
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
