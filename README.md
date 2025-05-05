@@ -143,6 +143,7 @@ API được tạo ra với mục đích dùng miễn phí, vui lòng không s�
 - **Một số ảnh có thể không tồn tại trên API, kém chất lượng hoặc khác với ứng dụng khách** do máy chủ không trả về ảnh, trả về ảnh rỗng hoặc kém chất lượng, hoặc ảnh chỉ có sẵn trên ứng dụng khách.
 - **Dữ liệu của một số server TeaMobi có thể bị chậm** do TeaMobi chặn địa chỉ IP nước ngoài truy cập game.
 - Mã nguồn của phần lấy dữ liệu từ các server lậu là __độc quyền__ và __không có trong kho mã nguồn này__.
+- Các tệp nén trong thư mục `SampleData` và trong log của các workflow đều được mã hoá mật khẩu. Nếu bạn muốn lấy dữ liệu cho mục đích riêng, vui lòng liên hệ với tôi.
 
 # Giấy phép
 Mã nguồn của dự án này, bao gồm module `DataNRO.TeaMobi`, được phát hành dưới giấy phép [GNU AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html).
