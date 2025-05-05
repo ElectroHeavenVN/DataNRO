@@ -74,14 +74,14 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
           workflow_conclusion: success
-          if_no_artifact_found: fail
+          if_no_artifact_found: warn
           allow_forks: false
           workflow: update-data.yml
           name: DataNRO-TeaMobi
           skip_unpack: true
           path: Output
       - name: Decompress password-protected artifact (TeaMobi)
-        run: 7z x SampleData\DataNRO-TeaMobi.zip -oPage\public\ -p${{ secrets.ZIP_PASSWORD }} -y
+        run: if (Test-Path -Path "SampleData\DataNRO-TeaMobi.zip") { 7z x SampleData\DataNRO-TeaMobi.zip -oPage\public\ -p${{ secrets.ZIP_PASSWORD }} -y } else { mkdir -Path Output }
       - name: Run headless client
         run: |
           cd Output
@@ -139,15 +139,20 @@ jobs:
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server Tôi yêu Ngọc Rồng/g' Page/dist/ILoveNRO/index.html
           cp Page/dist/index.html Page/dist/404.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Not found/g' Page/dist/404.html
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: Page/dist
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: Page/dist
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: Page/dist
+      # - name: Configure GitHub Pages
+      #   uses: actions/configure-pages@v5
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
 
   # ----------------------------------------------------
 
