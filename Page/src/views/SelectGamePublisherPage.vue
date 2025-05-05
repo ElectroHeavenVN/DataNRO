@@ -20,23 +20,23 @@ export default {
       <a class="hoverable publisher" href="TeaMobi/" :title="t('officialServer')">
         <img src="../assets/teamobi.png" v-if="currentLang == 'vi'" alt="TeaMobi" />
         <img src="../assets/teamobiEng.png" v-else alt="TeaMobi" />
-        <span>{{ t('teaMobiName') }}</span>
-        <span style="font-size: 15px; margin: 0;">{{ t('officialServer') }}</span>
+        <span class="publisherName">{{ t('teaMobiName') }}</span>
+        <span class="publisherDesc">{{ t('officialServer') }}</span>
       </a>
       <a class="hoverable publisher" href="HSNR/" :title="t('privateServer')">
         <img src="../assets/hsnr.png" alt="HSNR" />
-        <span>{{ t('hsnrName') }}🏴&zwj;☠️</span>
-        <span style="font-size: 15px; margin: 0;">{{ t('privateServer') }}</span>
+        <span class="publisherName">{{ t('hsnrName') }}🏴&zwj;☠️</span>
+        <span class="publisherDesc">{{ t('privateServer') }}</span>
       </a>
       <a class="hoverable publisher" href="BlueFake/" :title="t('privateAndScamServer')">
         <img src="../assets/blue.png" alt="BlueFake" />
-        <span>{{ t('nroBlueFakeName') }}🐓</span>
-        <span style="font-size: 15px; margin: 0;">{{ t('privateAndScamServer') }}</span>
+        <span class="publisherName">{{ t('nroBlueFakeName') }}🐓</span>
+        <span class="publisherDesc">{{ t('privateAndScamServer') }}</span>
       </a>
       <a class="hoverable publisher" href="ILoveNRO/" :title="t('privateAndScamServer')">
         <img src="../assets/ilovenro.png" alt="ILoveNRO" />
-        <span>{{ t('iLoveNROName') }}🐓</span>
-        <span style="font-size: 15px; margin: 0;">{{ t('privateAndScamServer') }}</span>
+        <span class="publisherName">{{ t('iLoveNROName') }}🐓</span>
+        <span class="publisherDesc">{{ t('privateAndScamServer') }}</span>
       </a>
     </div>
     <a class="ghStars" href="https://github.com/ElectroHeavenVN/DataNRO/" target="_blank">
@@ -94,9 +94,14 @@ export default {
   object-fit: contain;
 }
 
-.publisher span {
+.publisherName {
   font-size: 1.4rem;
   margin-top: 10px;
+}
+
+.publisherDesc {
+  font-size: 1rem;
+  margin: 0;
 }
 
 .ghStars {
@@ -141,8 +146,13 @@ export default {
   .publisher {
     width: 100%;
   }
-  .publisher span {
+
+  .publisherName {
     font-size: 1rem;
+  }
+  
+  .publisherDesc {
+    font-size: 0.75rem;
   }
 
   .ghStars {

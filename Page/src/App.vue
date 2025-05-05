@@ -41,10 +41,10 @@ const { t } = useI18n();
         <div v-if="lastWorkflowLink !== ''" class="lastWorkflow">
           <a v-if="lastWorkflowStatus === 'in_progress'" class="content links" :href="lastWorkflowLink" target="_blank"
             :title="t('workflowRunningDesc')">
-            <span class="lastWorkflowLongText" style='display: block'>
+            <span class="lastWorkflowLongText">
               {{ t("workflowRunning") }}
             </span>
-            <span class="lastWorkflowShortText" style='display: block'>
+            <span class="lastWorkflowShortText">
               {{ t("workflowRunningShort") }}
             </span>
             <svg width="20px" height="20px" fill="none" viewBox="0 0 16 16" class="anim-rotate"
