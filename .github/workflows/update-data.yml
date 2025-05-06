@@ -85,8 +85,10 @@ jobs:
           if (Test-Path -Path DataNRO-TeaMobi.zip) {
             7z x DataNRO-TeaMobi.zip -oOutput\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
-          elseif (!(Test-Path -Path Output)) {
-            mkdir -Path Output
+          else {
+            if (!(Test-Path -Path Output)) {
+              mkdir -Path Output
+            }
             7z x SampleData\DataNRO-TeaMobi.zip -oOutput\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
       - name: Run headless client
