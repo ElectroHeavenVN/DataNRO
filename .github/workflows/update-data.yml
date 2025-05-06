@@ -6,22 +6,22 @@ on:
     inputs:
       use-sample-data:
         description: "Use sample data"
-        type: "boolean"
+        type: boolean
         required: false
         default: false
       overwrite-icons:
         description: "ID icons to overwrite, separated by comma, -1 to overwrite all"
-        type: "string"
+        type: string
         required: false
         default: ""
       max-run-seconds:
         description: "Maximum run seconds"
-        type: "number"
+        type: number
         required: false
         default: 3600
       force-proxy:
         description: "Force using proxy"
-        type: "boolean"
+        type: boolean
         required: false
         default: false
   # push:
@@ -81,7 +81,7 @@ jobs:
           skip_unpack: true
           path: Output
       - name: Decompress password-protected artifact (TeaMobi)
-        run: if (Test-Path -Path DataNRO-TeaMobi.zip) { 7z x DataNRO-TeaMobi.zip -oOutput\ -p${{ secrets.ZIP_PASSWORD }} -y } elseif (!(Test-Path -Path Output)) { mkdir -Path Output }
+        run: if (Test-Path -Path DataNRO-TeaMobi.zip) { 7z x DataNRO-TeaMobi.zip -oOutput\ -p${{ secrets.ZIP_PASSWORD }} -y } elseif (!(Test-Path -Path Output)) { mkdir -Path Output; 7z x SampleData\DataNRO-TeaMobi.zip -oOutput\ -p${{ secrets.ZIP_PASSWORD }} -y }
       - name: Run headless client
         run: |
           cd Output
