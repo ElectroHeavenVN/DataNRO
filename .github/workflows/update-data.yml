@@ -77,13 +77,10 @@ jobs:
           path: Output
       - name: Decompress password-protected artifact (TeaMobi)
         run: |
-          if (Test-Path -Path DataNRO-TeaMobi.zip) {
+          if (Test-Path -Path Output\DataNRO-TeaMobi.zip) {
             7z x DataNRO-TeaMobi.zip -oOutput\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
           else {
-            if (!(Test-Path -Path Output)) {
-              mkdir -Path Output
-            }
             7z x SampleData\DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
       - name: Run headless client
