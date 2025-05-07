@@ -77,7 +77,7 @@ jobs:
       - name: Decompress password-protected artifact (TeaMobi)
         run: |
           if (Test-Path -Path DataNRO-TeaMobi.zip) {
-            7z x DataNRO-TeaMobi.zip -oOutput\ -p${{ secrets.ZIP_PASSWORD }} -y 
+            7z x DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
           else {
             7z x SampleData\DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y 
