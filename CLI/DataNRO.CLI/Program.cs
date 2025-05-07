@@ -39,7 +39,6 @@ namespace DataNRO.CLI
             if (!string.IsNullOrEmpty(overwriteIconsEnv))
                 overwriteIconIDs = overwriteIconsEnv.Split(',').Select(int.Parse).ToArray();
             string maxRunSecondsEnv = Environment.GetEnvironmentVariable("MAX_RUN_SECONDS");
-            Console.WriteLine(maxRunSecondsEnv);
             if (!string.IsNullOrEmpty(maxRunSecondsEnv))
                 maxRunSeconds = int.Parse(maxRunSecondsEnv);
             string forceProxyEnv = Environment.GetEnvironmentVariable("FORCE_PROXY");
@@ -78,7 +77,10 @@ namespace DataNRO.CLI
         static void FailoverThread()
         {
             for (int i = 0; i < maxRunSeconds / 10; i++)
+            {
+                Console.WriteLine($"[{DateTime.UtcNow:HH:mm:ss}] Sleeping for {maxRunSeconds / 10}s...");
                 Thread.Sleep(100 * maxRunSeconds);
+            }
             Console.WriteLine($"DataNRO.CLI has been running for {maxRunSeconds} seconds, exiting...");
             Environment.Exit(1);
         }
