@@ -22,7 +22,7 @@ namespace DataNRO.CLI
         static Random random = new Random();
         static string proxyData = "";
         static int[] overwriteIconIDs = new int[0];
-        static int maxRunSeconds = 3600;
+        static int maxRunSeconds = 4500;
         static bool forceProxy;
 
         [DllImport("msvcrt.dll")]
@@ -78,10 +78,7 @@ namespace DataNRO.CLI
         {
             Console.WriteLine($"DataNRO.CLI will run for {maxRunSeconds} seconds!");
             for (int i = 0; i < maxRunSeconds / 10; i++)
-            {
-                Console.WriteLine($"[{DateTime.UtcNow:HH:mm:ss}] {i}");
                 Thread.Sleep(100 * maxRunSeconds);
-            }
             Console.WriteLine($"DataNRO.CLI has been running for {maxRunSeconds} seconds, exiting...");
             Environment.Exit(1);
         }
