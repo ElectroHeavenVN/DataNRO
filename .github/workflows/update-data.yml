@@ -30,7 +30,7 @@ on:
   #   paths:
   #     - "CLI/**"
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
   actions: write
@@ -41,6 +41,7 @@ concurrency:
 jobs:
   cronjob-based-github-action:
     name: Cronjob based github action (Keep workflow alive)
+    if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -178,7 +179,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - run: tree
       - name: Decompress password-protected sample data (TeaMobi)
         run: 7z x SampleData/DataNRO-TeaMobi.zip -oOutput/Data/ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Upload artifact DataNRO-TeaMobi
@@ -193,6 +193,7 @@ jobs:
           7z x SampleData/DataNRO-ILoveNRO.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Move sample data to Page (TeaMobi)
         run: mv -f Output/Data/TeaMobi Page/public/
+      - run: tree
       - name: Build page
         run: |
           cd Page
