@@ -187,11 +187,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Decompress password-protected sample data (TeaMobi)
         run: 7z x SampleData/DataNRO-TeaMobi.zip -oOutput/Data/ -p${{ secrets.ZIP_PASSWORD }} -y
-      - name: Upload artifact DataNRO-TeaMobi
+      - name: Upload password-protected artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
           name: DataNRO-TeaMobi
-          path: Output/Data
+          path: SampleData/DataNRO-TeaMobi.zip
       - name: Decompress password-protected sample data (Private servers)
         run: |
           7z x SampleData/DataNRO-HSNR.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
