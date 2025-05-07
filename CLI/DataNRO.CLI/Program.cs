@@ -31,12 +31,6 @@ namespace DataNRO.CLI
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
-            Console.WriteLine("Environment variables:");
-            foreach (var item in Environment.GetEnvironmentVariables())
-            {
-                if (item is KeyValuePair<string, object> kvp)
-                    Console.WriteLine($"{kvp.Key}: {kvp.Value}");
-            }
             new Thread(FailoverThread) { IsBackground = true }.Start();
             if (!Directory.Exists("Data"))
                 Directory.CreateDirectory("Data");
@@ -45,6 +39,7 @@ namespace DataNRO.CLI
             if (!string.IsNullOrEmpty(overwriteIconsEnv))
                 overwriteIconIDs = overwriteIconsEnv.Split(',').Select(int.Parse).ToArray();
             string maxRunSecondsEnv = Environment.GetEnvironmentVariable("MAX_RUN_SECONDS");
+            Console.WriteLine(maxRunSecondsEnv);
             if (!string.IsNullOrEmpty(maxRunSecondsEnv))
                 maxRunSeconds = int.Parse(maxRunSecondsEnv);
             string forceProxyEnv = Environment.GetEnvironmentVariable("FORCE_PROXY");
