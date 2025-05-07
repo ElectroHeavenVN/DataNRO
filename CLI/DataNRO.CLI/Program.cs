@@ -31,9 +31,12 @@ namespace DataNRO.CLI
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
-#if DEBUG
-            Environment.CurrentDirectory = "D:\\Working Repositories\\DataNRO\\Output";
-#endif
+            Console.WriteLine("Environment variables:");
+            foreach (var item in Environment.GetEnvironmentVariables())
+            {
+                if (item is KeyValuePair<string, object> kvp)
+                    Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+            }
             new Thread(FailoverThread) { IsBackground = true }.Start();
             if (!Directory.Exists("Data"))
                 Directory.CreateDirectory("Data");
