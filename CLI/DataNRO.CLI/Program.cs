@@ -76,9 +76,10 @@ namespace DataNRO.CLI
 
         static void FailoverThread()
         {
+            Console.WriteLine($"DataNRO.CLI will run for {maxRunSeconds} seconds!");
             for (int i = 0; i < maxRunSeconds / 10; i++)
             {
-                Console.WriteLine($"[{DateTime.UtcNow:HH:mm:ss}] Sleeping for {maxRunSeconds / 10}s...");
+                Console.WriteLine($"[{DateTime.UtcNow:HH:mm:ss}] {i}");
                 Thread.Sleep(100 * maxRunSeconds);
             }
             Console.WriteLine($"DataNRO.CLI has been running for {maxRunSeconds} seconds, exiting...");
