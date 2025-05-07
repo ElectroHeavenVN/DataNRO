@@ -91,6 +91,9 @@ jobs:
             }
             7z x SampleData\DataNRO-TeaMobi.zip -oOutput\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
+      - run: tree /f Output
+      - name: Fail the workflow for debugging
+        run: exit 1
       - name: Run headless client
         run: |
           cd Output
@@ -101,8 +104,10 @@ jobs:
           OVERWRITE_ICONS: ${{ github.event.inputs.overwrite-icons }}
           MAX_RUN_SECONDS: ${{ github.event.inputs.max-run-seconds }}
           FORCE_PROXY:  ${{ github.event.inputs.force-proxy }}
+      - run: tree /f Output
       - name: Create password-protected zip file (TeaMobi)
         run: 7z a -p${{ secrets.ZIP_PASSWORD }} -mx=5 -y Output\DataNRO-TeaMobi.zip Output\Data\*.*
+      - run: tree /f Output
       - name: Upload password-protected artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
