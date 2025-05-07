@@ -83,7 +83,8 @@ jobs:
           allow_forks: false
           workflow: update-data.yml
           name: DataNRO-TeaMobi
-          skip_unpack: true
+          # The artifact is a password-protected zip file inside a normal zip file so we need to unpack the outer zip first
+          # skip_unpack: true
       - name: Decompress password-protected artifact (TeaMobi)
         run: |
           if (!(Test-Path -Path Output\Data)) {
@@ -130,7 +131,8 @@ jobs:
           workflow_conclusion: ""
           if_no_artifact_found: fail
           allow_forks: false
-          skip_unpack: true
+          # The artifact is a password-protected zip file inside a normal zip file so we need to unpack the outer zip first
+          # skip_unpack: true
       - name: Decompress password-protected artifact (TeaMobi)
         run: 7z x DataNRO-TeaMobi.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Decompress password-protected sample data (private servers)
@@ -177,7 +179,7 @@ jobs:
 
   # ----------------------------------------------------
 
-  update-data-sample:
+  update-using-sample-data:
     name: Update data and deploy using sample data
     needs: cronjob-based-github-action
     if: github.event.inputs.use-sample-data == 'true'

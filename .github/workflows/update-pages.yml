@@ -35,7 +35,8 @@ jobs:
           allow_forks: false
           workflow: update-data.yml
           name: DataNRO-TeaMobi
-          skip_unpack: true
+          # The artifact is a password-protected zip file inside a normal zip file so we need to unpack the outer zip first
+          # skip_unpack: true
       - name: Decompress password-protected artifact (TeaMobi)
         run: 7z x DataNRO-TeaMobi.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Decompress sample data (Private servers)
