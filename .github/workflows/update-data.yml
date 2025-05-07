@@ -24,6 +24,11 @@ on:
         type: boolean
         required: false
         default: false
+      skip-headless-client:
+        description: "Skip building and running headless client"
+        type: boolean
+        required: false
+        default: false
 permissions:
   pages: write
   id-token: write
@@ -54,14 +59,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup MSBuild
+        if: github.event.inputs.skip-headless-client != 'true'
         uses: microsoft/setup-msbuild@v2
       - name: Setup NuGet
+        if: github.event.inputs.skip-headless-client != 'true'
         uses: NuGet/setup-nuget@v2
       - name: Restore DataNRO
+        if: github.event.inputs.skip-headless-client != 'true'
         run: msbuild $env:CLISolutionPath /t:restore /p:Configuration=Release
       - name: Restore NuGet packages
+        if: github.event.inputs.skip-headless-client != 'true'
         run: nuget restore $env:CLISolutionPath
       - name: Build DataNRO.CLI
+        if: github.event.inputs.skip-headless-client != 'true'
         run: msbuild $env:CLISolutionPath /t:rebuild /p:Configuration=Release
       - name: Download artifact DataNRO-TeaMobi
         uses: dawidd6/action-download-artifact@v8
@@ -76,6 +86,9 @@ jobs:
           skip_unpack: true
       - name: Decompress password-protected artifact (TeaMobi)
         run: |
+          if (!(Test-Path -Path Output\Data)) {
+            mkdir -Path Output\Data
+          }
           if (Test-Path -Path DataNRO-TeaMobi.zip) {
             7z x DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
@@ -83,6 +96,7 @@ jobs:
             7z x SampleData\DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
       - name: Run headless client
+        if: github.event.inputs.skip-headless-client != 'true'
         run: |
           cd Output
           .\DataNRO.CLI.exe
@@ -127,6 +141,7 @@ jobs:
           cd Page
           npm install
           npm run build
+      - run: tree /f
       - name: Copy index.html (Dirty trick)
         run: |
           cp Page/dist/index.html Page/dist/TeaMobi/index.html
