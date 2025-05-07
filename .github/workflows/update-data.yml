@@ -74,7 +74,6 @@ jobs:
           workflow: update-data.yml
           name: DataNRO-TeaMobi
           skip_unpack: true
-          path: .\
       - name: Decompress password-protected artifact (TeaMobi)
         run: |
           if (Test-Path -Path DataNRO-TeaMobi.zip) {

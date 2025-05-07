@@ -37,15 +37,12 @@ jobs:
           name: DataNRO-TeaMobi
           skip_unpack: true
       - name: Decompress password-protected artifact (TeaMobi)
-        run: 7z x DataNRO-TeaMobi.zip -opublic/ -p${{ secrets.ZIP_PASSWORD }} -y
+        run: 7z x DataNRO-TeaMobi.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Decompress sample data (Private servers)
-      # unzip -o SampleData/DataNRO-HSNR.zip -d public
-      # unzip -o SampleData/DataNRO-BlueFake.zip -d public
-      # unzip -o SampleData/DataNRO-ILoveNRO.zip -d public
         run: |
-          7z x SampleData/DataNRO-HSNR.zip -opublic -p${{ secrets.ZIP_PASSWORD }} -y
-          7z x SampleData/DataNRO-BlueFake.zip -opublic -p${{ secrets.ZIP_PASSWORD }} -y
-          7z x SampleData/DataNRO-ILoveNRO.zip -opublic -p${{ secrets.ZIP_PASSWORD }} -y
+          7z x SampleData/DataNRO-HSNR.zip -oPage/public -p${{ secrets.ZIP_PASSWORD }} -y
+          7z x SampleData/DataNRO-BlueFake.zip -oPage/public -p${{ secrets.ZIP_PASSWORD }} -y
+          7z x SampleData/DataNRO-ILoveNRO.zip -oPage/public -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Build page
         run: |
           cd Page
