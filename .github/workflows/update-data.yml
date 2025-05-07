@@ -178,6 +178,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - run: tree
       - name: Decompress password-protected sample data (TeaMobi)
         run: 7z x SampleData\DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Upload artifact DataNRO-TeaMobi
