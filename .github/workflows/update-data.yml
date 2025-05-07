@@ -112,7 +112,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: DataNRO-TeaMobi
-          path: Output\DataNRO-TeaMobi.zip
+          path: Output/DataNRO-TeaMobi.zip
 
   build-and-deploy-pages:
     name: Build and deploy pages
@@ -130,12 +130,12 @@ jobs:
           workflow_conclusion: ""
           if_no_artifact_found: fail
           allow_forks: false
-          path: Page\public
+          path: Page/public
       - name: Decompress password-protected sample data (private servers)
         run: |
-          7z x SampleData\DataNRO-HSNR.zip -oPage\public\ -p${{ secrets.ZIP_PASSWORD }} -y
-          7z x SampleData\DataNRO-BlueFake.zip -oPage\public\ -p${{ secrets.ZIP_PASSWORD }} -y
-          7z x SampleData\DataNRO-ILoveNRO.zip -oPage\public\ -p${{ secrets.ZIP_PASSWORD }} -y
+          7z x SampleData/DataNRO-HSNR.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
+          7z x SampleData/DataNRO-BlueFake.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
+          7z x SampleData/DataNRO-ILoveNRO.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Build page
         run: |
           cd Page
@@ -180,12 +180,12 @@ jobs:
         uses: actions/checkout@v4
       - run: tree
       - name: Decompress password-protected sample data (TeaMobi)
-        run: 7z x SampleData\DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y
+        run: 7z x SampleData/DataNRO-TeaMobi.zip -oOutput/Data/ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Upload artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
           name: DataNRO-TeaMobi
-          path: Output\Data
+          path: Output/Data
       - name: Decompress password-protected sample data (Private servers)
         run: |
           7z x SampleData/DataNRO-HSNR.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
