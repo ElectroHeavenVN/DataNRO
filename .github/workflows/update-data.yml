@@ -89,7 +89,7 @@ jobs:
             if (!(Test-Path -Path Output)) {
               mkdir -Path Output
             }
-            7z x SampleData\DataNRO-TeaMobi.zip -oOutput\ -p${{ secrets.ZIP_PASSWORD }} -y 
+            7z x SampleData\DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
       - run: tree /f Output
       - name: Fail the workflow for debugging
