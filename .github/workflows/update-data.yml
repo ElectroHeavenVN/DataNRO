@@ -16,9 +16,9 @@ on:
         default: ""
       max-run-seconds:
         description: "Maximum run seconds"
-        type: number
+        type: string
         required: false
-        default: 3600
+        default: "3600"
       force-proxy:
         description: "Force using proxy"
         type: boolean
