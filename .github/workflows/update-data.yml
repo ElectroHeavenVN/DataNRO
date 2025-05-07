@@ -49,7 +49,7 @@ jobs:
     if: github.event.inputs.use-sample-data != 'true'
     runs-on: windows-latest
     env:
-      CLISolutionPath: CLI/DataNRO.sln
+      CLISolutionPath: CLI\DataNRO.sln
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -86,9 +86,6 @@ jobs:
             }
             7z x SampleData\DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
-      - run: tree /f Output
-      - name: Fail the workflow for debugging
-        run: exit 1
       - name: Run headless client
         run: |
           cd Output
@@ -99,7 +96,6 @@ jobs:
           OVERWRITE_ICONS: ${{ github.event.inputs.overwrite-icons }}
           MAX_RUN_SECONDS: ${{ github.event.inputs.max-run-seconds }}
           FORCE_PROXY:  ${{ github.event.inputs.force-proxy }}
-      - run: tree /f Output
       - name: Create password-protected zip file (TeaMobi)
         run: 7z a -p${{ secrets.ZIP_PASSWORD }} -mx=5 -y Output\DataNRO-TeaMobi.zip Output\Data\*.*
       - run: tree /f Output
@@ -191,7 +187,6 @@ jobs:
           7z x SampleData/DataNRO-ILoveNRO.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Move sample data to Page (TeaMobi)
         run: mv -f Output/Data/TeaMobi Page/public/
-      - run: tree
       - name: Build page
         run: |
           cd Page
