@@ -24,11 +24,6 @@ on:
         type: boolean
         required: false
         default: false
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - "CLI/**"
 permissions:
   contents: write
   pages: write
@@ -39,11 +34,12 @@ concurrency:
 jobs:
   cronjob-based-github-action:
     name: Cronjob based github action (Keep workflow alive)
-    if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        if: github.event_name == 'schedule'
       - uses: liskin/gh-workflow-keepalive@v1
+        if: github.event_name == 'schedule'
 
   # ----------------------------------------------------
 
