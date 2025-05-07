@@ -130,7 +130,9 @@ jobs:
           workflow_conclusion: ""
           if_no_artifact_found: fail
           allow_forks: false
-          path: Page/public
+          skip_unpack: true
+      - name: Decompress password-protected artifact (TeaMobi)
+        run: 7z x DataNRO-TeaMobi.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Decompress password-protected sample data (private servers)
         run: |
           7z x SampleData/DataNRO-HSNR.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
