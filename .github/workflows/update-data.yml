@@ -108,12 +108,14 @@ jobs:
           MAX_RUN_SECONDS: ${{ github.event.inputs.max-run-seconds }}
           FORCE_PROXY:  ${{ github.event.inputs.force-proxy }}
       - name: Create password-protected zip file (TeaMobi)
-        run: 7z a -p${{ secrets.ZIP_PASSWORD }} -mx=5 -y Output\DataNRO-TeaMobi.zip Output\Data\*
+        run: |
+          cd Output\Data
+          7z a -p${{ secrets.ZIP_PASSWORD }} -mx=5 -y ..\..\DataNRO-TeaMobi.zip .\
       - name: Upload password-protected artifact DataNRO-TeaMobi
         uses: actions/upload-artifact@v4
         with:
           name: DataNRO-TeaMobi
-          path: Output/DataNRO-TeaMobi.zip
+          path: DataNRO-TeaMobi.zip
 
   build-and-deploy-pages:
     name: Build and deploy pages
