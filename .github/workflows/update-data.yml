@@ -145,7 +145,7 @@ jobs:
           cd Page
           npm install
           npm run build
-      - run: tree
+      - run: tree -d
       - name: Copy index.html (Dirty trick)
         run: |
           cp Page/dist/index.html Page/dist/TeaMobi/index.html
