@@ -17,23 +17,23 @@ export default {
   <div class="selectPublisher">
     <h1>{{ t('selectPublisher') }}</h1>
     <div class="publishers">
-      <a class="hoverable publisher" href="TeaMobi/" :title="t('officialServer')">
+      <a class="hoverable publisher" href="TeaMobi/" :title="t('teaMobiName') + ' (' + t('officialServer') + ')'">
         <img src="../assets/teamobi.png" v-if="currentLang == 'vi'" alt="TeaMobi" />
         <img src="../assets/teamobiEng.png" v-else alt="TeaMobi" />
         <span class="publisherName">{{ t('teaMobiName') }}</span>
         <span class="publisherDesc">{{ t('officialServer') }}</span>
       </a>
-      <a class="hoverable publisher" href="HSNR/" :title="t('privateServer')">
+      <a class="hoverable publisher" href="HSNR/" :title="t('hsnrName') + ' (' + t('privateServer') + ')'">
         <img src="../assets/hsnr.png" alt="HSNR" />
         <span class="publisherName">{{ t('hsnrName') }}🏴&zwj;☠️</span>
         <span class="publisherDesc">{{ t('privateServer') }}</span>
       </a>
-      <a class="hoverable publisher" href="BlueFake/" :title="t('privateAndScamServer')">
+      <a class="hoverable publisher" href="BlueFake/" :title="t('nroBlueFakeName') + ' (' + t('privateAndScamServer') + ')'">
         <img src="../assets/blue.png" alt="BlueFake" />
         <span class="publisherName">{{ t('nroBlueFakeName') }}🐓</span>
         <span class="publisherDesc">{{ t('privateAndScamServer') }}</span>
       </a>
-      <a class="hoverable publisher" href="ILoveNRO/" :title="t('privateAndScamServer')">
+      <a class="hoverable publisher" href="ILoveNRO/" :title="t('iLoveNROName') + ' (' + t('privateAndScamServer') + ')'">
         <img src="../assets/ilovenro.png" alt="ILoveNRO" />
         <span class="publisherName">{{ t('iLoveNROName') }}🐓</span>
         <span class="publisherDesc">{{ t('privateAndScamServer') }}</span>
