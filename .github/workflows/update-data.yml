@@ -40,6 +40,8 @@ jobs:
   cronjob-based-github-action:
     name: Cronjob based github action (Keep workflow alive)
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     steps:
       - uses: actions/checkout@v4
         if: github.event_name == 'schedule'
