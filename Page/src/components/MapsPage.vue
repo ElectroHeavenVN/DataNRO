@@ -131,6 +131,13 @@ export default {
       this.selectedServerIndex = index + 1;
     else
       this.selectedServerIndex = 1;
+    let serverFromURL = new URL(window.location.href).searchParams.get('server');
+    if (serverFromURL) {
+      let serverIndex = this.servers.map(s => s.id).indexOf(serverFromURL);
+      if (serverIndex !== -1) {
+        this.selectedServerIndex = serverIndex + 1;
+      }
+    }
     moment.locale(navigator.language);
     this.getMaps();
   },

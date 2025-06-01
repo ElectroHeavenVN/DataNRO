@@ -24,6 +24,10 @@ export default {
       type: Array,
       required: true,
     },
+    defaultValue: {
+      type: String,
+      default: "",
+    },
     defaultServerId: {
       type: String,
       default: "",
@@ -40,8 +44,14 @@ export default {
       this.selectedServerIndex = index + 1;
     else 
       this.selectedServerIndex = 1;
-      document.querySelector(".select-server select").selectedIndex = this.selectedServerIndex - 1;
-      this.$emit('change-server', { target: document.querySelector(".select-server select") });
+    if (this.defaultValue !== "") {
+      let serverIndex = this.servers.map(s => s.id).indexOf(this.defaultValue);
+      if (serverIndex !== -1) {
+        this.selectedServerIndex = serverIndex + 1;
+      }
+    }
+    document.querySelector(".select-server select").selectedIndex = this.selectedServerIndex - 1;
+    this.$emit('change-server', { target: document.querySelector(".select-server select") });
   },
 }
 </script>

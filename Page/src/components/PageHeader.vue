@@ -17,7 +17,7 @@ const { t } = useI18n();
       </div>
       <h2>{{ t('lastUpdated') }}: {{ lastUpdated }}</h2>
     </div>
-    <SelectServer :servers="servers" :defaultServerId="defaultServerId" @change-server="changeServer" />
+    <SelectServer :servers="servers" :defaultValue="getServerIdFromUrl()" :defaultServerId="defaultServerId" @change-server="changeServer" />
   </div>
   <div class="searchBar">
     <SearchBar :placeholder="placeholder" :defaultValue="getQueryFromUrl()" @inputText="inputText" @search="search" />
@@ -68,7 +68,22 @@ export default {
     getSortInverseFromUrl() {
       return new URL(window.location.href).searchParams.get('inverse') === 'true';
     },
+    getServerIdFromUrl() {
+      return new URL(window.location.href).searchParams.get('server') || this.defaultServerId;
+    },
     changeServer(e) {
+      let url = new URL(window.location.href);
+      console.log('Changing server to:', e?.target?.value);
+      let index = this.servers.map(s => s.id).indexOf(e?.target?.value);
+      let defaultIndex = 0;
+      if (this.defaultServerId !== "")
+        defaultIndex = this.servers.map(s => s.id).indexOf(this.defaultServerId);
+      if (index !== -1 && index !== defaultIndex) {
+        url.searchParams.set('server', e.target.value);
+      } else {
+        url.searchParams.delete('server');
+      }
+      window.history.pushState({}, '', url.toString());
       this.$emit('changeServer', e);
     },
     inputText(e) {
@@ -108,6 +123,18 @@ export default {
     },
   },
   mounted() {
+    const serverId = this.getServerIdFromUrl();
+    if (serverId) {
+      const index = this.servers.map(s => s.id).indexOf(serverId);
+      if (index !== -1) {
+        this.$emit('changeServer', { target: { selectedIndex: index } });
+      }
+      else {
+        let url = new URL(window.location.href);
+        url.searchParams.delete('server');
+        window.history.pushState({}, '', url.toString());
+      }
+    }
     const query = this.getQueryFromUrl();
     if (query) {
       this.$emit('inputText', { target: { value: query } });
