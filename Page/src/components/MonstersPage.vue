@@ -3,9 +3,7 @@ import { useI18n } from 'vue-i18n'
 import moment from 'moment/min/moment-with-locales';
 import Monster from './Monster.vue';
 import LoadMore from './LoadMore.vue';
-import Sort from './Sort.vue';
-import SearchBar from './SearchBar.vue';
-import SelectServer from './SelectServer.vue';
+import PageHeader from './PageHeader.vue';
 import LoadingPage from './LoadingPage.vue';
 const { t } = useI18n();
 
@@ -14,22 +12,10 @@ const { t } = useI18n();
 <template>
   <LoadingPage v-if="loading" />
   <div v-else>
-    <div class="title">
-      <div>
-        <div style="display: flex; flex-direction: row; gap: 5px; align-items: center;">
-          <h1>{{ t('mobs') }}</h1>
-          <a class="material-icons-round" :title="t('viewRaw')"
-            :href="servers[selectedServerIndex - 1].id + '/MobTemplates.json'" target="_blank"
-            style="color: unset !important;">open_in_new</a>
-        </div>
-        <h5>{{ t('lastUpdated') }}: {{ lastUpdated }}</h5>
-      </div>
-      <SelectServer :servers="servers" :defaultServerId="defaultServerId" @change-server="changeServer" />
-    </div>
-    <div class="searchBar">
-      <SearchBar :placeholder="t('searchMob')" @inputText="checkDeleteAll" @search="searchMob" />
-      <Sort @change-sort="changeSort" @inverse-sort="inverseSort" />
-    </div>
+    <PageHeader :servers="servers" :selectedServerIndex="selectedServerIndex" :defaultServerId="defaultServerId"
+      :jsonFileName="'MobTemplates.json'" :placeholder="t('searchMob')" :lastUpdated="lastUpdated"
+      @change-server="changeServer" @inputText="checkDeleteAll" @search="searchMob" @changeSort="changeSort"
+      @inverseSort="inverseSort" />
     <div class="mobs">
       <Monster v-for="mob in visibleMobs" :name=mob.name :id=mob.mobTemplateId :range=mob.rangeMove :speed=mob.speed
         :type=mob.type :dartType=mob.dartType :hp=mob.hp class="hoverable" />
@@ -152,49 +138,10 @@ export default {
 </script>
 
 <style scoped>
-.title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  gap: 20px;
-}
-
-.title h1,
-.title h5 {
-  margin: 0;
-}
-
 .mobs {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 25px;
-}
-
-.searchBar {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 30px;
-}
-
-select {
-  padding: 15px;
-  background-color: var(--component-bg);
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  outline: none;
-  font-size: 1rem;
-  width: 100px;
-}
-
-@media screen and (max-width: 700px) {
-  .searchBar {
-    flex-wrap: wrap;
-    gap: 20px;
-  }
 }
 </style>

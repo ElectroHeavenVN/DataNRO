@@ -9,7 +9,7 @@ const { t } = useI18n();
       <span class="material-icons-round" style="font-size: 2rem; position: relative; top: 3px; left: 2px;">straight</span>
       <span class="material-icons-round" style="position: relative; left: -8px;">sort</span>
     </div>
-    <select @change="changeSort">
+    <select @change="changeSort" :aria-label="t('selectServer')">
       <option value="id" selected="">ID</option>
       <option value="name">{{ t('name') }}</option>
       <option value="icon">Icon</option>

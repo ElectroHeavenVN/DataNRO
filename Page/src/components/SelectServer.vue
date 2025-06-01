@@ -5,8 +5,8 @@ const { t } = useI18n();
 
 <template>
   <div class="select-server">
-    <span style="white-space: nowrap;">{{ t('selectServer') }}</span>
-    <select @change="changeServer">
+    <span style="white-space: nowrap;">{{ t('server') }}</span>
+    <select @change="changeServer" :aria-label="t('selectServer')">
       <option v-for = "server in servers" :value="server.id">{{ t(server.name.toLowerCase()) }}</option>
     </select>
   </div>

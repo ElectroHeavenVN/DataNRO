@@ -18,8 +18,8 @@ export default {
     <h1>{{ t('selectPublisher') }}</h1>
     <div class="publishers">
       <a class="hoverable publisher" href="TeaMobi/" :title="t('teaMobiName') + ' (' + t('officialServer') + ')'">
-        <img src="../assets/teamobi.png" v-if="currentLang == 'vi'" alt="TeaMobi" />
-        <img src="../assets/teamobiEng.png" v-else alt="TeaMobi" />
+        <img src="../assets/teamobi.png" v-if="currentLang == 'vi'" alt="TeaMobi Vietnam" />
+        <img src="../assets/teamobiEng.png" v-else alt="TeaMobi Global" />
         <span class="publisherName">{{ t('teaMobiName') }}</span>
         <span class="publisherDesc">{{ t('officialServer') }}</span>
       </a>

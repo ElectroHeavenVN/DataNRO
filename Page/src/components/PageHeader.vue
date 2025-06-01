@@ -1,0 +1,110 @@
+<script setup>
+import { useI18n } from 'vue-i18n'
+import Sort from './Sort.vue';
+import SearchBar from './SearchBar.vue';
+import SelectServer from './SelectServer.vue';
+const { t } = useI18n();
+</script>
+
+<template>
+  <div class="title">
+    <div>
+      <div style="display: flex; flex-direction: row; gap: 5px; align-items: center;">
+        <h1>{{ t('items') }}</h1>
+        <a class="material-icons-round" :title="t('viewRaw')"
+          :href="servers[selectedServerIndex - 1].id + '/' + jsonFileName" target="_blank"
+          style="color: unset !important;">open_in_new</a>
+      </div>
+      <h2>{{ t('lastUpdated') }}: {{ lastUpdated }}</h2>
+    </div>
+    <SelectServer :servers="servers" :defaultServerId="defaultServerId" @change-server="changeServer" />
+  </div>
+  <div class="searchBar">
+    <SearchBar :placeholder="placeholder" :defaultValue="getQueryFromUrl()" @inputText="inputText" @search="search" />
+    <Sort @change-sort="changeSort" @inverse-sort="inverseSort" />
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    servers: {
+      type: Array,
+      required: true,
+    },
+    selectedServerIndex: {
+      type: Number,
+      default: 1,
+    },
+    defaultServerId: {
+      type: String,
+      default: "",
+    },
+    jsonFileName: {
+      type: String,
+      required: true,
+    },
+    placeholder: {
+      type: String,
+      default: '',
+    },
+    lastUpdated: {
+      type: String,
+      default: '',
+    },
+  },
+  methods: {
+    changeServer(e) {
+      this.$emit('changeServer', e);
+    },
+    inputText(e) {
+      this.$emit('inputText', e);
+    },
+    search(e) {
+      this.$emit('search', e);
+    },
+    changeSort(e) {
+      this.$emit('changeSort', e);
+    },
+    inverseSort(e) {
+      this.$emit('inverseSort', e);
+    },
+  },
+  },
+};
+</script>
+
+
+<style scoped>
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.title h1,
+.title h2 {
+  margin: 0;
+}
+
+h2 {
+  font-size: 1rem;
+}
+
+.searchBar {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 30px;
+}
+
+@media screen and (max-width: 700px) {
+  .searchBar {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+}
+</style>

@@ -101,6 +101,7 @@
 	"loadMoreHold": "Hold to load all",
 	"loadMoreWarning": "Your browser WILL lag",
 
+	"server": "Server",
 	"selectServer": "Select server",
 	"search": "Search",
 	"searchItem": "Search item",

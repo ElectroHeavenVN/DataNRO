@@ -3,9 +3,7 @@ import { useI18n } from 'vue-i18n'
 import moment from 'moment/min/moment-with-locales';
 import Map from './Map.vue';
 import LoadMore from './LoadMore.vue';
-import Sort from './Sort.vue';
-import SearchBar from './SearchBar.vue';
-import SelectServer from './SelectServer.vue';
+import PageHeader from './PageHeader.vue';
 import LoadingPage from './LoadingPage.vue';
 const { t } = useI18n();
 
@@ -14,22 +12,9 @@ const { t } = useI18n();
 <template>
   <LoadingPage v-if="loading" />
   <div v-else>
-    <div class="title">
-      <div>
-        <div style="display: flex; flex-direction: row; gap: 5px; align-items: center;">
-          <h1>{{ t('maps') }}</h1>
-          <a class="material-icons-round" :title="t('viewRaw')"
-            :href="servers[selectedServerIndex - 1].id + '/Maps.json'" target="_blank"
-            style="color: unset !important;">open_in_new</a>
-        </div>
-        <h5>{{ t('lastUpdated') }}: {{ lastUpdated }}</h5>
-      </div>
-      <SelectServer :servers="servers" :defaultServerId="defaultServerId" @change-server="changeServer" />
-    </div>
-    <div class="searchBar">
-      <SearchBar :placeholder="t('searchMap')" @input="checkDeleteAll" @search="searchMap" />
-      <Sort @change-sort="changeSort" @inverse-sort="inverseSort" />
-    </div>
+    <PageHeader :servers="servers" :selectedServerIndex="selectedServerIndex" :defaultServerId="defaultServerId"
+      :jsonFileName="'Maps.json'" :placeholder="t('searchMap')" :lastUpdated="lastUpdated" @change-server="changeServer"
+      @inputText="checkDeleteAll" @search="searchMap" @changeSort="changeSort" @inverseSort="inverseSort" />
     <div class="maps">
       <Map v-for="map in visibleMaps" :name=map.name :id=map.id class="hoverable" />
     </div>
@@ -151,43 +136,11 @@ export default {
 </script>
 
 <style scoped>
-.title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  gap: 20px;
-}
-
-.title h1,
-.title h5 {
-  margin: 0;
-}
-
 .maps {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 25px;
-}
-
-.searchBar {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 30px;
-}
-
-select {
-  padding: 15px;
-  background-color: var(--component-bg);
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  outline: none;
-  font-size: 1rem;
-  width: 100px;
 }
 
 @media screen and (max-width: 700px) {

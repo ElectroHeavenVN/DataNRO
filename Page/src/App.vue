@@ -12,7 +12,9 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR' || currentPath == 'BlueFake' || currentPath == 'ILoveNRO'" id="mySidenav" class="sidenav">
+  <div
+    v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR' || currentPath == 'BlueFake' || currentPath == 'ILoveNRO'"
+    id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" @click=closeNav>&times;</a>
     <span class="hoverable" @click="setPage('items')">{{ t("items") }}</span>
     <span class="hoverable" @click="setPage('npcs')">{{ t("npcs") }}</span>
@@ -26,7 +28,8 @@ const { t } = useI18n();
     <nav>
       <div class="wrapper">
         <div href="/" class="content head">
-          <span v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR' || currentPath == 'BlueFake' || currentPath == 'ILoveNRO'"
+          <span
+            v-if="currentPath == 'TeaMobi' || currentPath == 'HSNR' || currentPath == 'BlueFake' || currentPath == 'ILoveNRO'"
             style="font-size: 25px; cursor:pointer; position: relative; top:1px;" @click=openNav>&#9776;</span>
           <div style="display: flex; flex-direction: column; align-items: center; max-height: 40px;">
             <a href="/DataNRO/" style="position: relative; top: 3px">
@@ -78,7 +81,8 @@ const { t } = useI18n();
             <span class="lastWorkflowShortText">
               {{ t("workflowFailureShort") }}
             </span>
-            <svg width="16" height="16" style="margin-top: 2px" class="octicon octicon-x-circle-fill color-fg-danger" viewBox="0 0 16 16" version="1.1" role="img">
+            <svg width="16" height="16" style="margin-top: 2px" class="octicon octicon-x-circle-fill color-fg-danger"
+              viewBox="0 0 16 16" version="1.1" role="img">
               <path fill="#FF9492"
                 d="M2.343 13.657A8 8 0 1 1 13.658 2.343 8 8 0 0 1 2.343 13.657ZM6.03 4.97a.751.751 0 0 0-1.042.018.751.751 0 0 0-.018 1.042L6.94 8 4.97 9.97a.749.749 0 0 0 .326 1.275.749.749 0 0 0 .734-.215L8 9.06l1.97 1.97a.749.749 0 0 0 1.275-.326.749.749 0 0 0-.215-.734L9.06 8l1.97-1.97a.749.749 0 0 0-.326-1.275.749.749 0 0 0-.734.215L8 6.94Z">
               </path>
@@ -91,26 +95,28 @@ const { t } = useI18n();
             <span class="lastWorkflowShortText">
               {{ t("workflowCancelledShort") }}
             </span>
-            <svg width="16" height="16" style="margin-top: 2px" class="octicon octicon-stop neutral-check" viewBox="0 0 16 16" version="1.1" role="img">
-              <path fill="#B7BDC8" d="M4.47.22A.749.749 0 0 1 5 0h6c.199 0 .389.079.53.22l4.25 4.25c.141.14.22.331.22.53v6a.749.749 0 0 1-.22.53l-4.25 4.25A.749.749 0 0 1 11 16H5a.749.749 0 0 1-.53-.22L.22 11.53A.749.749 0 0 1 0 11V5c0-.199.079-.389.22-.53Zm.84 1.28L1.5 5.31v5.38l3.81 3.81h5.38l3.81-3.81V5.31L10.69 1.5ZM8 4a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z">
+            <svg width="16" height="16" style="margin-top: 2px" class="octicon octicon-stop neutral-check"
+              viewBox="0 0 16 16" version="1.1" role="img">
+              <path fill="#B7BDC8"
+                d="M4.47.22A.749.749 0 0 1 5 0h6c.199 0 .389.079.53.22l4.25 4.25c.141.14.22.331.22.53v6a.749.749 0 0 1-.22.53l-4.25 4.25A.749.749 0 0 1 11 16H5a.749.749 0 0 1-.53-.22L.22 11.53A.749.749 0 0 1 0 11V5c0-.199.079-.389.22-.53Zm.84 1.28L1.5 5.31v5.38l3.81 3.81h5.38l3.81-3.81V5.31L10.69 1.5ZM8 4a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z">
               </path>
             </svg>
           </a>
         </div>
         <div class="content">
           <div class="themeSwitcher">
-            <input type="checkbox" @change="changeTheme" id="chk" />
+            <input type="checkbox" @change="changeTheme" id="chk" aria-label="Toggle theme" />
             <font-awesome-icon icon="fa-solid fa-sun" class="light" />
             <font-awesome-icon icon="fa-solid fa-moon" class="dark" />
           </div>
           <div class="links">
-            <a href="/" target="_blank">
+            <a href="/" target="_blank" aria-label="Home">
               <font-awesome-icon icon="fa-solid fa-house" fixed-width alt="Home" />
             </a>
-            <a @click="showDiscordEmbed">
+            <a @click="showDiscordEmbed" aria-label="Discord">
               <font-awesome-icon icon="fa-brands fa-discord" fixed-width alt="Discord" />
             </a>
-            <a href="https://github.com/ElectroHeavenVN/DataNRO" target="_blank">
+            <a href="https://github.com/ElectroHeavenVN/DataNRO" target="_blank" aria-label="GitHub">
               <font-awesome-icon icon="fa-brands fa-github" fixed-width alt="GitHub" />
             </a>
           </div>
@@ -163,7 +169,7 @@ export default {
     getCurrentServer() {
       let currentPath = this.currentPath;
       if (currentPath === 'TeaMobi')
-        return 'TeaMobi'; 
+        return 'TeaMobi';
       else if (currentPath === 'HSNR')
         return 'HSNR';
       else if (currentPath === 'BlueFake')
@@ -302,11 +308,7 @@ export default {
 .fa-discord {
   color: #5865F2;
   filter:
-    drop-shadow(1px 1px 1px #00ffff)
-    drop-shadow(-1px 1px 1px #00ffff)
-    drop-shadow(1px -1px 1px #00ffff)
-    drop-shadow(-1px -1px 1px #00ffff) 
-    !important;
+    drop-shadow(1px 1px 1px #00ffff) drop-shadow(-1px 1px 1px #00ffff) drop-shadow(1px -1px 1px #00ffff) drop-shadow(-1px -1px 1px #00ffff) !important;
 }
 
 .sidenav {
@@ -412,8 +414,8 @@ export default {
   }
 
   .lastWorkflow {
-  padding-right: 0;
-}
+    padding-right: 0;
+  }
 
   .links {
     gap: 5px;

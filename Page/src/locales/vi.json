@@ -101,7 +101,8 @@
 	"loadMoreHold": "Giữ để tải hết",
 	"loadMoreWarning": "Lag máy đừng kêu",
 	
-	"selectServer": "Máy chủ",
+	"server": "Máy chủ",
+	"selectServer": "Chọn máy chủ",
 	"search": "Tìm kiếm",
 	"searchItem": "Tìm vật phẩm",
 	"searchNPC": "Tìm NPC",
