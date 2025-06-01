@@ -12,7 +12,7 @@ const { t } = useI18n();
 <template>
   <LoadingPage v-if="loading" />
   <div v-else>
-    <PageHeader :servers="servers" :selectedServerIndex="selectedServerIndex" :defaultServerId="defaultServerId"
+    <PageHeader :title="t('skills')" :servers="servers" :selectedServerIndex="selectedServerIndex" :defaultServerId="defaultServerId"
       :jsonFileName="'NClasses.json'" :placeholder="t('searchSkill')" :lastUpdated="lastUpdated"
       @change-server="changeServer" @inputText="checkDeleteAll" @search="searchSkillTemplates" @changeSort="changeSort"
       @inverseSort="inverseSort" />

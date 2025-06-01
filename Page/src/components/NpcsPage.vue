@@ -12,7 +12,7 @@ const { t } = useI18n();
 <template>
   <LoadingPage v-if="loading" />
   <div v-else>
-    <PageHeader :servers="servers" :selectedServerIndex="selectedServerIndex" :defaultServerId="defaultServerId"
+    <PageHeader :title="t('npcs')" :servers="servers" :selectedServerIndex="selectedServerIndex" :defaultServerId="defaultServerId"
       :jsonFileName="'NpcTemplates.json'" :placeholder="t('searchNPC')" :lastUpdated="lastUpdated"
       @change-server="changeServer" @inputText="checkDeleteAll" @search="searchNpc" @changeSort="changeSort"
       @inverseSort="inverseSort" />

@@ -12,7 +12,7 @@ const { t } = useI18n();
 <template>
   <LoadingPage v-if="loading" />
   <div v-else>
-    <PageHeader :servers="servers" :selectedServerIndex="selectedServerIndex" :defaultServerId="defaultServerId"
+    <PageHeader :title="t('maps')" :servers="servers" :selectedServerIndex="selectedServerIndex" :defaultServerId="defaultServerId"
       :jsonFileName="'Maps.json'" :placeholder="t('searchMap')" :lastUpdated="lastUpdated" @change-server="changeServer"
       @inputText="checkDeleteAll" @search="searchMap" @changeSort="changeSort" @inverseSort="inverseSort" />
     <div class="maps">

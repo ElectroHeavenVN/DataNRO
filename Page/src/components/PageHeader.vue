@@ -10,7 +10,7 @@ const { t } = useI18n();
   <div class="title">
     <div>
       <div style="display: flex; flex-direction: row; gap: 5px; align-items: center;">
-        <h1>{{ t('items') }}</h1>
+        <h1>{{ title }}</h1>
         <a class="material-icons-round" :title="t('viewRaw')"
           :href="servers[selectedServerIndex - 1].id + '/' + jsonFileName" target="_blank"
           style="color: unset !important;">open_in_new</a>
@@ -29,6 +29,10 @@ const { t } = useI18n();
 export default {
   emits: ['changeServer', 'inputText', 'search', 'changeSort', 'inverseSort'],
   props: {
+    title: {
+      type: String,
+      required: true,
+    },
     servers: {
       type: Array,
       required: true,
@@ -96,7 +100,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .title {
