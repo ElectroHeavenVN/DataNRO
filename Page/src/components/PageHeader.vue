@@ -7,21 +7,25 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="title">
-    <div>
-      <div style="display: flex; flex-direction: row; gap: 5px; align-items: center;">
-        <h1>{{ title }}</h1>
-        <a class="material-icons-round" :title="t('viewRaw')"
-          :href="servers[selectedServerIndex - 1].id + '/' + jsonFileName" target="_blank"
-          style="color: unset !important;">open_in_new</a>
+  <div>
+    <div class="title">
+      <div>
+        <div style="display: flex; flex-direction: row; gap: 5px; align-items: center;">
+          <h1>{{ title }}</h1>
+          <a class="material-icons-round" :title="t('viewRaw')"
+            :href="servers[selectedServerIndex - 1].id + '/' + jsonFileName" target="_blank"
+            style="color: unset !important;">open_in_new</a>
+        </div>
+        <h2>{{ t('lastUpdated') }}: {{ lastUpdated }}</h2>
       </div>
-      <h2>{{ t('lastUpdated') }}: {{ lastUpdated }}</h2>
+      <SelectServer :servers="servers" :defaultValue="getServerIdFromUrl()" :defaultServerId="defaultServerId"
+        @change-server="changeServer" />
     </div>
-    <SelectServer :servers="servers" :defaultValue="getServerIdFromUrl()" :defaultServerId="defaultServerId" @change-server="changeServer" />
-  </div>
-  <div class="searchBar">
-    <SearchBar :placeholder="placeholder" :defaultValue="getQueryFromUrl()" @inputText="inputText" @search="search" />
-    <Sort :defaultValue="getSortFromUrl()" :inverse="getSortInverseFromUrl()" @change-sort="changeSort" @inverse-sort="inverseSort" />
+    <div class="searchBar">
+      <SearchBar :placeholder="placeholder" :defaultValue="getQueryFromUrl()" @inputText="inputText" @search="search" />
+      <Sort :defaultValue="getSortFromUrl()" :inverse="getSortInverseFromUrl()" @change-sort="changeSort"
+        @inverse-sort="inverseSort" />
+    </div>
   </div>
 </template>
 
@@ -58,6 +62,11 @@ export default {
       default: '',
     },
   },
+  data() {
+    return {
+      firstTimeChangeServer: true,
+    };
+  },
   methods: {
     getQueryFromUrl() {
       return new URL(window.location.href).searchParams.get('q') || '';
@@ -73,7 +82,6 @@ export default {
     },
     changeServer(e) {
       let url = new URL(window.location.href);
-      console.log('Changing server to:', e?.target?.value);
       let index = this.servers.map(s => s.id).indexOf(e?.target?.value);
       let defaultIndex = 0;
       if (this.defaultServerId !== "")
@@ -83,7 +91,16 @@ export default {
       } else {
         url.searchParams.delete('server');
       }
-      window.history.pushState({}, '', url.toString());
+      if (!this.firstTimeChangeServer) {
+        url.searchParams.delete('q');
+        window.history.pushState({}, '', url.toString());
+        this.$nextTick(() => {
+          this.$el.querySelector('.searchBar input').value = '';
+        });
+      }
+      else {
+        this.firstTimeChangeServer = false;
+      }
       this.$emit('changeServer', e);
     },
     inputText(e) {
