@@ -21,7 +21,7 @@ const { t } = useI18n();
   </div>
   <div class="searchBar">
     <SearchBar :placeholder="placeholder" :defaultValue="getQueryFromUrl()" @inputText="inputText" @search="search" />
-    <Sort @change-sort="changeSort" @inverse-sort="inverseSort" />
+    <Sort :defaultValue="getSortFromUrl()" @change-sort="changeSort" @inverse-sort="inverseSort" />
   </div>
 </template>
 
@@ -60,8 +60,10 @@ export default {
   },
   methods: {
     getQueryFromUrl() {
-      let url = new URL(window.location.href);
-      return url.searchParams.get('q') || '';
+      return new URL(window.location.href).searchParams.get('q') || '';
+    },
+    getSortFromUrl() {
+      return new URL(window.location.href).searchParams.get('sort') || '';
     },
     changeServer(e) {
       this.$emit('changeServer', e);
@@ -85,6 +87,9 @@ export default {
       this.$emit('search', e);
     },
     changeSort(e) {
+      let url = new URL(window.location.href);
+      url.searchParams.set('sort', e.target.value);
+      window.history.pushState({}, '', url.toString());
       this.$emit('changeSort', e);
     },
     inverseSort(e) {
@@ -96,6 +101,10 @@ export default {
     if (query) {
       this.$emit('inputText', { target: { value: query } });
       this.$emit('search', { target: { value: query } });
+    }
+    const sort = this.getSortFromUrl();
+    if (sort) {
+      this.$emit('changeSort', { target: { value: sort } });
     }
   },
 };

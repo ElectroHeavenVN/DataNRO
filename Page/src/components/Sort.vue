@@ -19,6 +19,12 @@ const { t } = useI18n();
 
 <script>
 export default {
+  props: {
+    defaultValue: {
+      type: String,
+      default: '',
+    },
+  },
   methods: {
     changeSort(e) {
       this.$emit('change-sort', e);
@@ -27,7 +33,14 @@ export default {
       e.target.parentElement.style.transform = e.target.parentElement.style.transform === 'scale(1, -1)' ? 'none' : 'scale(1, -1)';
       this.$emit('inverse-sort', {reversed: e.target.parentElement.style.transform === 'scale(1, -1)'});
     }
-  }
+  },
+  mounted() {
+    if (this.defaultValue) {
+      this.$nextTick(() => {
+        this.$el.querySelector('select').value = this.defaultValue;
+      });
+    }
+  },
 }
 </script>
 
