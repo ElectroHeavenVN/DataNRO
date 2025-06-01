@@ -6,7 +6,7 @@ const { t } = useI18n();
 <template>
   <div class="search-bar">
     <span class="material-icons-round" style="font-size: 2rem;">search</span>
-    <input type="search" :placeholder="placeholder" @input="onInput" @change="onSearch" />
+    <input type="search" :placeholder="placeholder" @input="onInput" @change="onSearch" :aria-label="placeholder" />
   </div>
 </template>
 
@@ -14,6 +14,10 @@ const { t } = useI18n();
 export default {
   props: {
     placeholder: {
+      type: String,
+      default: '',
+    },
+    defaultValue: {
       type: String,
       default: '',
     },
@@ -26,7 +30,14 @@ export default {
       this.$emit('search', event);
     },
   },
-}
+  mounted() {
+    if (this.defaultValue) {
+      this.$nextTick(() => {
+        this.$el.querySelector('input').value = this.defaultValue;
+      });
+    }
+  },
+};
 </script>
 
 <style scoped>

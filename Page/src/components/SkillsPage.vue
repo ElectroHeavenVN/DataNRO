@@ -149,6 +149,8 @@ export default {
         .replace(/ý|ỳ|ỷ|ỹ|ỵ/g, 'y');
     },
     changeServer(e) {
+      if (e.target.selectedIndex === this.selectedServerIndex - 1)
+        return; 
       this.selectedServerIndex = e.target.selectedIndex + 1;
       this.getSkillTemplates();
     },

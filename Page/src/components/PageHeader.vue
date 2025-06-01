@@ -27,6 +27,7 @@ const { t } = useI18n();
 
 <script>
 export default {
+  emits: ['changeServer', 'inputText', 'search', 'changeSort', 'inverseSort'],
   props: {
     servers: {
       type: Array,
@@ -54,13 +55,29 @@ export default {
     },
   },
   methods: {
+    getQueryFromUrl() {
+      let url = new URL(window.location.href);
+      return url.searchParams.get('q') || '';
+    },
     changeServer(e) {
       this.$emit('changeServer', e);
     },
     inputText(e) {
+      let url = new URL(window.location.href);
+      if (!e?.target?.value) {
+        url.searchParams.delete('q');
+        window.history.pushState({}, '', url.toString());
+      }
       this.$emit('inputText', e);
     },
     search(e) {
+      let url = new URL(window.location.href);
+      if (e?.target?.value) {
+        url.searchParams.set('q', e.target.value);
+      } else {
+        url.searchParams.delete('q');
+      }
+      window.history.pushState({}, '', url.toString());
       this.$emit('search', e);
     },
     changeSort(e) {
@@ -70,6 +87,12 @@ export default {
       this.$emit('inverseSort', e);
     },
   },
+  mounted() {
+    const query = this.getQueryFromUrl();
+    if (query) {
+      this.$emit('inputText', { target: { value: query } });
+      this.$emit('search', { target: { value: query } });
+    }
   },
 };
 </script>
