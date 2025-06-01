@@ -24,6 +24,10 @@ export default {
       type: String,
       default: '',
     },
+    inverse: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     changeSort(e) {
@@ -38,6 +42,11 @@ export default {
     if (this.defaultValue) {
       this.$nextTick(() => {
         this.$el.querySelector('select').value = this.defaultValue;
+      });
+    }
+    if (this.inverse) {
+      this.$nextTick(() => {
+        this.$el.querySelector('.sort-icon').style.transform = 'scale(1, -1)';
       });
     }
   },
