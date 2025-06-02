@@ -50,6 +50,10 @@ namespace DataNRO.CLI
 #if DEBUG
                 Console.Write("DATA: ");
                 data = Console.ReadLine();
+                Console.Write("PROXY: ");
+                proxyData = Console.ReadLine();
+                Console.Write("FORCE_PROXY: ");
+                bool.TryParse(Console.ReadLine(), out forceProxy);
 #else
                 Console.WriteLine("DATA environment variable is not set!");
                 Environment.Exit(1);
@@ -798,6 +802,7 @@ namespace DataNRO.CLI
                 proxyUsername = arrP[3];
             if (arrP.Length > 4)
                 proxyPassword = arrP[4];
+            Console.WriteLine("Using proxy: " + Regex.Replace(proxyHost, "[0-9]", "*") + ":" + proxyPort + " (" + proxyType + ")");
             int retryTimes = 0;
             try
             {
@@ -826,8 +831,7 @@ namespace DataNRO.CLI
                     Console.WriteLine("Failed to connect to the server through the provided proxy!");
                     return false;
                 }
-                else
-                    return true;
+                return true;
             }
         }
 
