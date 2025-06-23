@@ -102,5 +102,21 @@
         /// </summary>
         /// <param name="mapTemplateID">ID map cần lấy thông tin</param>
         void RequestMapTemplate(int mapTemplateID);
+
+        /// <summary>
+        /// Lấy "ImgByName" theo tên
+        /// </summary>
+        /// <param name="name">
+        /// Tên ảnh "ImgByName"
+        /// </param>
+        void GetImgByName(string name);
+
+        /// <summary>
+        /// Lấy dữ liệu hiệu ứng theo ID
+        /// </summary>
+        /// <param name="id">
+        /// ID của hiệu ứng cần lấy dữ liệu
+        /// </param>
+        void GetEffectData(short id);
     }
 }

@@ -172,7 +172,8 @@ namespace DataNRO
 
         public NpcTemplate[] NpcTemplates { get; set; }
         public MobTemplate[] MobTemplates { get; set; }
-        public EffectData[] MobTemplateEffectData { get; set; }
+        public EffectData[] MobTemplateEffectData { get; set; } //MobTemplateEffectData does not use id field
+        public Dictionary<int, EffectData> EffectDataDict { get; set; } = new Dictionary<int, EffectData>();
         public ItemOptionTemplate[] ItemOptionTemplates { get; set; }
         public NClass[] NClasses { get; set; }
         public List<Map> Maps { get; set; } = new List<Map>();

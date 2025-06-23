@@ -6,6 +6,7 @@ using static DataNRO.GameData;
 
 namespace DataNRO.TeaMobi
 {
+    //TODO: Char.Arr_Head_2Fr
     public class TeaMobiMessageReceiver : IMessageReceiver
     {
         static readonly string[] blankImageHashes = new string[]
@@ -24,10 +25,9 @@ namespace DataNRO.TeaMobi
 
         public void OnMessageReceived(MessageReceive message)
         {
-            switch (message.Command)
+            switch ((Commands)message.Command)
             {
-                case -28:
-                    //MessageNotMap
+                case Commands.NotMap:
                     switch (message.ReadSByte())
                     {
                         case 6:
@@ -44,33 +44,39 @@ namespace DataNRO.TeaMobi
                             break;
                     }
                     break;
-                case -29:
+                case Commands.NotLogin:
                     if (message.ReadSByte() != 2)
                         break;
                     Console.WriteLine("IP address list received: " + message.ReadString());
                     break;
-                case -26:
+                case Commands.DialogMessage:
                     Console.WriteLine("Message received: " + message.ReadString());
                     break;
-                case -24:
+                case Commands.MapInfo:
                     ReadCurrentMapInfo(message);
                     break;
-                case -67:
+                case Commands.RequestIcon:
                     ReadIcon(message);
                     break;
-                case -82:
+                case Commands.GetEffectData:
+                    ReadEffectDataByID(message);
+                    break;
+                case Commands.Tileset:
                     ReadTileTypeAndIndex(message);
                     break;
-                case -87:
+                case Commands.UpdateData:
                     ReadCommonData(message);
                     break;
-                case -74:
+                case Commands.GetResource:
                     ReadResource(message);
                     break;
-                case 11:
+                case Commands.RequestMobTemplate:
                     ReadMobTemplate(message);
                     break;
-                case 12:    //read_cmdExtraBig
+                case Commands.GetImgByName:
+                    ReadImgByName(message);
+                    break;
+                case Commands.ExtraBig:
                     byte b = message.ReadByte();
                     if (b == 0)
                         ReadItemData(message);
@@ -372,25 +378,26 @@ namespace DataNRO.TeaMobi
         void ReadMobTemplate(MessageReceive message)
         {
             int templateID = message.ReadShort();
-            byte type = message.ReadByte();
+            byte typeRead = message.ReadByte();
             byte[] data = message.ReadBytes();
-            if (type == 0)
-                ReadMobData(templateID, data);
+            session.FileWriter.WriteEffectDataMob(templateID, data);
+            EffectData effectData = session.Data.MobTemplateEffectData[templateID];
+            if (typeRead == 0)
+                ReadEffectData(effectData, data);
             else
-                ReadNewMobData(templateID, data, type);
+                ReadEffectData(effectData, data, typeRead);
             byte[] imgData = message.ReadBytes();
-            session.FileWriter.WriteMobImg(templateID, imgData);
+            session.FileWriter.WriteEffectDataMobImg(templateID, imgData);
             byte typeData = message.ReadByte();
         }
 
-        void ReadMobData(int templateID, byte[] data)
+        void ReadEffectData(EffectData effectData, byte[] data)
         {
             MessageReceive reader = new MessageReceive(0, data);
             int left = 0;
             int top = 0;
             int right = 0;
             int bottom = 0;
-            EffectData effectData = session.Data.MobTemplateEffectData[templateID];
             try
             {
                 ImageInfo[] imgInfos = new ImageInfo[reader.ReadByte()];
@@ -476,14 +483,13 @@ namespace DataNRO.TeaMobi
             catch { }
         }
 
-        void ReadNewMobData(int templateID, byte[] data, byte typeRead)
+        void ReadEffectData(EffectData effectData, byte[] data, byte typeRead)
         {
             MessageReceive reader = new MessageReceive(0, data);
             int left = 0;
             int top = 0;
             int right = 0;
             int bottom = 0;
-            EffectData effectData = session.Data.MobTemplateEffectData[templateID];
             try
             {
                 ImageInfo[] imgInfos = new ImageInfo[reader.ReadByte()];
@@ -539,6 +545,34 @@ namespace DataNRO.TeaMobi
                 effectData.arrFrame = arrFrame;
             }
             catch { }
+        }
+
+        void ReadEffectDataByID(MessageReceive message)
+        {
+            short id = message.ReadShort();
+            byte[] data = message.ReadBytes();
+            if (!session.Data.EffectDataDict.TryGetValue(id, out EffectData effectData))
+            {
+                effectData = new EffectData();
+                effectData.id = id;
+                session.Data.EffectDataDict[id] = effectData;
+            }
+            session.FileWriter.WriteEffectData(id, data);
+            byte typeRead = message.ReadByte();
+            if (typeRead == 0)
+                ReadEffectData(effectData, data);
+            else
+                ReadEffectData(effectData, data, typeRead);
+            byte[] imgData = message.ReadBytes();
+            session.FileWriter.WriteEffectDataImg(id, imgData);
+        }
+
+        void ReadImgByName(MessageReceive message)
+        {
+            string name = message.ReadString();
+            byte nFrame = message.ReadByte();
+            byte[] data = message.ReadBytes();
+            session.FileWriter.WriteImgByName(name, data, nFrame);
         }
     }
 }

@@ -25,6 +25,248 @@ namespace DataNRO.CLI
         static int maxRunSeconds = 4500;
         static bool forceProxy;
 
+        //static readonly int IMG_BY_NAME_BANNER_COUNT = 100;
+        //static readonly int IMG_BY_NAME_DIV_2_COUNT = 200;
+        //static readonly int IMG_BY_NAME_HAT_COUNT = 200;
+        //static readonly int IMG_BY_NAME_SKILL_COUNT = 20;
+        //static readonly short IMG_BY_NAME_SKILL_TYPE_PAINT_COUNT = 10;
+        static readonly short EFFECT_DATA_COUNT = short.MaxValue;
+
+        static int[][][] charInfo = new int[33][][]
+        {
+            new int[4][]
+            {
+                new int[3] { 0, -13, 34 },
+                new int[3] { 1, -8, 10 },
+                new int[3] { 1, -9, 16 },
+                new int[3] { 1, -9, 45 }
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -13, 35 },
+                new int[3] { 1, -8, 10 },
+                new int[3] { 1, -9, 17 },
+                new int[3] { 1, -9, 46 }
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -10, 33 },
+                new int[3] { 2, -10, 11 },
+                new int[3] { 2, -8, 16 },
+                new int[3] { 1, -12, 49 }
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -10, 32 },
+                new int[3] { 3, -12, 10 },
+                new int[3] { 3, -11, 15 },
+                new int[3] { 1, -13, 47 }
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -10, 34 },
+                new int[3] { 4, -8, 11 },
+                new int[3] { 4, -7, 17 },
+                new int[3] { 1, -12, 47 }
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -10, 34 },
+                new int[3] { 5, -12, 11 },
+                new int[3] { 5, -9, 17 },
+                new int[3] { 1, -13, 49 }
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -10, 33 },
+                new int[3] { 6, -10, 10 },
+                new int[3] { 6, -8, 16 },
+                new int[3] { 1, -12, 47 }
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -9, 36 },
+                new int[3] { 7, -5, 17 },
+                new int[3] { 7, -11, 25 },
+                new int[3] { 1, -8, 49 }
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -7, 35 },
+                new int[3] { 0, -18, 22 },
+                new int[3] { 7, -10, 25 },
+                new int[3] { 1, -7, 48 }
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -11, 35 },
+                new int[3] { 10, -3, 25 },
+                new int[3] { 12, -10, 26 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -11, 37 },
+                new int[3] { 11, -3, 25 },
+                new int[3] { 12, -11, 27 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -14, 34 },
+                new int[3] { 12, -8, 21 },
+                new int[3] { 9, -7, 31 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -12, 35 },
+                new int[3] { 8, -5, 14 },
+                new int[3] { 8, -15, 29 },
+                new int[3] { 1, -9, 49 }
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -9, 34 },
+                new int[3] { 9, -12, 9 },
+                new int[3] { 10, -7, 19 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -13, 34 },
+                new int[3] { 9, -12, 9 },
+                new int[3] { 11, -10, 19 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -8, 32 },
+                new int[3] { 9, -12, 9 },
+                new int[3] { 2, -6, 15 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -8, 32 },
+                new int[3] { 9, -12, 9 },
+                new int[3] { 13, -12, 16 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -10, 31 },
+                new int[3] { 9, -12, 9 },
+                new int[3] { 7, -13, 20 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -11, 32 },
+                new int[3] { 9, -12, 9 },
+                new int[3] { 8, -15, 26 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -9, 33 },
+                new int[3] { 9, -12, 9 },
+                new int[3] { 14, -8, 18 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -11, 33 },
+                new int[3] { 9, -12, 9 },
+                new int[3] { 15, -6, 19 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -16, 31 },
+                new int[3] { 9, -12, 9 },
+                new int[3] { 9, -8, 28 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -14, 34 },
+                new int[3] { 1, -8, 10 },
+                new int[3] { 8, -16, 28 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -8, 36 },
+                new int[3] { 7, -5, 17 },
+                new int[3] { 0, -5, 25 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -9, 31 },
+                new int[3] { 9, -12, 9 },
+                new int[3] { 0, -6, 20 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 2, -9, 36 },
+                new int[3] { 13, -5, 17 },
+                new int[3] { 16, -11, 25 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -9, 34 },
+                new int[3] { 8, -5, 13 },
+                new int[3] { 10, -7, 19 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -13, 34 },
+                new int[3] { 8, -5, 13 },
+                new int[3] { 11, -10, 19 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -8, 32 },
+                new int[3] { 8, -5, 13 },
+                new int[3] { 2, -6, 15 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 1, -8, 32 },
+                new int[3] { 8, -5, 13 },
+                new int[3] { 13, -12, 16 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -9, 33 },
+                new int[3] { 8, -5, 13 },
+                new int[3] { 14, -8, 18 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -11, 33 },
+                new int[3] { 8, -5, 13 },
+                new int[3] { 15, -6, 19 },
+                new int[3]
+            },
+            new int[4][]
+            {
+                new int[3] { 0, -16, 32 },
+                new int[3] { 8, -5, 13 },
+                new int[3] { 9, -8, 29 },
+                new int[3]
+            }
+        };
+
         [DllImport("msvcrt.dll")]
         public static extern int system(string cmd);
 
@@ -80,11 +322,13 @@ namespace DataNRO.CLI
 
         static void FailoverThread()
         {
+#if !DEBUG
             Console.WriteLine($"DataNRO.CLI will run for {maxRunSeconds} seconds!");
             for (int i = 0; i < maxRunSeconds / 10; i++)
                 Thread.Sleep(100 * maxRunSeconds);
             Console.WriteLine($"DataNRO.CLI has been running for {maxRunSeconds} seconds, exiting...");
             Environment.Exit(1);
+#endif
         }
 
         static void LoginAndGetData(string data)
@@ -186,13 +430,17 @@ namespace DataNRO.CLI
             Thread.Sleep(2000);
             if (session.Data.SaveIcon)
             {
-                if (session.Data.MapTileIDs.Count == 0)
-                    Console.WriteLine($"[{session.Host}:{session.Port}] No map tile IDs found, skipping map templates...");
-                else
-                    RequestMapsTemplate(session);
-                RequestMobsImg(session);
-                if (!RequestIcons(session))
-                    return;
+                //if (session.Data.MapTileIDs.Count == 0)
+                //    Console.WriteLine($"[{session.Host}:{session.Port}] No map tile IDs found, skipping map templates...");
+                //else
+                //    RequestMapTemplates(session);
+                RequestEffectData(session);
+                //if (!RequestMobImgs(session))
+                //    return;
+                //if (!RequestImgByNames(session))    //not working right now
+                //    return;
+                //if (!RequestIcons(session))
+                //    return;
             }
             TryGoOutsideIfAtHome(session);
             Console.WriteLine($"[{session.Host}:{session.Port}] Disconnect from {session.Host}:{session.Port} in 10s...");
@@ -362,7 +610,7 @@ namespace DataNRO.CLI
                 if (effectData.frame == null || effectData.frame.Length == 0)
                     continue;
                 Frame frame = effectData.frame[0];
-                Bitmap mobImg = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\MobImg\\{templateId}.png");
+                Bitmap mobImg = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\EffectDataMob\\{templateId}.png");
                 using (Bitmap monster = new Bitmap(mobImg.Width * 3, mobImg.Height * 3))
                 {
                     int x = (int)(monster.Width / 2f / session.Data.ZoomLevel);
@@ -501,7 +749,7 @@ namespace DataNRO.CLI
 
                 }
             }
-            mapImgG.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+            mapImgG.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             Font font = new Font("Arial", 50);
             for (int i = 0; i < 3; i++)
                 mapImgG.DrawString("© ElectroHeavenVN", font, Brushes.Black, random.Next(0, pixelWidth - 500), random.Next(0, pixelHeight - 100));
@@ -580,26 +828,6 @@ namespace DataNRO.CLI
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
                 }
             }
-            //npc
-            //while (session.Data.NpcTemplates == null)
-            //{
-            //    Thread.Sleep(1000 + random.Next(-200, 201));
-            //    count++;
-            //    if (count >= 10)
-            //    {
-            //        writer.RequestChangeZone(session.Player.location.zoneId);
-            //        count = 0;
-            //    }
-            //}
-            //foreach (NpcTemplate npc in session.Data.NpcTemplates)
-            //{
-            //    Part partHead = npc.headId == -1 ? null : session.Data.Parts[npc.headId];
-            //    Part partBody = npc.bodyId == -1 ? null : session.Data.Parts[npc.bodyId];
-            //    Part partLeg = npc.legId == -1 ? null : session.Data.Parts[npc.legId];
-            //    RequestPartIcon(partHead, 0);
-            //    RequestPartIcon(partBody, 1);
-            //    RequestPartIcon(partLeg, 1);
-            //}
             //parts
             List<Part> parts = new List<Part>(session.Data.Parts);
             while (parts.Count > 0)
@@ -608,12 +836,19 @@ namespace DataNRO.CLI
                 parts.Remove(part);
                 if (part is null)
                     continue;
-                int index = 0;
-                if (part.type == 1 || part.type == 2) //body, leg
-                    index = 1;
-                if (part.pi[index].id <= 0)
-                    continue;
-                RequestPartIcon(part, index);
+                //int index = 0;
+                //if (part.type == 1 || part.type == 2) //body, leg
+                //    index = 1;
+                for (int cf = 0; cf < charInfo.Length; cf++)
+                {
+                    for (int i = 0; i < charInfo[cf].Length; i++)
+                    {
+                        int index = charInfo[cf][i][0];
+                        if (part.pi[index].id <= 0)
+                            continue;
+                        RequestPartIcon(part, index);
+                    }
+                }
             }
             //skills
             while (session.Data.NClasses == null)
@@ -650,9 +885,20 @@ namespace DataNRO.CLI
             return true;
         }
 
-        static void RequestMobsImg(ISession session)
+        static bool RequestMobImgs(ISession session)
         {
             IMessageWriter writer = session.MessageWriter;
+            int count = 0;
+            while (session.Data.MobTemplates == null)
+            {
+                count++;
+                if (count >= 10)
+                {
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Get monster images failed!");
+                    return false;
+                }
+                Thread.Sleep(1000);
+            }
             MobTemplate[] mobTemplates = session.Data.MobTemplates;
             int templateID = 0;
             for (; templateID < mobTemplates.Length; templateID++)
@@ -666,9 +912,10 @@ namespace DataNRO.CLI
                 }
             }
             Console.WriteLine($"[{session.Host}:{session.Port}] Requested {templateID} mob templates.");
+            return true;
         }
 
-        static void RequestMapsTemplate(ISession session)
+        static void RequestMapTemplates(ISession session)
         {
             IMessageWriter writer = session.MessageWriter;
             List<Map> maps = session.Data.Maps;
@@ -698,6 +945,22 @@ namespace DataNRO.CLI
             }
             Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} map templates.");
             session.Data.MapToReceiveTemplate = null;
+        }
+
+        static void RequestEffectData(ISession session)
+        {
+            IMessageWriter writer = session.MessageWriter;
+            for (short i = 0; i < EFFECT_DATA_COUNT; i++)
+            {
+                writer.GetEffectData(i);
+                Thread.Sleep(1000 + random.Next(-200, 201));
+                if (i % 10 == 0)
+                {
+                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} effect data");
+                }
+            }
+            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {session.Data.EffectDataDict.Count} effect data.");
         }
 
         static void TryGoOutsideIfAtHome(ISession session)
@@ -863,5 +1126,141 @@ namespace DataNRO.CLI
             }
             return croppedBitmap;
         }
+
+        //static bool RequestImgByNames(ISession session)
+        //{
+        //    IMessageWriter writer = session.MessageWriter;
+        //    int count = 0;
+        //    while (session.Data.NClasses == null)
+        //    {
+        //        count++;
+        //        if (count >= 10)
+        //        {
+        //            Console.WriteLine($"[{session.Host}:{session.Port}] Get ImgByName(s) failed!");
+        //            return false;
+        //        }
+        //        Thread.Sleep(1000);
+        //    }
+        //    count = 0;
+        //    for (int i = 0; i < IMG_BY_NAME_BANNER_COUNT; i++)
+        //    {
+        //        string name = "banner_" + i;
+        //        writer.GetImgByName(name);
+        //        Thread.Sleep(1000 + random.Next(-200, 201));
+        //        if (i % 10 == 0)
+        //        {
+        //            writer.RequestChangeZone(session.Player.location.zoneId);
+        //            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} banner ImgByName(s)");
+        //        }
+        //        count++;
+        //    }
+        //    for (int i = 0; i < IMG_BY_NAME_DIV_2_COUNT; i++)
+        //    {
+        //        string name = "mount_" + i / 2 + "_" + i % 2;
+        //        writer.GetImgByName(name);
+        //        Thread.Sleep(1000 + random.Next(-200, 201));
+        //        if (i % 10 == 0)
+        //        {
+        //            writer.RequestChangeZone(session.Player.location.zoneId);
+        //            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} mount ImgByName(s)");
+        //        }
+        //        count++;
+        //    }
+        //    for (int i = 0; i < IMG_BY_NAME_DIV_2_COUNT; i++)   //only 10 * 2
+        //    {
+        //        string name = "aura_" + i / 2 + "_" + i % 2;
+        //        writer.GetImgByName(name);
+        //        Thread.Sleep(1000 + random.Next(-200, 201));
+        //        if (i % 10 == 0)
+        //        {
+        //            writer.RequestChangeZone(session.Player.location.zoneId);
+        //            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} aura ImgByName(s)");
+        //        }
+        //        count++;
+        //    }
+        //    for (int i = 0; i < IMG_BY_NAME_DIV_2_COUNT; i++)   //only 10 * 2
+        //    {
+        //        string name = "set_eff_" + i / 2 + "_" + i % 2;
+        //        writer.GetImgByName(name);
+        //        Thread.Sleep(1000 + random.Next(-200, 201));
+        //        if (i % 10 == 0)
+        //        {
+        //            writer.RequestChangeZone(session.Player.location.zoneId);
+        //            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} set item ImgByName(s)");
+        //        }
+        //        count++;
+        //    }
+        //    for (int i = 0; i < IMG_BY_NAME_HAT_COUNT; i++)
+        //    {
+        //        string name = "hat_sau_" + i;
+        //        writer.GetImgByName(name);
+        //        Thread.Sleep(1000 + random.Next(-200, 201));
+        //        if (i % 10 == 0)
+        //        {
+        //            writer.RequestChangeZone(session.Player.location.zoneId);
+        //            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} hat_sau ImgByName(s)");
+        //        }
+        //        count++;
+        //    }
+        //    for (int i = 0; i < IMG_BY_NAME_HAT_COUNT; i++)
+        //    {
+        //        string name = "hat_sau_ngang_" + i;
+        //        writer.GetImgByName(name);
+        //        Thread.Sleep(1000 + random.Next(-200, 201));
+        //        if (i % 10 == 0)
+        //        {
+        //            writer.RequestChangeZone(session.Player.location.zoneId);
+        //            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} hat_sau_ngang ImgByName(s)");
+        //        }
+        //        count++;
+        //    }
+        //    for (int i = 0; i < IMG_BY_NAME_HAT_COUNT; i++)
+        //    {
+        //        string name = "hat_truoc_" + i;
+        //        writer.GetImgByName(name);
+        //        Thread.Sleep(1000 + random.Next(-200, 201));
+        //        if (i % 10 == 0)
+        //        {
+        //            writer.RequestChangeZone(session.Player.location.zoneId);
+        //            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} hat_truoc ImgByName(s)");
+        //        }
+        //        count++;
+        //    }
+        //    for (int i = 0; i < IMG_BY_NAME_HAT_COUNT; i++)
+        //    {
+        //        string name = "hat_truoc_ngang_"; 
+        //        writer.GetImgByName(name);
+        //        Thread.Sleep(1000 + random.Next(-200, 201));
+        //        if (i % 10 == 0)
+        //        {
+        //            writer.RequestChangeZone(session.Player.location.zoneId);
+        //            Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} hat_truoc_ngang ImgByName(s)");
+        //        }
+        //        count++;
+        //    }
+        //    foreach (NClass nClass in session.Data.NClasses)
+        //    {
+        //        foreach (SkillTemplate skillTemplate in nClass.skillTemplates)
+        //        {
+        //            for (int typePaint = 0; typePaint < IMG_BY_NAME_SKILL_TYPE_PAINT_COUNT; typePaint++)
+        //            {
+        //                for (int i = 0; i < IMG_BY_NAME_SKILL_COUNT; i++)
+        //                {
+        //                    string name = $"Skills_{skillTemplate.id}_{typePaint}_{i}";
+        //                    writer.GetImgByName(name);
+        //                    Thread.Sleep(1000 + random.Next(-200, 201));
+        //                    if (i % 10 == 0)
+        //                    {
+        //                        writer.RequestChangeZone(session.Player.location.zoneId);
+        //                        Console.WriteLine($"[{session.Host}:{session.Port}] Requested {count} skill ImgByName(s)");
+        //                    }
+        //                    count++;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    Console.WriteLine($"[{session.Host}:{session.Port}] Requested {count} ImgByName(s).");
+        //    return true;
+        //}
     }
 }

@@ -39,7 +39,7 @@ namespace DataNRO.TeaMobi
 
         public void UpdateData()
         {
-            MessageSend message = new MessageSend(-87);
+            MessageSend message = new MessageSend((sbyte)Commands.UpdateData);
             session.SendMessage(message);
         }
 
@@ -72,7 +72,7 @@ namespace DataNRO.TeaMobi
 
         public void ImageSource()
         {
-            MessageSend message = new MessageSend(-111);
+            MessageSend message = new MessageSend((sbyte)Commands.GetImageSource);
             message.WriteShort(0);
             session.SendMessage(message);
         }
@@ -89,19 +89,19 @@ namespace DataNRO.TeaMobi
 
         public void FinishUpdate()
         {
-            MessageSend message = new MessageSend(-38);
+            MessageSend message = new MessageSend((sbyte)Commands.FinishUpdate);
             session.SendMessage(message);
         }
 
         public void FinishLoadMap()
         {
-            MessageSend message = new MessageSend(-39);
+            MessageSend message = new MessageSend((sbyte)Commands.FinishLoadMap);
             session.SendMessage(message);
         }
 
         public void CharMove(int x, int y)
         {
-            MessageSend message = new MessageSend(-7);
+            MessageSend message = new MessageSend((sbyte)Commands.PlayerMove);
             message.WriteByte(0);
             message.WriteShort((short)x);
             message.WriteShort((short)y);
@@ -110,46 +110,46 @@ namespace DataNRO.TeaMobi
 
         public void RequestChangeMap()
         {
-            MessageSend message = new MessageSend(-23);
+            MessageSend message = new MessageSend((sbyte)Commands.ChangeMap);
             session.SendMessage(message);
         }
         
         public void GetMapOffline()
         {
-            MessageSend message = new MessageSend(-33);
+            MessageSend message = new MessageSend((sbyte)Commands.GetMapOffline);
             session.SendMessage(message);
         }
 
         public void RequestIcon(int id)
         {
-            MessageSend message = new MessageSend(-67);
+            MessageSend message = new MessageSend((sbyte)Commands.RequestIcon);
             message.WriteInt(id);
             session.SendMessage(message);
         }
 
         public void GetResource(byte action)
         {
-            MessageSend message = new MessageSend(-74);
+            MessageSend message = new MessageSend((sbyte)Commands.GetResource);
             message.WriteByte(action);
             session.SendMessage(message);
         }
 
         public void OpenUIZone()
         {
-            MessageSend message = new MessageSend(29);
+            MessageSend message = new MessageSend((sbyte)Commands.OpenUIZone);
             session.SendMessage(message);
         }
 
         public void RequestMobTemplate(short mobTemplateID)
         {
-            MessageSend message = new MessageSend(11);
+            MessageSend message = new MessageSend((sbyte)Commands.RequestMobTemplate);
             message.WriteShort(mobTemplateID);
             session.SendMessage(message);
         }
 
         public void RequestChangeZone(int zoneId)
         {
-            MessageSend message = new MessageSend(21);
+            MessageSend message = new MessageSend((sbyte)Commands.ChangeZone);
             message.WriteByte((byte)zoneId);
             session.SendMessage(message);
         }
@@ -160,17 +160,31 @@ namespace DataNRO.TeaMobi
             messageSend.WriteByte((byte)mapTemplateID);
             session.SendMessage(messageSend);
         }
+        
+        public void GetImgByName(string name)
+        {
+            MessageSend messageSend = new MessageSend((sbyte)Commands.GetImgByName);
+            messageSend.WriteStringUTF(name);
+            session.SendMessage(messageSend);
+        }
+
+        public void GetEffectData(short id)
+        {
+            MessageSend message = new MessageSend((sbyte)Commands.GetEffectData);
+            message.WriteShort(id);
+            session.SendMessage(message);
+        }
 
         MessageSend MessageNotMap(sbyte command)
         {
-            MessageSend message = new MessageSend(-28);
+            MessageSend message = new MessageSend((sbyte)Commands.NotMap);
             message.WriteSByte(command);
             return message;
         }
 
         MessageSend MessageNotLogin(sbyte command)
         {
-            MessageSend message = new MessageSend(-29);
+            MessageSend message = new MessageSend((sbyte)Commands.NotLogin);
             message.WriteSByte(command);
             return message;
         }
