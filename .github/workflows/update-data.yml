@@ -2,6 +2,7 @@ name: Update data and deploy to GitHub Pages
 on:
   schedule:
     - cron: "0 15 * * *"
+    - cron: "0 3 * * *"
   workflow_dispatch:
     inputs:
       use-sample-data:
