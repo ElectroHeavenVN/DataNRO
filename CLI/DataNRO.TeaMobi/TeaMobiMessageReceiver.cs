@@ -96,7 +96,7 @@ namespace EHVN.DataNRO.TeaMobi
                     short body = message.ReadShort();
                     short bag = message.ReadShort();
                     short leg = message.ReadShort();
-                    bool isChatServer = message.ReadBool();
+                    bool isChatServer = !message.ReadBool();
                     if (isChatServer)
                         Console.WriteLine($"[{session.Host}:{session.Port}] Server chat received from {name} ({charId}):\r\n{msg}");
                     else
