@@ -87,7 +87,7 @@ namespace EHVN.DataNRO.TeaMobi
                     string msg = message.ReadString();
                     if (string.IsNullOrEmpty(name))
                     {
-                        Console.WriteLine($"[{session.Host}:{session.Port}] Server login message received:\r\n" + msg);    //Nhiệm vụ của bạn là Thu thập 10 đùi gà...
+                        Console.WriteLine($"[{session.Host}:{session.Port}] User message received:\r\n" + msg);    //Nhiệm vụ của bạn là Thu thập 10 đùi gà...
                         break;
                     }
                     int charId = message.ReadInt();
