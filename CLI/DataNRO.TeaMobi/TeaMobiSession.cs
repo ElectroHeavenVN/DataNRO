@@ -2,6 +2,7 @@
 using Starksoft.Net.Proxy;
 using System;
 using System.Collections.Concurrent;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
@@ -89,11 +90,11 @@ namespace EHVN.DataNRO.TeaMobi
         {
             while (tcpClient.Connected && !cts.IsCancellationRequested)
             {
+                while (key is null)
+                    await Task.Delay(100);
                 try
                 {
                     await sendSignal.WaitAsync(cts.Token);
-                    if (key is null)
-                        continue;
                     if (sendMessages.TryDequeue(out MessageSend? message))
                         await SendMessageAsync(message, cts.Token);
                 }
@@ -101,6 +102,11 @@ namespace EHVN.DataNRO.TeaMobi
                 {
                     if (ex is not OperationCanceledException)
                         Console.WriteLine($"[{Host}:{Port}] Exception:\r\n{ex}");
+                    if (ex is IOException && ex.InnerException is SocketException)
+                    {
+                        Disconnect();
+                        throw;
+                    }
                 }
             }
         }
@@ -121,6 +127,11 @@ namespace EHVN.DataNRO.TeaMobi
                 {
                     if (ex is not OperationCanceledException)
                         Console.WriteLine($"[{Host}:{Port}] Exception:\r\n{ex}");
+                    if (ex is IOException && ex.InnerException is SocketException)
+                    {
+                        Disconnect();
+                        throw;
+                    }
                 }
             }
         }
