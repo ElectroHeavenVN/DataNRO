@@ -140,7 +140,7 @@ namespace EHVN.DataNRO
         public class Part
         {
             public int type;
-            public PartImage[] pi;
+            public PartImage[] pi = [];
 
             public Part(int type)
             {

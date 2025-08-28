@@ -137,6 +137,7 @@ namespace EHVN.DataNRO.CLI
                 Console.WriteLine($"Failed to create session type \"{type}\" from assembly \"DataNRO.{type}.dll\"!");
                 return;
             }
+            RegisterEventListeners(session);
             session.Data.Path = dataPath;
             session.Data.SaveIcon = requestAndSaveIcons;
             session.Data.OverwriteIconIDs = overwriteIconIDs;
@@ -270,6 +271,46 @@ namespace EHVN.DataNRO.CLI
             await Task.Delay(3000);
             session.FileWriter.DeleteTempFiles();
             session.Dispose();
+        }
+
+        static void RegisterEventListeners(ISession session)
+        {
+            session.MessageReceiver.EventListeners.IPAddressListReceived += (msg) =>
+            {
+                Console.WriteLine($"[{session.Host}:{session.Port}] IP address list received:\r\n" + msg);
+            };
+            session.MessageReceiver.EventListeners.DialogMessageReceived += (msg) =>
+            {
+                Console.WriteLine($"[{session.Host}:{session.Port}] Dialog message received:\r\n" + msg);
+            };
+            session.MessageReceiver.EventListeners.ServerMessageReceived += (msg) =>
+            {
+                Console.WriteLine($"[{session.Host}:{session.Port}] Server message received:\r\n" + msg);
+            };
+            session.MessageReceiver.EventListeners.ServerAlertReceived += (msg) =>
+            {
+                Console.WriteLine($"[{session.Host}:{session.Port}] Server alert received:\r\n" + msg);
+            };
+            session.MessageReceiver.EventListeners.GameNotificationReceived += (msg) =>
+            {
+                Console.WriteLine($"[{session.Host}:{session.Port}] Game notification received:\r\n" + msg);    //Nhiệm vụ của bạn là Thu thập 10 đùi gà...
+            };
+            session.MessageReceiver.EventListeners.ServerChatReceived += (name, msg) =>
+            {
+                Console.WriteLine($"[{session.Host}:{session.Port}] Server chat received from {name}:\r\n{msg}");
+            };
+            session.MessageReceiver.EventListeners.PrivateChatReceived += (name, msg) =>
+            {
+                Console.WriteLine($"[{session.Host}:{session.Port}] Private chat received from {name}:\r\n{msg}");
+            };
+            session.MessageReceiver.EventListeners.ServerNotificationReceived += (msg) =>
+            {
+                Console.WriteLine($"[{session.Host}:{session.Port}] Server notification received:\r\n" + msg);
+            };
+            session.MessageReceiver.EventListeners.UnknownMessageReceived += (msg) =>
+            {
+                Console.WriteLine($"[{session.Host}:{session.Port}] Unknown message received:\r\n" + msg);
+            };
         }
 
         static void ProcessImages(ISession session)

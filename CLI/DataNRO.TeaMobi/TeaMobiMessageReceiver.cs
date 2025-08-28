@@ -8,6 +8,8 @@ namespace EHVN.DataNRO.TeaMobi
 {
     public class TeaMobiMessageReceiver : IMessageReceiver
     {
+        public GatewayEvents EventListeners { get; } = new GatewayEvents();
+
         static readonly string[] blankImageHashes =
         [
             "110B964285DEB1A8D3D13562914E1E2B51F4799A85412884B481E0316358DF48",
@@ -71,23 +73,23 @@ namespace EHVN.DataNRO.TeaMobi
                 case -29:
                     if (message.ReadByte() != 2)
                         break;
-                    Console.WriteLine($"[{session.Host}:{session.Port}] IP address list received:\r\n" + message.ReadString());
+                    EventListeners.OnIPAddressListReceived(message.ReadString());
                     break;
                 case -26:
-                    Console.WriteLine($"[{session.Host}:{session.Port}] Dialog message received:\r\n" + message.ReadString());
+                    EventListeners.OnDialogMessageReceived(message.ReadString());
                     break;
                 case -25:
-                    Console.WriteLine($"[{session.Host}:{session.Port}] Server message received:\r\n" + message.ReadString());
+                    EventListeners.OnServerMessageReceived(message.ReadString());
                     break;
                 case 94:
-                    Console.WriteLine($"[{session.Host}:{session.Port}] Server alert received:\r\n" + message.ReadString());
+                    EventListeners.OnServerAlertReceived(message.ReadString());
                     break;
                 case 92:
                     string name = message.ReadString();
                     string msg = message.ReadString();
                     if (string.IsNullOrEmpty(name))
                     {
-                        Console.WriteLine($"[{session.Host}:{session.Port}] User message received:\r\n" + msg);    //Nhiệm vụ của bạn là Thu thập 10 đùi gà...
+                        EventListeners.OnGameNotificationReceived(msg);
                         break;
                     }
                     int charId = message.ReadInt();
@@ -98,15 +100,15 @@ namespace EHVN.DataNRO.TeaMobi
                     short leg = message.ReadShort();
                     bool isChatServer = !message.ReadBool();
                     if (isChatServer)
-                        Console.WriteLine($"[{session.Host}:{session.Port}] Server chat received from {name} ({charId}):\r\n{msg}");
+                        EventListeners.OnServerChatReceived(name, msg);
                     else
-                        Console.WriteLine($"[{session.Host}:{session.Port}] Private chat received from {name} ({charId}):\r\n{msg}");
+                        EventListeners.OnPrivateChatReceived(name, msg);
                     break;
                 case 93:
-                    Console.WriteLine($"[{session.Host}:{session.Port}] Server notification received:\r\n" + message.ReadString());
+                    EventListeners.OnServerNotificationReceived(message.ReadString());
                     break;
                 case 35:
-                    Console.WriteLine($"[{session.Host}:{session.Port}] Unknown message received:\r\n" + message.ReadString());
+                    EventListeners.OnUnknownMessageReceived(message.ReadString());
                     break;
             }
         }

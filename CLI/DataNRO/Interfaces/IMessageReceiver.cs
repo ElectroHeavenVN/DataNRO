@@ -10,5 +10,10 @@
         /// </summary>
         /// <param name="message">Gói tin nhận được từ máy chủ</param>
         void OnMessageReceived(MessageReceive message);
+
+        /// <summary>
+        /// Chứa các sự kiện lắng nghe từ game.
+        /// </summary>
+        GatewayEvents EventListeners { get; }
     }
 }
