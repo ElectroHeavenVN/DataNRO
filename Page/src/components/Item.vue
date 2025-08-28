@@ -37,6 +37,8 @@ const formatPowerRequired = (powerRequired) => {
   return (powerRequired / 1000000000) + 'B';
 }
 
+const isHSNR = () => window.location.pathname.toLowerCase().includes('/hsnr/');
+
 const getTypeString = (type) => {
   switch (type) {
     case 0:
@@ -107,14 +109,25 @@ const getTypeString = (type) => {
       return t('typeSkillBooks2');
 
     case 17:
-      return t('typeTitlesHSNR');
+      if (isHSNR()) 
+        return t('typeTitlesHSNR');
+      else 
+        return t('typeUnknown');
     case 19:
-      return t('typeBeastsHSNR');
+      if (isHSNR()) 
+        return t('typeBeastsHSNR');
+      else 
+        return t('porataLv1');
     case 21:
-      return t('typeHalosHSNR');
+      if (isHSNR())
+        return t('typeHalosHSNR');
+      else 
+        return t('typeUnknown');
     case 26:
-      return t('typeJadeHSNR');
-
+      if (isHSNR())
+        return t('typeJadeHSNR');
+      else 
+        return t('typeUnknown');
     default:
       return t('typeUnknown');
   }
