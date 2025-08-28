@@ -44,14 +44,6 @@ namespace EHVN.DataNRO.TeaMobi
                             break;
                     }
                     break;
-                case -29:
-                    if (message.ReadByte() != 2)
-                        break;
-                    Console.WriteLine("IP address list received: " + message.ReadString());
-                    break;
-                case -26:
-                    Console.WriteLine("Message received: " + message.ReadString());
-                    break;
                 case -24:
                     ReadCurrentMapInfo(message);
                     break;
@@ -74,6 +66,47 @@ namespace EHVN.DataNRO.TeaMobi
                     byte b = message.ReadByte();
                     if (b == 0)
                         ReadItemData(message);
+                    break;
+                //Messages
+                case -29:
+                    if (message.ReadByte() != 2)
+                        break;
+                    Console.WriteLine($"[{session.Host}:{session.Port}] IP address list received:\r\n" + message.ReadString());
+                    break;
+                case -26:
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Dialog message received:\r\n" + message.ReadString());
+                    break;
+                case -25:
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Server message received:\r\n" + message.ReadString());
+                    break;
+                case 94:
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Server alert received:\r\n" + message.ReadString());
+                    break;
+                case 92:
+                    string name = message.ReadString();
+                    string msg = message.ReadString();
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        Console.WriteLine($"[{session.Host}:{session.Port}] Server login message received:\r\n" + msg);    //Nhiệm vụ của bạn là Thu thập 10 đùi gà...
+                        break;
+                    }
+                    int charId = message.ReadInt();
+                    short head = message.ReadShort();
+                    short headIcon = message.ReadShort();
+                    short body = message.ReadShort();
+                    short bag = message.ReadShort();
+                    short leg = message.ReadShort();
+                    bool isChatServer = message.ReadBool();
+                    if (isChatServer)
+                        Console.WriteLine($"[{session.Host}:{session.Port}] Server chat received from {name} ({charId}):\r\n{msg}");
+                    else
+                        Console.WriteLine($"[{session.Host}:{session.Port}] Private chat received from {name} ({charId}):\r\n{msg}");
+                    break;
+                case 93:
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Server notification received:\r\n" + message.ReadString());
+                    break;
+                case 35:
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Unknown message received:\r\n" + message.ReadString());
                     break;
             }
         }
@@ -241,21 +274,25 @@ namespace EHVN.DataNRO.TeaMobi
 
         void ReadTileTypeAndIndex(MessageReceive message)
         {
-            MapTemplate.tileIndex = new int[message.ReadByte()][][];
-            MapTemplate.tileType = new int[MapTemplate.tileIndex.Length][];
-            for (int i = 0; i < MapTemplate.tileIndex.Length; i++)
+            try
             {
-                byte length = message.ReadByte();
-                MapTemplate.tileType[i] = new int[length];
-                MapTemplate.tileIndex[i] = new int[length][];
-                for (int j = 0; j < length; j++)
+                MapTemplate.tileIndex = new int[message.ReadByte()][][];
+                MapTemplate.tileType = new int[MapTemplate.tileIndex.Length][];
+                for (int i = 0; i < MapTemplate.tileIndex.Length; i++)
                 {
-                    MapTemplate.tileType[i][j] = message.ReadInt();
-                    MapTemplate.tileIndex[i][j] = new int[message.ReadByte()];
-                    for (int k = 0; k < MapTemplate.tileIndex[i][j].Length; k++)
-                        MapTemplate.tileIndex[i][j][k] = message.ReadByte();
+                    byte length = message.ReadByte();
+                    MapTemplate.tileType[i] = new int[length];
+                    MapTemplate.tileIndex[i] = new int[length][];
+                    for (int j = 0; j < length; j++)
+                    {
+                        MapTemplate.tileType[i][j] = message.ReadInt();
+                        MapTemplate.tileIndex[i][j] = new int[message.ReadByte()];
+                        for (int k = 0; k < MapTemplate.tileIndex[i][j].Length; k++)
+                            MapTemplate.tileIndex[i][j][k] = message.ReadByte();
+                    }
                 }
             }
+            catch { }
         }
 
         void ReadCurrentMapInfo(MessageReceive message)

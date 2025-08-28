@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -184,6 +185,7 @@ namespace EHVN.DataNRO.CLI
                 writer.ClientOk();
                 writer.FinishUpdate();
                 await Task.Delay(4000);
+                writer.FinishLoadMap();
                 int count = 0;
                 Location? location;
                 bool retry = false;
@@ -208,8 +210,7 @@ namespace EHVN.DataNRO.CLI
                 while (location is null || string.IsNullOrEmpty(location.mapName));
                 if (retry)
                     continue;
-                writer.FinishLoadMap();
-                Console.WriteLine($"[{session.Host}:{session.Port}] Current map: {location.mapName} [{location.mapId}], zone {location.zoneId}");
+                Console.WriteLine($"[{session.Host}:{session.Port}] Current map: {location!.mapName} [{location.mapId}], zone {location.zoneId}");
                 await Task.Delay(2000);
                 break;
             }
@@ -224,9 +225,9 @@ namespace EHVN.DataNRO.CLI
                     return;
             }
             await TryGoOutsideIfAtHomeAsync(session);
-            Console.WriteLine($"[{session.Host}:{session.Port}] Disconnect from {session.Host}:{session.Port} in 10s...");
+            Console.WriteLine($"[{session.Host}:{session.Port}] Disconnect from {session.Host}:{session.Port} in 20s...");
             writer.Chat("DataNRO by ElectroHeavenVN");
-            await Task.Delay(10000);
+            await Task.Delay(20000);
             session.Disconnect();
 
             if (session.Data.SaveIcon)
@@ -238,6 +239,7 @@ namespace EHVN.DataNRO.CLI
             {
                 WriteIndented = true,
                 IncludeFields = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
 
@@ -257,6 +259,7 @@ namespace EHVN.DataNRO.CLI
                 File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NClasses)}.json", JsonSerializer.Serialize(session.Data.NClasses, options));
             if (session.Data.ItemTemplates.Count > 0)
                 File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonSerializer.Serialize(session.Data.ItemTemplates, options));
+            options = new JsonSerializerOptions(options) { WriteIndented = false };
             if (session.Data.Parts.Length > 0)
                 File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Parts)}.json", JsonSerializer.Serialize(session.Data.Parts, options));
 

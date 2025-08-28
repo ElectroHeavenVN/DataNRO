@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace EHVN.DataNRO.TeaMobi
 {
@@ -61,6 +62,7 @@ namespace EHVN.DataNRO.TeaMobi
                 tcpClient = await proxyClient.CreateConnectionAsync(Host, Port, cancellationToken);
             }
             networkStream = tcpClient.GetStream();
+            cts = new CancellationTokenSource();
             _ = SendDataTask().ConfigureAwait(false);
             _ = ReceiveDataTask().ConfigureAwait(false);
             key = null;
@@ -95,7 +97,11 @@ namespace EHVN.DataNRO.TeaMobi
                     if (sendMessages.TryDequeue(out MessageSend? message))
                         await SendMessageAsync(message, cts.Token);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    if (ex is not OperationCanceledException)
+                        Console.WriteLine($"[{Host}:{Port}] Exception:\r\n{ex}");
+                }
             }
         }
 
@@ -113,7 +119,8 @@ namespace EHVN.DataNRO.TeaMobi
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
+                    if (ex is not OperationCanceledException)
+                        Console.WriteLine($"[{Host}:{Port}] Exception:\r\n{ex}");
                 }
             }
         }
@@ -157,7 +164,6 @@ namespace EHVN.DataNRO.TeaMobi
                 byte b2 = ApplyEncryption(buffer[0], EncryptionType.Receive);
                 length = (b1 << 8) | b2;
             }
-            Console.WriteLine(b + " " + length);
             buffer = new byte[length];
             await networkStream.ReadExactlyAsync(buffer, 0, length, cancellationToken);
             return new MessageReceive(b, ApplyEncryption(buffer, EncryptionType.Receive));
