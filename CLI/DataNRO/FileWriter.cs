@@ -1,22 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EHVN.DataNRO.Interfaces;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataNRO.Interfaces;
 
-namespace DataNRO
+namespace EHVN.DataNRO
 {
-    public class FileWriter
+    public class FileWriter(ISession session)
     {
-        ISession session;
-
-        public FileWriter(ISession session)
-        {
-            this.session = session;
-        }
-
         public void WriteIcon(int iconId, byte[] data)
         {
             string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Icons";

@@ -1,4 +1,4 @@
-﻿namespace DataNRO.Interfaces
+﻿namespace EHVN.DataNRO.Interfaces
 {
     /// <summary>
     /// Interface đại diện cho các class tạo và gửi gói tin tới máy chủ.

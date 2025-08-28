@@ -1,38 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using DataNRO.Interfaces;
+﻿using EHVN.DataNRO.Interfaces;
 using Starksoft.Net.Proxy;
+using System;
+using System.Collections.Concurrent;
+using System.Linq;
+using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace DataNRO.TeaMobi
+namespace EHVN.DataNRO.TeaMobi
 {
     public class TeaMobiSession : ISession
     {
+        enum EncryptionType
+        {
+            None, Send, Receive
+        }
+
+        static readonly sbyte[] BIG_MSG_CMDs = [-32, -66, 11, -67, -74, -87, 66, 12];
+
         public string Host { get; }
         public ushort Port { get; }
-        public IMessageReceiver MessageReceiver { get; private set; }
-        public IMessageWriter MessageWriter { get; private set; }
-        public FileWriter FileWriter { get; private set; }
-        public bool IsConnected => tcpClient == null ? false : tcpClient.Connected;
+        public IMessageReceiver MessageReceiver { get; set; }
+        public IMessageWriter MessageWriter { get; set; }
+        public FileWriter FileWriter { get; set; }
+        public bool IsConnected => tcpClient is null ? false : tcpClient.Connected;
         public GameData Data { get; } = new GameData()
         {
             MapTileIDs = Config.MapTileIDs
         };
         public Player Player { get; } = new Player();
 
-        Thread receiveThread;
-        Thread sendThread;
         TcpClient tcpClient;
-        BinaryReader reader;
-        BinaryWriter writer;
-        Queue<MessageSend> sendMessages = new Queue<MessageSend>();
-        bool getKeyComplete;
-        sbyte[] key;
-        sbyte curR;
-        sbyte curW;
+        NetworkStream networkStream;
+        ConcurrentQueue<MessageSend> sendMessages = [];
+        SemaphoreSlim sendSignal = new SemaphoreSlim(0);
+        byte[]? key;
+        byte curR, curW;
+        CancellationTokenSource cts = new CancellationTokenSource();
 
         public TeaMobiSession(string host, ushort port)
         {
@@ -43,194 +47,131 @@ namespace DataNRO.TeaMobi
             FileWriter = new FileWriter(this);
         }
 
-        public void Connect()
+        public async Task ConnectAsync(string? proxyHost = null, ushort proxyPort = 0, string? proxyUsername = null, string? proxyPassword = null, ProxyType proxyType = ProxyType.None, CancellationToken cancellationToken = default)
         {
-            tcpClient = new TcpClient();
-            if (!tcpClient.ConnectAsync(Host, Port).Wait(5000))
-                throw new TimeoutException($"Connection to {Host}:{Port} timeout");
-            reader = new BinaryReader(tcpClient.GetStream(), Encoding.UTF8);
-            writer = new BinaryWriter(tcpClient.GetStream(), Encoding.UTF8);
-            sendThread = new Thread(SendDataThread);
-            receiveThread = new Thread(ReceiveDataThread);
-            sendThread.Start();
-            receiveThread.Start();
+            if (proxyType == ProxyType.None || string.IsNullOrEmpty(proxyHost) || proxyPort == 0 || string.IsNullOrEmpty(proxyUsername) || string.IsNullOrEmpty(proxyPassword))
+            {
+                tcpClient = new TcpClient();
+                await tcpClient.ConnectAsync(Host, Port, cancellationToken);
+            }
+            else
+            {
+                ProxyClientFactory proxyClientFactory = new ProxyClientFactory();
+                IProxyClient proxyClient = proxyClientFactory.CreateProxyClient(proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
+                tcpClient = await proxyClient.CreateConnectionAsync(Host, Port, cancellationToken);
+            }
+            networkStream = tcpClient.GetStream();
+            _ = SendDataTask().ConfigureAwait(false);
+            _ = ReceiveDataTask().ConfigureAwait(false);
             key = null;
-            WriteMessageToStream(new MessageSend(-27));
-        }
-        
-        public void Connect(string proxyHost, ushort proxyPort, string proxyUsername, string proxyPassword, ProxyType proxyType)
-        {
-            ProxyClientFactory proxyClientFactory = new ProxyClientFactory();
-            IProxyClient proxyClient = proxyClientFactory.CreateProxyClient(proxyType, proxyHost, proxyPort, proxyUsername, proxyPassword);
-            tcpClient = proxyClient.CreateConnection(Host, Port);
-            reader = new BinaryReader(tcpClient.GetStream(), Encoding.UTF8);
-            writer = new BinaryWriter(tcpClient.GetStream(), Encoding.UTF8);
-            sendThread = new Thread(SendDataThread);
-            receiveThread = new Thread(ReceiveDataThread);
-            sendThread.Start();
-            receiveThread.Start();
-            key = null;
-            WriteMessageToStream(new MessageSend(-27));
+            await SendMessageAsync(new MessageSend(-27), cancellationToken);
         }
 
-        public void SendMessage(MessageSend message)
+        public void EnqueueMessage(MessageSend message)
         {
             sendMessages.Enqueue(message);
+            sendSignal.Release();
         }
 
         public void Disconnect()
         {
+            cts.Cancel();
+            sendSignal.Dispose();
+            cts.Dispose();
+            networkStream.Close();
             tcpClient.Close();
-            reader.Close();
-            writer.Close();
-            sendThread.Abort();
-            receiveThread.Abort();
+            key = null;
         }
 
-        void SendDataThread()
+        async Task SendDataTask()
         {
-            while (tcpClient.Connected)
+            while (tcpClient.Connected && !cts.IsCancellationRequested)
             {
                 try
                 {
-                    if (getKeyComplete && sendMessages.Count > 0)
-                    {
-                        MessageSend message = sendMessages.Dequeue();
-                        WriteMessageToStream(message);
-                    }
-                    Thread.Sleep(5);
+                    await sendSignal.WaitAsync(cts.Token);
+                    if (key is null)
+                        continue;
+                    if (sendMessages.TryDequeue(out MessageSend? message))
+                        await SendMessageAsync(message, cts.Token);
                 }
                 catch { }
             }
         }
 
-        void ReceiveDataThread()
+        async Task ReceiveDataTask()
         {
-            while (tcpClient.Connected)
+            while (tcpClient.Connected && !cts.IsCancellationRequested)
             {
                 try
                 {
-                    MessageReceive message = ReadMessageFromStream();
-                    if (message == null)
-                        break;
+                    MessageReceive message = await ReadMessageAsync(cts.Token);
                     if (message.Command == -27)
-                        GetKey(message);
+                        LoadDecryptionKey(message);
                     else
                         MessageReceiver.OnMessageReceived(message);
-                    Thread.Sleep(5);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
         }
 
-        void WriteMessageToStream(MessageSend m)
+        public async Task SendMessageAsync(MessageSend m, CancellationToken cancellationToken)
         {
-            sbyte[] data = new sbyte[m.Buffer.Length];
-            Buffer.BlockCopy(m.Buffer, 0, data, 0, m.Buffer.Length);
-            try
+            await networkStream.WriteAsync([ApplyEncryption(m.Command, EncryptionType.Send)], 0, 1, cancellationToken);
+            byte[] data = BitConverter.GetBytes((ushort)m.Buffer.Length);
+            if (key is null)
+                await networkStream.WriteAsync(data, 0, 2, cancellationToken);
+            else
             {
-                if (getKeyComplete)
-                {
-                    sbyte value = WriteKey(m.Command);
-                    writer.Write(value);
-                }
-                else
-                    writer.Write(m.Command);
-                if (data != null)
-                {
-                    ushort length = (ushort)data.Length;
-                    if (getKeyComplete)
-                    {
-                        byte[] d = BitConverter.GetBytes(length);
-                        writer.Write(WriteKey((sbyte)d[1]));
-                        writer.Write(WriteKey((sbyte)d[0]));
-                        for (int i = 0; i < data.Length; i++)
-                        {
-                            sbyte value2 = WriteKey(data[i]);
-                            writer.Write(value2);
-                        }
-                    }
-                    else
-                        writer.Write(length);
-                }
-                else
-                {
-                    if (getKeyComplete)
-                    {
-                        writer.Write(WriteKey(0));
-                        writer.Write(WriteKey(0));
-                    }
-                    else
-                        writer.Write((ushort)0);
-                }
+                Array.Reverse(data);
+                await networkStream.WriteAsync(ApplyEncryption(data, EncryptionType.Send), 0, 2, cancellationToken);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[{Host}:{Port}] Error sending message:\r\n{ex}");
-                writer.Flush();
-            }
+            if (m.Buffer.Length > 0)
+                await networkStream.WriteAsync(ApplyEncryption(m.Buffer, EncryptionType.Send), 0, m.Buffer.Length, cancellationToken);
         }
 
-        MessageReceive ReadMessageFromStream()
+        async Task<MessageReceive> ReadMessageAsync(CancellationToken cancellationToken)
         {
-            try
+            byte[] buffer = new byte[1];
+            await networkStream.ReadExactlyAsync(buffer, 0, 1, cancellationToken);
+            sbyte b = ApplyEncryptionSigned(buffer[0], EncryptionType.Receive);
+            int length;
+            if (BIG_MSG_CMDs.Contains(b))
             {
-                sbyte b = reader.ReadSByte();
-                if (getKeyComplete)
-                    b = ReadKey(b);
-                if (b == -32 || b == -66 || b == 11 || b == -67 || b == -74 || b == -87 || b == 66 || b == 12)
-                {
-                    int num = ReadKey(reader.ReadSByte()) + 128;
-                    int num2 = ReadKey(reader.ReadSByte()) + 128;
-                    int num3 = ((ReadKey(reader.ReadSByte()) + 128) * 256 + num2) * 256 + num;
-                    sbyte[] data = new sbyte[num3];
-                    Buffer.BlockCopy(reader.ReadBytes(num3), 0, data, 0, num3);
-                    if (getKeyComplete)
-                    {
-                        for (int i = 0; i < data.Length; i++)
-                            data[i] = ReadKey(data[i]);
-                    }
-                    return new MessageReceive(b, data);
-                }
-                int length;
-                if (getKeyComplete)
-                    length = ((ReadKey(reader.ReadSByte()) & 0xFF) << 8) | (ReadKey(reader.ReadSByte()) & 0xFF);
-                else
-                    length = reader.ReadUInt16BE();
-                sbyte[] arr = new sbyte[length];
-                Buffer.BlockCopy(reader.ReadBytes(length), 0, arr, 0, length);
-                if (getKeyComplete)
-                {
-                    for (int i = 0; i < arr.Length; i++)
-                        arr[i] = ReadKey(arr[i]);
-                }
-                return new MessageReceive(b, arr);
+                await networkStream.ReadExactlyAsync(buffer, 0, 1, cancellationToken);
+                byte b1 = (byte)(ApplyEncryptionSigned(unchecked((sbyte)buffer[0]), EncryptionType.Receive) + 128);
+                await networkStream.ReadExactlyAsync(buffer, 0, 1, cancellationToken);
+                byte b2 = (byte)(ApplyEncryptionSigned(unchecked((sbyte)buffer[0]), EncryptionType.Receive) + 128);
+                await networkStream.ReadExactlyAsync(buffer, 0, 1, cancellationToken);
+                byte b3 = (byte)(ApplyEncryptionSigned(unchecked((sbyte)buffer[0]), EncryptionType.Receive) + 128);
+                length = (b3 << 16) | (b2 << 8) | b1;
             }
-            catch { }
-            return null;
+            else
+            {
+                await networkStream.ReadExactlyAsync(buffer, 0, 1, cancellationToken);
+                byte b1 = ApplyEncryption(buffer[0], EncryptionType.Receive);
+                await networkStream.ReadExactlyAsync(buffer, 0, 1, cancellationToken);
+                byte b2 = ApplyEncryption(buffer[0], EncryptionType.Receive);
+                length = (b1 << 8) | b2;
+            }
+            Console.WriteLine(b + " " + length);
+            buffer = new byte[length];
+            await networkStream.ReadExactlyAsync(buffer, 0, length, cancellationToken);
+            return new MessageReceive(b, ApplyEncryption(buffer, EncryptionType.Receive));
         }
 
-        void GetKey(MessageReceive message)
+        void LoadDecryptionKey(MessageReceive message)
         {
-            try
-            {
-                sbyte b = message.ReadSByte();
-                key = new sbyte[b];
-                for (int i = 0; i < b; i++)
-                {
-                    key[i] = message.ReadSByte();
-                }
-                for (int j = 0; j < key.Length - 1; j++)
-                {
-                    ref sbyte reference = ref key[j + 1];
-                    reference ^= key[j];
-                }
-                getKeyComplete = true;
-                string IP2 = message.ReadString();
-                ushort PORT2 = (ushort)message.ReadInt();
-                bool isConnect2 = message.ReadBool();
-            }
-            catch (Exception) { }
+            byte[] bytes = message.ReadBytes(message.ReadByte());
+            for (int i = 0; i < bytes.Length - 1; i++)
+                bytes[i + 1] ^= bytes[i];
+            key = bytes;
+            string IP2 = message.ReadString();
+            ushort PORT2 = (ushort)message.ReadInt();
+            bool isConnect2 = message.ReadBool();
         }
 
         public void Dispose()
@@ -244,26 +185,66 @@ namespace DataNRO.TeaMobi
             Data.Reset();
         }
 
-        sbyte ReadKey(sbyte b)
+        byte ApplyEncryption(sbyte b, EncryptionType type) => ApplyEncryption(unchecked((byte)b), type);
+
+        sbyte ApplyEncryptionSigned(byte b, EncryptionType type) => ApplyEncryptionSigned(unchecked((sbyte)b), type);
+
+        byte[] ApplyEncryption(byte[] data, EncryptionType type)
         {
-            sbyte[] array = key;
-            sbyte num = curR;
-            curR = (sbyte)(num + 1);
-            sbyte result = (sbyte)((array[num] & 0xFF) ^ (b & 0xFF));
-            if (curR >= key.Length)
-                curR %= (sbyte)key.Length;
-            return result;
+            if (key is null)
+                return data;
+            byte[] array = new byte[data.Length];
+            for (int i = 0; i < data.Length; i++)
+                array[i] = ApplyEncryption(data[i], type);
+            return array;
         }
 
-        sbyte WriteKey(sbyte b)
+        byte ApplyEncryption(byte b, EncryptionType type)
         {
-            sbyte[] array = key;
-            sbyte num = curW;
-            curW = (sbyte)(num + 1);
-            sbyte result = (sbyte)((array[num] & 0xFF) ^ (b & 0xFF));
-            if (curW >= key.Length)
-                curW %= (sbyte)key.Length;
-            return result;
+            if (key is null)
+                return b;
+            if (type == EncryptionType.Send)
+            {
+                byte index = curW;
+                curW++;
+                if (curW >= key.Length)
+                    curW %= (byte)key.Length;
+                return (byte)(key[index] ^ b);
+            }
+            else if (type == EncryptionType.Receive)
+            {
+                byte index = curR;
+                curR++;
+                if (curR >= key.Length)
+                    curR %= (byte)key.Length;
+                return (byte)(key[index] ^ b);
+            }
+            else
+                return b;
+        }
+
+        sbyte ApplyEncryptionSigned(sbyte b, EncryptionType type)
+        {
+            if (key is null)
+                return b;
+            if (type == EncryptionType.Send)
+            {
+                byte index = curW;
+                curW++;
+                if (curW >= key.Length)
+                    curW %= (byte)key.Length;
+                return (sbyte)((key[index] & 0xFF) ^ (b & 0xFF));
+            }
+            else if (type == EncryptionType.Receive)
+            {
+                byte index = curR;
+                curR++;
+                if (curR >= key.Length)
+                    curR %= (byte)key.Length;
+                return (sbyte)((key[index] & 0xFF) ^ (b & 0xFF));
+            }
+            else
+                return b;
         }
     }
 }

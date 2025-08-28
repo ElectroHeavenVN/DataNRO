@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataNRO.Interfaces
+namespace EHVN.DataNRO.Interfaces
 {
     /// <summary>
     /// Interface đại diện cho các gói tin gửi đi và nhận được từ máy chủ.

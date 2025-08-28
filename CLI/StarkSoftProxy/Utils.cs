@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using System.Globalization;
 using System.Net.Sockets;
 
@@ -7,37 +6,28 @@ namespace Starksoft.Net.Proxy
 {
     internal static class Utils
     {
-        internal static string GetHost(TcpClient client)
+        internal static string GetHost(TcpClient? client)
         {
-            if (client == null)
-                throw new ArgumentNullException("client");
-
+            ArgumentNullException.ThrowIfNull(client);
             string host = "";
             try
             {
-                host = ((System.Net.IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
+                host = ((System.Net.IPEndPoint?)client.Client.RemoteEndPoint)?.Address.ToString() ?? "";
             }
-            catch
-            {   };
-
+            catch { };
             return host;
         }
 
-        internal static string GetPort(TcpClient client)
+        internal static string GetPort(TcpClient? client)
         {
-            if (client == null)
-                throw new ArgumentNullException("client");
-
+            ArgumentNullException.ThrowIfNull(client);
             string port = "";
             try
             {
-                port = ((System.Net.IPEndPoint)client.Client.RemoteEndPoint).Port.ToString(CultureInfo.InvariantCulture);
+                port = ((System.Net.IPEndPoint?)client.Client.RemoteEndPoint)?.Port.ToString(CultureInfo.InvariantCulture) ?? "";
             }
-            catch
-            { };
-
+            catch { };
             return port;
         }
-
     }
 }

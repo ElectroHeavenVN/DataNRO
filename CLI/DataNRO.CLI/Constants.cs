@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataNRO.CLI
+﻿namespace EHVN.DataNRO.CLI
 {
     internal class Constants
     {
@@ -17,8 +11,8 @@ namespace DataNRO.CLI
         internal static readonly int NPC_MABU_EGG = 50;
         internal static readonly int NPC_MABU_WATERMELON = 51;
 
-        internal static readonly int[] EXCLUDED_NPCS = new int[]
-        {
+        internal static readonly int[] EXCLUDED_NPCS =
+        [
             NPC_CHEST,
             NPC_SENZU_BEAN_TREE,
             NPC_NOTIFICATOR,
@@ -27,6 +21,6 @@ namespace DataNRO.CLI
             NPC_PORUNGA,
             NPC_MABU_EGG,
             NPC_MABU_WATERMELON
-        };
+        ];
     }
 }

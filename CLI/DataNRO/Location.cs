@@ -1,11 +1,11 @@
-﻿namespace DataNRO
+﻿namespace EHVN.DataNRO
 {
     /// <summary>
-    /// Class chứa thông tin về vị trí của nhân vật
+    /// Thông tin về vị trí của nhân vật
     /// </summary>
     public class Location
     {
         public int planetId, mapId, zoneId;
-        public string mapName;
+        public string mapName = "";
     }
 }

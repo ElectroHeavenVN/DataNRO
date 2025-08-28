@@ -1,68 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AB875070-C555-46A0-953A-F577D5BC85C6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataNRO.TeaMobi</RootNamespace>
-    <AssemblyName>DataNRO.TeaMobi</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <IncludeSymbols>false</IncludeSymbols>
+    <Deterministic>false</Deterministic>
+    <RootNamespace>EHVN.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <IsAotCompatible>true</IsAotCompatible>
+    <Title>EHVN.DataNRO.TeaMobi</Title>
+    <PackageId>EHVN.$(AssemblyName)</PackageId>
+    <Authors>ElectroHeavenVN</Authors>
+    <Description>Module DataNRO cho server Ngọc Rồng Online</Description>
+    <Copyright>Copyright © ElectroHeavenVN 2024-2025</Copyright>
+    <PackageProjectUrl>https://electroheavenvn.github.io/DataNRO/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ElectroHeavenVN/DataNRO/</RepositoryUrl>
+    <BaseOutputPath>..\..\Output\</BaseOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <EmbeddedResource Include="Resources\*" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TeaMobiMessageReceiver.cs" />
-    <Compile Include="TeaMobiMessageWriter.cs" />
-    <Compile Include="TeaMobiSession.cs" />
+    <ProjectReference Include="..\DataNRO\DataNRO.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DataNRO\DataNRO.csproj">
-      <Project>{bf737c20-1ed8-4cee-b8a2-f099d559c80e}</Project>
-      <Name>DataNRO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StarkSoftProxy\StarkSoftProxy.csproj">
-      <Project>{6fc0aa75-ce40-4401-96f9-0ecf5a112acc}</Project>
-      <Name>StarkSoftProxy</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\info" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>mkdir "$(SolutionDir)..\Output\"
-copy /y "$(TargetDir)*" "$(SolutionDir)..\Output\"</PostBuildEvent>
-  </PropertyGroup>
 </Project>

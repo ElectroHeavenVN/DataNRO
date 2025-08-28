@@ -1,8 +1,8 @@
-﻿using DataNRO.Interfaces;
-using Newtonsoft.Json;
+﻿using EHVN.DataNRO.Interfaces;
 using Starksoft.Net.Proxy;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Globalization;
@@ -11,53 +11,56 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading;
-using static DataNRO.GameData;
+using System.Threading.Tasks;
+using static EHVN.DataNRO.GameData;
 
-namespace DataNRO.CLI
+namespace EHVN.DataNRO.CLI
 {
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     internal class Program
     {
-        static Random random = new Random();
         static string proxyData = "";
-        static int[] overwriteIconIDs = new int[0];
+        static int[] overwriteIconIDs = [];
         static int maxRunSeconds = 4500;
         static bool forceProxy;
 
         [DllImport("msvcrt.dll")]
         public static extern int system(string cmd);
 
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
             new Thread(FailoverThread) { IsBackground = true }.Start();
+            Thread.Sleep(100);
             if (!Directory.Exists("Data"))
                 Directory.CreateDirectory("Data");
-            proxyData = Environment.GetEnvironmentVariable("PROXY");
-            string overwriteIconsEnv = Environment.GetEnvironmentVariable("OVERWRITE_ICONS");
+            proxyData = Environment.GetEnvironmentVariable("PROXY") ?? "";
+            string? overwriteIconsEnv = Environment.GetEnvironmentVariable("OVERWRITE_ICONS");
             if (!string.IsNullOrEmpty(overwriteIconsEnv))
                 overwriteIconIDs = overwriteIconsEnv.Split(',').Select(int.Parse).ToArray();
-            string maxRunSecondsEnv = Environment.GetEnvironmentVariable("MAX_RUN_SECONDS");
+            string? maxRunSecondsEnv = Environment.GetEnvironmentVariable("MAX_RUN_SECONDS");
             if (!string.IsNullOrEmpty(maxRunSecondsEnv))
                 maxRunSeconds = int.Parse(maxRunSecondsEnv);
-            string forceProxyEnv = Environment.GetEnvironmentVariable("FORCE_PROXY");
+            string? forceProxyEnv = Environment.GetEnvironmentVariable("FORCE_PROXY");
             if (!string.IsNullOrEmpty(forceProxyEnv))
                 forceProxy = bool.Parse(forceProxyEnv);
-            string data = Environment.GetEnvironmentVariable("DATA");
+            string? data = Environment.GetEnvironmentVariable("DATA");
             if (string.IsNullOrEmpty(data))
             {
 #if DEBUG
                 Console.Write("DATA: ");
-                data = Console.ReadLine();
+                data = Console.ReadLine() ?? "";
                 Console.Write("PROXY: ");
-                proxyData = Console.ReadLine();
+                proxyData = Console.ReadLine() ?? "";
                 Console.Write("FORCE_PROXY: ");
                 bool.TryParse(Console.ReadLine(), out forceProxy);
 #else
                 Console.WriteLine("DATA environment variable is not set!");
-                Environment.Exit(1);
-                return;
+                return 1;
 #endif
             }
             string[] datas = data.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -65,7 +68,7 @@ namespace DataNRO.CLI
             {
                 try
                 {
-                    LoginAndGetData(d);
+                    LoginAndGetDataAsync(d).GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {
@@ -73,9 +76,10 @@ namespace DataNRO.CLI
                 }
             }
 #if DEBUG
-            system("pause");
+            return system("pause");
+#else
+            return 0;
 #endif
-            Environment.Exit(0);
         }
 
         static void FailoverThread()
@@ -87,7 +91,7 @@ namespace DataNRO.CLI
             Environment.Exit(1);
         }
 
-        static void LoginAndGetData(string data)
+        static async Task LoginAndGetDataAsync(string data)
         {
             string[] arr = data.Split('|');
             string type = arr[0];
@@ -101,24 +105,35 @@ namespace DataNRO.CLI
             string dataPath = $"Data\\{type}\\{folderName}";
             if (!Directory.Exists(dataPath))
                 Directory.CreateDirectory(dataPath);
-            ISession session;
+            ISession? session;
             try
             {
                 Console.WriteLine($"Creating session type \"{type}\" from assembly \"DataNRO.{type}.dll\"...");
-                Assembly assembly = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), $"DataNRO.{type}.dll"));
+                Assembly assembly = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location) ?? "", $"DataNRO.{type}.dll"));
                 Console.WriteLine($"Loaded assembly: {assembly.FullName}");
-                Console.WriteLine($"Assembly name: {assembly.GetCustomAttribute<AssemblyTitleAttribute>().Title}");
-                Console.WriteLine($"Assembly description: {assembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description}");
-                Console.WriteLine($"Assembly company: {assembly.GetCustomAttribute<AssemblyCompanyAttribute>().Company}");
-                Console.WriteLine($"Assembly copyright: {assembly.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright}");
-                string sessionTypeName = $"DataNRO.{type}.{type}Session";
+                Console.WriteLine($"Assembly name: {assembly.GetCustomAttribute<AssemblyTitleAttribute>()!.Title}");
+                Console.WriteLine($"Assembly description: {assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()!.Description}");
+                Console.WriteLine($"Assembly company: {assembly.GetCustomAttribute<AssemblyCompanyAttribute>()!.Company}");
+                Console.WriteLine($"Assembly copyright: {assembly.GetCustomAttribute<AssemblyCopyrightAttribute>()!.Copyright}");
+                string sessionTypeName = $"EHVN.DataNRO.{type}.{type}Session";
                 Console.WriteLine($"Creating session type: {sessionTypeName}...");
-                session = (ISession)Activator.CreateInstance(assembly.GetType(sessionTypeName), new object[] { host, port });
+                Type? sessionType = assembly.GetType(sessionTypeName);
+                if (sessionType is null)
+                {
+                    Console.WriteLine($"Failed to get session type \"{sessionTypeName}\" from assembly \"DataNRO.{type}.dll\"!");
+                    return;
+                }
+                session = (ISession?)Activator.CreateInstance(sessionType, [host, port]);
                 Console.WriteLine($"Session type \"{type}\" has been created successfully!");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to create session type \"{type}\" from assembly \"DataNRO.{type}.dll\"!\r\n{ex}");
+                return;
+            }
+            if (session is null)
+            {
+                Console.WriteLine($"Failed to create session type \"{type}\" from assembly \"DataNRO.{type}.dll\"!");
                 return;
             }
             session.Data.Path = dataPath;
@@ -130,106 +145,126 @@ namespace DataNRO.CLI
                     File.Delete($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{iconId}.png");
             }
             Console.WriteLine($"Connecting to {session.Host}:{session.Port}...");
-            if (!TryConnect(session))
+            if (!await TryConnectAsync(session))
                 return;
             Console.WriteLine("Connected successfully!");
             IMessageWriter writer = session.MessageWriter;
             writer.SetClientType();
-            Thread.Sleep(1500);
+            await Task.Delay(2000);
             writer.ImageSource();
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             if (session.Data.SaveIcon)
             {
                 Console.WriteLine($"[{session.Host}:{session.Port}] Downloading data...");
                 writer.GetResource(1);
                 do
                 {
-                    Thread.Sleep(1000);
+                    await Task.Delay(1000);
                 }
                 while (!session.Data.AllResourceLoaded);
             }
-            if (!string.IsNullOrEmpty(unregisteredUser))
+            for (int i = 0; i < 3; i++)
             {
-                Console.WriteLine($"[{session.Host}:{session.Port}] Login as {unregisteredUser.Substring(0, 4)}{new string('*', unregisteredUser.Length - 4)}");
-                writer.Login(unregisteredUser, "a", 1);
-            }
-            else
-            {
-                Console.WriteLine($"[{session.Host}:{session.Port}] Login as {new string('*', account.Length)}");
-                writer.Login(account, password, 0);
-            }
-            Thread.Sleep(1000);
-            writer.UpdateMap();
-            writer.UpdateSkill();
-            writer.UpdateItem();
-            writer.UpdateData();
-            Thread.Sleep(1000);
-            writer.ClientOk();
-            writer.FinishUpdate();
-            Thread.Sleep(4000);
-            int count = 0;
-            Location location;
-            do
-            {
-                location = session.Player.location;
-                count++;
-                if (count >= 20)
+                if (!string.IsNullOrEmpty(unregisteredUser))
                 {
-                    Console.WriteLine($"[{session.Host}:{session.Port}] Failed to get the player's location!");
-                    return;
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Login as {unregisteredUser.Substring(0, 4)}{new string('*', unregisteredUser.Length - 4)}");
+                    writer.Login(unregisteredUser, "a", 1);
                 }
-                Thread.Sleep(1000);
+                else
+                {
+                    Console.WriteLine($"[{session.Host}:{session.Port}] Login as {new string('*', account.Length)}");
+                    writer.Login(account, password, 0);
+                }
+                await Task.Delay(1000);
+                writer.UpdateMap();
+                writer.UpdateSkill();
+                writer.UpdateItem();
+                writer.UpdateData();
+                await Task.Delay(1000);
+                writer.ClientOk();
+                writer.FinishUpdate();
+                await Task.Delay(4000);
+                int count = 0;
+                Location? location;
+                bool retry = false;
+                do
+                {
+                    location = session.Player.Location;
+                    count++;
+                    if (count >= 20)
+                    {
+                        if (i == 2)
+                        {
+                            Console.WriteLine($"[{session.Host}:{session.Port}] Failed to get the player's location!");
+                            session.Disconnect();
+                            return;
+                        }
+                        Console.WriteLine($"[{session.Host}:{session.Port}] Failed to get the player's location! Retry {i + 1}...");
+                        retry = true;
+                        break;
+                    }
+                    await Task.Delay(1000);
+                }
+                while (location is null || string.IsNullOrEmpty(location.mapName));
+                if (retry)
+                    continue;
+                writer.FinishLoadMap();
+                Console.WriteLine($"[{session.Host}:{session.Port}] Current map: {location.mapName} [{location.mapId}], zone {location.zoneId}");
+                await Task.Delay(2000);
+                break;
             }
-            while (location == null || string.IsNullOrEmpty(location.mapName));
-            writer.FinishLoadMap();
-            Console.WriteLine($"[{session.Host}:{session.Port}] Current map: {location.mapName} [{location.mapId}], zone {location.zoneId}");
-            Thread.Sleep(2000);
             if (session.Data.SaveIcon)
             {
                 if (session.Data.MapTileIDs.Count == 0)
                     Console.WriteLine($"[{session.Host}:{session.Port}] No map tile IDs found, skipping map templates...");
                 else
-                    RequestMapsTemplate(session);
-                RequestMobsImg(session);
-                if (!RequestIcons(session))
+                    await RequestMapsTemplateAsync(session);
+                await RequestMobsImgAsync(session);
+                if (!await RequestIconsAsync(session))
                     return;
             }
-            TryGoOutsideIfAtHome(session);
+            await TryGoOutsideIfAtHomeAsync(session);
             Console.WriteLine($"[{session.Host}:{session.Port}] Disconnect from {session.Host}:{session.Port} in 10s...");
             writer.Chat("DataNRO by ElectroHeavenVN");
-            Thread.Sleep(10000);
+            await Task.Delay(10000);
             session.Disconnect();
 
             if (session.Data.SaveIcon)
                 ProcessImages(session);
 
             Console.WriteLine($"[{session.Host}:{session.Port}] Writing data to {session.Data.Path}\\...");
-            Formatting formatting = Formatting.Indented;
+
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                IncludeFields = true,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
+
             if (session.Data.Maps.Count > 0)
             {
-                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Maps)}.json", JsonConvert.SerializeObject(session.Data.Maps, formatting, new JsonSerializerSettings()
-                {
-                    ContractResolver = new IgnoreMapTemplateResolver()
-                }));
+                foreach (Map map in session.Data.Maps)
+                    map.mapTemplate = null;
+                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Maps)}.json", JsonSerializer.Serialize(session.Data.Maps, options));
             }
             if (session.Data.NpcTemplates.Length > 0)
-                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NpcTemplates)}.json", JsonConvert.SerializeObject(session.Data.NpcTemplates, formatting));
+                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NpcTemplates)}.json", JsonSerializer.Serialize(session.Data.NpcTemplates, options));
             if (session.Data.MobTemplates.Length > 0)
-                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.MobTemplates)}.json", JsonConvert.SerializeObject(session.Data.MobTemplates, formatting));
+                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.MobTemplates)}.json", JsonSerializer.Serialize(session.Data.MobTemplates, options));
             if (session.Data.ItemOptionTemplates.Length > 0)
-                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemOptionTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemOptionTemplates, formatting));
+                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemOptionTemplates)}.json", JsonSerializer.Serialize(session.Data.ItemOptionTemplates, options));
             if (session.Data.NClasses.Length > 0)
-                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NClasses)}.json", JsonConvert.SerializeObject(session.Data.NClasses, formatting));
+                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NClasses)}.json", JsonSerializer.Serialize(session.Data.NClasses, options));
             if (session.Data.ItemTemplates.Count > 0)
-                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonConvert.SerializeObject(session.Data.ItemTemplates, formatting));
+                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonSerializer.Serialize(session.Data.ItemTemplates, options));
             if (session.Data.Parts.Length > 0)
-                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Parts)}.json", JsonConvert.SerializeObject(session.Data.Parts, formatting));
+                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Parts)}.json", JsonSerializer.Serialize(session.Data.Parts, options));
 
             //if (session.Data.SaveIcon)
-            //File.WriteAllText($"{Path.GetDirectoryName(session.Data.Path)}\\{nameof(GameData.MobTemplateEffectData)}.json", JsonConvert.SerializeObject(session.Data.MobTemplateEffectData, formatting));
+            //File.WriteAllText($"{Path.GetDirectoryName(session.Data.Path)}\\{nameof(GameData.MobTemplateEffectData)}.json", JsonSerializer.Serialize(session.Data.MobTemplateEffectData, options));
 
             File.WriteAllText($"{session.Data.Path}\\LastUpdated", DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
-            Thread.Sleep(3000);
+            await Task.Delay(3000);
             session.FileWriter.DeleteTempFiles();
             session.Dispose();
         }
@@ -248,7 +283,7 @@ namespace DataNRO.CLI
         static void SplitBigImgs(ISession session)
         {
             Console.WriteLine($"[{session.Host}:{session.Port}] Splitting images...");
-            List<Bitmap> smallImages = new List<Bitmap>();
+            List<Bitmap> smallImages = [];
             for (int i = 0; File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\BigIcons\\Big{i}.png"); i++)
                 smallImages.Add(new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\BigIcons\\Big{i}.png"));
             for (int id = 0; id < session.Data.SmallImg.Length; id++)
@@ -257,7 +292,7 @@ namespace DataNRO.CLI
                     continue;
                 int[] smallImg = session.Data.SmallImg[id];
                 int imgBigIndex = smallImg[0];
-                if (imgBigIndex < 0 || imgBigIndex >= smallImages.Count || smallImages[imgBigIndex] == null)
+                if (imgBigIndex < 0 || imgBigIndex >= smallImages.Count)
                     continue;
                 if (smallImg[1] >= 256 || smallImg[2] >= 256 || smallImg[3] >= 256 || smallImg[4] >= 256)
                     continue;
@@ -265,14 +300,12 @@ namespace DataNRO.CLI
                 int y = smallImg[2] * session.Data.ZoomLevel;
                 int width = smallImg[3] * session.Data.ZoomLevel;
                 int height = smallImg[4] * session.Data.ZoomLevel;
-                using (Bitmap bitmap = new Bitmap(width, height))
+                using Bitmap bitmap = new Bitmap(width, height);
+                using (Graphics g = Graphics.FromImage(bitmap))
                 {
-                    using (Graphics g = Graphics.FromImage(bitmap))
-                    {
-                        g.DrawImage(smallImages[imgBigIndex], new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);
-                    }
-                    bitmap.Save($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png");
+                    g.DrawImage(smallImages[imgBigIndex], new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);
                 }
+                bitmap.Save($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png");
             }
         }
 
@@ -286,30 +319,30 @@ namespace DataNRO.CLI
                     NpcTemplate npc = session.Data.NpcTemplates[i];
                     if (Constants.EXCLUDED_NPCS.Contains(npc.npcTemplateId))
                         continue;
-                    Part partHead = npc.headId == -1 ? null : session.Data.Parts[npc.headId];
-                    Part partBody = npc.bodyId == -1 ? null : session.Data.Parts[npc.bodyId];
-                    Part partLeg = npc.legId == -1 ? null : session.Data.Parts[npc.legId];
-                    if (partHead == null && partBody == null && partLeg == null)
+                    Part? partHead = npc.headId == -1 ? null : session.Data.Parts[npc.headId];
+                    Part? partBody = npc.bodyId == -1 ? null : session.Data.Parts[npc.bodyId];
+                    Part? partLeg = npc.legId == -1 ? null : session.Data.Parts[npc.legId];
+                    if (partHead is null && partBody is null && partLeg is null)
                         continue;
-                    Bitmap imgHead = null, imgBody = null, imgLeg = null;
-                    if (partHead != null && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partHead.pi[0].id}.png"))
+                    Bitmap? imgHead = null, imgBody = null, imgLeg = null;
+                    if (partHead is not null && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partHead.pi[0].id}.png"))
                         imgHead = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partHead.pi[0].id}.png");
-                    if (partBody != null && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partBody.pi[1].id}.png"))
+                    if (partBody is not null && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partBody.pi[1].id}.png"))
                         imgBody = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partBody.pi[1].id}.png");
-                    if (partLeg != null && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partLeg.pi[1].id}.png"))
+                    if (partLeg is not null && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partLeg.pi[1].id}.png"))
                         imgLeg = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{partLeg.pi[1].id}.png");
                     int maxWidth = 0, maxHeight = 0;
-                    if (imgHead != null)
+                    if (imgHead is not null)
                     {
                         maxWidth = imgHead.Width;
                         maxHeight = imgHead.Height;
                     }
-                    if (imgBody != null)
+                    if (imgBody is not null)
                     {
                         maxWidth += imgBody.Width;
                         maxHeight += imgBody.Height;
                     }
-                    if (imgLeg != null)
+                    if (imgLeg is not null)
                     {
                         maxWidth += imgLeg.Width;
                         maxHeight += imgLeg.Height;
@@ -323,11 +356,11 @@ namespace DataNRO.CLI
                             g.FillRectangle(Brushes.Transparent, 0, 0, imgNpc.Width, imgNpc.Height);
                             float cx = imgNpc.Width / 2f / session.Data.ZoomLevel;
                             float cy = imgNpc.Height / 2f / session.Data.ZoomLevel;
-                            if (imgHead != null)
+                            if (imgHead is not null && partHead is not null)
                                 g.DrawImage(imgHead, (cx + -13 + partHead.pi[0].dx) * session.Data.ZoomLevel, (cy - 34 + partHead.pi[0].dy) * session.Data.ZoomLevel, imgHead.Width, imgHead.Height);
-                            if (imgLeg != null)
+                            if (imgLeg is not null && partLeg is not null)
                                 g.DrawImage(imgLeg, (cx + -8 + partLeg.pi[1].dx) * session.Data.ZoomLevel, (cy - 10 + partLeg.pi[1].dy) * session.Data.ZoomLevel, imgLeg.Width, imgLeg.Height);
-                            if (imgBody != null)
+                            if (imgBody is not null && partBody is not null)
                                 g.DrawImage(imgBody, (cx + -9 + partBody.pi[1].dx) * session.Data.ZoomLevel, (cy - 16 + partBody.pi[1].dy) * session.Data.ZoomLevel, imgBody.Width, imgBody.Height);
                         }
                         string path = $"{Path.GetDirectoryName(session.Data.Path)}\\NPCs";
@@ -359,7 +392,7 @@ namespace DataNRO.CLI
             {
                 MobTemplate template = session.Data.MobTemplates[templateId];
                 EffectData effectData = session.Data.MobTemplateEffectData[templateId];
-                if (effectData.frame == null || effectData.frame.Length == 0)
+                if (effectData.frame.Length == 0)
                     continue;
                 Frame frame = effectData.frame[0];
                 Bitmap mobImg = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\MobImg\\{templateId}.png");
@@ -371,12 +404,15 @@ namespace DataNRO.CLI
                     {
                         for (int i = 0; i < frame.dx.Length; i++)
                         {
-                            ImageInfo imageInfo = effectData.imgInfo.FirstOrDefault(img => img.id == frame.idImg[i]);
-                            if (imageInfo == null)
+                            ImageInfo? imageInfo = effectData.imgInfo.FirstOrDefault(img => img.id == frame.idImg[i]);
+                            if (imageInfo is null)
                                 continue;
                             try
                             {
-                                g.DrawImage(mobImg, new Rectangle((x + frame.dx[i]) * session.Data.ZoomLevel, (y + frame.dy[i]) * session.Data.ZoomLevel, imageInfo.w * session.Data.ZoomLevel, imageInfo.h * session.Data.ZoomLevel), new Rectangle(imageInfo.x0 * session.Data.ZoomLevel, imageInfo.y0 * session.Data.ZoomLevel, imageInfo.w * session.Data.ZoomLevel, imageInfo.h * session.Data.ZoomLevel), GraphicsUnit.Pixel);
+                                g.DrawImage(mobImg, 
+                                    new Rectangle((x + frame.dx[i]) * session.Data.ZoomLevel, (y + frame.dy[i]) * session.Data.ZoomLevel, imageInfo.w * session.Data.ZoomLevel, imageInfo.h * session.Data.ZoomLevel),
+                                    new Rectangle(imageInfo.x0 * session.Data.ZoomLevel, imageInfo.y0 * session.Data.ZoomLevel, imageInfo.w * session.Data.ZoomLevel, imageInfo.h * session.Data.ZoomLevel),
+                                    GraphicsUnit.Pixel);
                             }
                             catch { }
                         }
@@ -438,19 +474,16 @@ namespace DataNRO.CLI
 
         static void CombineMapImages(ISession session, Map map, int tileID, bool includeTileID = false)
         {
-            MapTemplate mapTemplate = map.mapTemplate;
-            if (mapTemplate == null)
+            MapTemplate? mapTemplate = map.mapTemplate;
+            if (mapTemplate is null)
                 return;
             int mapID = map.id;
             int pixelWidth = (mapTemplate.width - 2) * 24 * session.Data.ZoomLevel;
             int pixelHeight = (mapTemplate.height - 1) * 24 * session.Data.ZoomLevel;
             Bitmap mapImg = new Bitmap(pixelWidth, pixelHeight);
-
             Bitmap imgWaterfall = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Resources\\wtf");
             Bitmap imgTopWaterfall = new Bitmap($"{Path.GetDirectoryName(session.Data.Path)}\\Resources\\twtf");
-
             Graphics mapImgG = Graphics.FromImage(mapImg);
-
             void paintTile(int frame, int x, int y)
             {
                 x -= 24;
@@ -464,9 +497,7 @@ namespace DataNRO.CLI
                 }
                 catch { }
             }
-
             mapTemplate.LoadMap(tileID);
-
             for (int x = 1; x < mapTemplate.width - 1; x++)
             {
                 for (int y = 0; y < mapTemplate.height; y++)
@@ -475,9 +506,15 @@ namespace DataNRO.CLI
                     if ((mapTemplate.TileTypeAt(x, y) & 0x100) == 256)
                         continue;
                     if ((mapTemplate.TileTypeAt(x, y) & 0x20) == 32)
-                        mapImgG.DrawImage(imgWaterfall, new Rectangle((x - 1) * 24 * session.Data.ZoomLevel, y * 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel), new Rectangle(0, 0, 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel), GraphicsUnit.Pixel);
+                        mapImgG.DrawImage(imgWaterfall,
+                            new Rectangle((x - 1) * 24 * session.Data.ZoomLevel, y * 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel),
+                            new Rectangle(0, 0, 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel),
+                            GraphicsUnit.Pixel);
                     else if ((mapTemplate.TileTypeAt(x, y) & 0x80) == 128)
-                        mapImgG.DrawImage(imgTopWaterfall, new Rectangle((x - 1) * 24 * session.Data.ZoomLevel, y * 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel), new Rectangle(0, 0, 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel), GraphicsUnit.Pixel);
+                        mapImgG.DrawImage(imgTopWaterfall, 
+                            new Rectangle((x - 1) * 24 * session.Data.ZoomLevel, y * 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel),
+                            new Rectangle(0, 0, 24 * session.Data.ZoomLevel, 24 * session.Data.ZoomLevel),
+                            GraphicsUnit.Pixel);
                     else
                     {
                         //if (tileID == 13 && num != -1)
@@ -501,10 +538,10 @@ namespace DataNRO.CLI
 
                 }
             }
-            mapImgG.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+            mapImgG.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             Font font = new Font("Arial", 50);
             for (int i = 0; i < 3; i++)
-                mapImgG.DrawString("© ElectroHeavenVN", font, Brushes.Black, random.Next(0, pixelWidth - 500), random.Next(0, pixelHeight - 100));
+                mapImgG.DrawString("© ElectroHeavenVN", font, Brushes.Black, Random.Shared.Next(0, pixelWidth - 500), Random.Shared.Next(0, pixelHeight - 100));
             if (includeTileID)
                 mapImg.Save($"{$"{Path.GetDirectoryName(session.Data.Path)}\\Maps"}\\{mapID}-{tileID}.png");
             else
@@ -515,14 +552,14 @@ namespace DataNRO.CLI
             imgTopWaterfall.Dispose();
         }
 
-        static bool RequestIcons(ISession session)
+        static async Task<bool> RequestIconsAsync(ISession session)
         {
             IMessageWriter writer = session.MessageWriter;
-            List<int> requestedIcons = new List<int>();
+            List<int> requestedIcons = [];
             int count = 0;
-            void RequestPartIcon(Part part, int index)
+            async Task RequestPartIcon(Part? part, int index)
             {
-                if (part == null)
+                if (part is null)
                     return;
                 int id = part.pi[index].id;
                 if (requestedIcons.Contains(id))
@@ -531,16 +568,16 @@ namespace DataNRO.CLI
                     return;
                 writer.RequestIcon(id);
                 requestedIcons.Add(id);
-                Thread.Sleep(1000 + random.Next(-200, 201));
+                await Task.Delay(1000 + Random.Shared.Next(-200, 201));
                 if (requestedIcons.Count % 10 == 0)
                 {
-                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    writer.RequestChangeZone(session.Player.Location?.zoneId ?? 0);
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
                 }
             }
 
             writer.UpdateData();
-            while (session.Data.Parts == null)
+            while (session.Data.Parts.Length == 0)
             {
                 count++;
                 if (count >= 10)
@@ -548,24 +585,24 @@ namespace DataNRO.CLI
                     Console.WriteLine($"[{session.Host}:{session.Port}] Get parts failed!");
                     return false;
                 }
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
             }
             //item
             count = 0;
-            while (session.Data.ItemTemplates == null)
+            while (session.Data.ItemTemplates is null)
             {
-                Thread.Sleep(1000 + random.Next(-200, 201));
+                await Task.Delay(1000 + Random.Shared.Next(-200, 201));
                 count++;
                 if (count >= 10)
                 {
-                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    writer.RequestChangeZone(session.Player.Location?.zoneId ?? 0);
                     count = 0;
                 }
             }
-            List<ItemTemplate> items = new List<ItemTemplate>(session.Data.ItemTemplates);
+            List<ItemTemplate> items = [.. session.Data.ItemTemplates];
             while (items.Count > 0)
             {
-                ItemTemplate item = items[random.Next(0, items.Count)];
+                ItemTemplate item = items[Random.Shared.Next(0, items.Count)];
                 items.Remove(item);
                 if (requestedIcons.Contains(item.icon))
                     continue;
@@ -573,17 +610,17 @@ namespace DataNRO.CLI
                     continue;
                 writer.RequestIcon(item.icon);
                 requestedIcons.Add(item.icon);
-                Thread.Sleep(1000 + random.Next(-200, 201));
+                await Task.Delay(1000 + Random.Shared.Next(-200, 201));
                 if (requestedIcons.Count % 10 == 0)
                 {
-                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    writer.RequestChangeZone(session.Player.Location?.zoneId ?? 0);
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
                 }
             }
             //npc
-            //while (session.Data.NpcTemplates == null)
+            //while (session.Data.NpcTemplates.Length == 0)
             //{
-            //    Thread.Sleep(1000 + random.Next(-200, 201));
+            //    await Task.Delay(1000 + random.Next(-200, 201));
             //    count++;
             //    if (count >= 10)
             //    {
@@ -593,36 +630,34 @@ namespace DataNRO.CLI
             //}
             //foreach (NpcTemplate npc in session.Data.NpcTemplates)
             //{
-            //    Part partHead = npc.headId == -1 ? null : session.Data.Parts[npc.headId];
-            //    Part partBody = npc.bodyId == -1 ? null : session.Data.Parts[npc.bodyId];
-            //    Part partLeg = npc.legId == -1 ? null : session.Data.Parts[npc.legId];
+            //    Part? partHead = npc.headId == -1 ? null : session.Data.Parts[npc.headId];
+            //    Part? partBody = npc.bodyId == -1 ? null : session.Data.Parts[npc.bodyId];
+            //    Part? partLeg = npc.legId == -1 ? null : session.Data.Parts[npc.legId];
             //    RequestPartIcon(partHead, 0);
             //    RequestPartIcon(partBody, 1);
             //    RequestPartIcon(partLeg, 1);
             //}
             //parts
-            List<Part> parts = new List<Part>(session.Data.Parts);
+            List<Part> parts = [.. session.Data.Parts];
             while (parts.Count > 0)
             {
-                Part part = parts[random.Next(0, parts.Count)];
+                Part part = parts[Random.Shared.Next(0, parts.Count)];
                 parts.Remove(part);
-                if (part is null)
-                    continue;
                 int index = 0;
                 if (part.type == 1 || part.type == 2) //body, leg
                     index = 1;
                 if (part.pi[index].id <= 0)
                     continue;
-                RequestPartIcon(part, index);
+                await RequestPartIcon(part, index);
             }
             //skills
-            while (session.Data.NClasses == null)
+            while (session.Data.NClasses is null)
             {
-                Thread.Sleep(1000 + random.Next(-200, 201));
+                await Task.Delay(1000 + Random.Shared.Next(-200, 201));
                 count++;
                 if (count >= 10)
                 {
-                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    writer.RequestChangeZone(session.Player.Location?.zoneId ?? 0);
                     count = 0;
                 }
             }
@@ -636,21 +671,21 @@ namespace DataNRO.CLI
                         continue;
                     writer.RequestIcon(skillTemplate.icon);
                     requestedIcons.Add(skillTemplate.icon);
-                    Thread.Sleep(1000 + random.Next(-200, 201));
+                    await Task.Delay(1000 + Random.Shared.Next(-200, 201));
                     if (requestedIcons.Count % 10 == 0)
                     {
-                        writer.RequestChangeZone(session.Player.location.zoneId);
+                        writer.RequestChangeZone(session.Player.Location?.zoneId ?? 0);
                         Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons");
                     }
                 }
             }
             Console.WriteLine($"[{session.Host}:{session.Port}] Requested {requestedIcons.Count} icons.");
             Console.WriteLine($"[{session.Host}:{session.Port}] Wait 10s...");
-            Thread.Sleep(10000);
+            await Task.Delay(10000);
             return true;
         }
 
-        static void RequestMobsImg(ISession session)
+        static async Task RequestMobsImgAsync(ISession session)
         {
             IMessageWriter writer = session.MessageWriter;
             MobTemplate[] mobTemplates = session.Data.MobTemplates;
@@ -658,17 +693,17 @@ namespace DataNRO.CLI
             for (; templateID < mobTemplates.Length; templateID++)
             {
                 writer.RequestMobTemplate((short)templateID);
-                Thread.Sleep(1000 + random.Next(-200, 201));
+                await Task.Delay(1000 + Random.Shared.Next(-200, 201));
                 if (templateID % 10 == 0)
                 {
-                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    writer.RequestChangeZone(session.Player.Location?.zoneId ?? 0);
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {templateID} mob templates");
                 }
             }
             Console.WriteLine($"[{session.Host}:{session.Port}] Requested {templateID} mob templates.");
         }
 
-        static void RequestMapsTemplate(ISession session)
+        static async Task RequestMapsTemplateAsync(ISession session)
         {
             IMessageWriter writer = session.MessageWriter;
             List<Map> maps = session.Data.Maps;
@@ -681,7 +716,7 @@ namespace DataNRO.CLI
                 int count = 0;
                 do
                 {
-                    Thread.Sleep(1000 + random.Next(-200, 201));
+                    await Task.Delay(1000 + Random.Shared.Next(-200, 201));
                     count++;
                     if (count >= 5)
                     {
@@ -689,10 +724,10 @@ namespace DataNRO.CLI
                         break;
                     }
                 }
-                while (session.Data.MapToReceiveTemplate != null);
+                while (session.Data.MapToReceiveTemplate is not null);
                 if (i % 10 == 0)
                 {
-                    writer.RequestChangeZone(session.Player.location.zoneId);
+                    writer.RequestChangeZone(session.Player.Location?.zoneId ?? 0);
                     Console.WriteLine($"[{session.Host}:{session.Port}] Requested {i} map templates");
                 }
             }
@@ -700,15 +735,15 @@ namespace DataNRO.CLI
             session.Data.MapToReceiveTemplate = null;
         }
 
-        static void TryGoOutsideIfAtHome(ISession session)
+        static async Task TryGoOutsideIfAtHomeAsync(ISession session)
         {
             IMessageWriter writer = session.MessageWriter;
-            Location location = session.Player.location;
-            while (location.mapId <= 23 && location.mapId >= 21)
+            Location? location = session.Player.Location;
+            while (location is null || location.mapId <= 23 && location.mapId >= 21)
             {
                 Console.WriteLine("The player is at home, trying to go outside...");
                 int x = 0, y = 336;
-                switch (location.mapId)
+                switch (location?.mapId)
                 {
                     case 21:
                         x = 495;
@@ -719,24 +754,31 @@ namespace DataNRO.CLI
                     case 23:
                         x = 475;
                         break;
+                    default:
+                        x = 390;
+                        break;
                 }
                 writer.CharMove(x, y);
-                Thread.Sleep(200);
+                await Task.Delay(200);
                 writer.CharMove(x, ++y);
-                Thread.Sleep(200);
+                await Task.Delay(200);
                 writer.CharMove(x, --y);
-                Thread.Sleep(200);
+                await Task.Delay(200);
                 writer.GetMapOffline();
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
                 writer.FinishLoadMap();
-                Thread.Sleep(3000);
-                location = session.Player.location;
-                Console.WriteLine($"Current map: {location.mapName} [{location.mapId}], zone {location.zoneId}");
+                await Task.Delay(3000);
+                location = session.Player.Location;
+                if (location is null)
+                    Console.WriteLine($"Current map: null");
+                else 
+                    Console.WriteLine($"Current map: {location.mapName} [{location.mapId}], zone {location.zoneId}");
             }
         }
 
-        static bool TryConnect(ISession session)
+        static async Task<bool> TryConnectAsync(ISession session)
         {
+            CancellationTokenSource cts = new CancellationTokenSource(15000);
             int retryTimes = 0;
             try
             {
@@ -745,28 +787,30 @@ namespace DataNRO.CLI
                     if (string.IsNullOrEmpty(proxyData))
                     {
                         Console.WriteLine("No proxy data provided! Falling back to direct connection...");
-                        session.Connect();
+                        await session.ConnectAsync(cancellationToken: cts.Token);
                     }
                     else
-                        return TryConnectProxy(session);
+                        return await TryConnectProxyAsync(session);
                 }
                 else
-                    session.Connect();
+                    await session.ConnectAsync(cancellationToken: cts.Token);
             }
             catch
             {
                 while (!session.IsConnected)
                 {
+                    await cts.CancelAsync();
+                    cts = new CancellationTokenSource(15000);
                     try
                     {
-                        session.Connect();
+                        await session.ConnectAsync(cancellationToken: cts.Token);
                     }
                     catch
                     {
                         if (retryTimes >= 3)
                             break;
                         Console.WriteLine($"Retry {retryTimes + 1}...");
-                        Thread.Sleep(1000);
+                        await Task.Delay(1000);
                     }
                     retryTimes++;
                 }
@@ -778,7 +822,7 @@ namespace DataNRO.CLI
                         string proxyHost = arrP[1];
                         ushort proxyPort = ushort.Parse(arrP[2]);
                         Console.WriteLine($"Failed to connect to the server! Retry with proxy {Regex.Replace(proxyHost, "[0-9]", "*")}:{proxyPort}...");
-                        return TryConnectProxy(session);
+                        return await TryConnectProxyAsync(session);
                     }
                     else
                     {
@@ -790,7 +834,7 @@ namespace DataNRO.CLI
             return true;
         }
 
-        static bool TryConnectProxy(ISession session)
+        static async Task<bool> TryConnectProxyAsync(ISession session)
         {
             string[] arrP = proxyData.Split(':');
             ProxyType proxyType = (ProxyType)Enum.Parse(typeof(ProxyType), arrP[0]);
@@ -804,25 +848,28 @@ namespace DataNRO.CLI
                 proxyPassword = arrP[4];
             Console.WriteLine("Using proxy: " + Regex.Replace(proxyHost, "[0-9]", "*") + ":" + proxyPort + " (" + proxyType + ")");
             int retryTimes = 0;
+            CancellationTokenSource cts = new CancellationTokenSource(15000);
             try
             {
-                session.Connect(proxyHost, proxyPort, proxyUsername, proxyPassword, proxyType);
+                await session.ConnectAsync(proxyHost, proxyPort, proxyUsername, proxyPassword, proxyType, cts.Token);
                 return true;
             }
             catch
             {
                 while (!session.IsConnected)
                 {
+                    await cts.CancelAsync();
+                    cts = new CancellationTokenSource(15000);
                     try
                     {
-                        session.Connect(proxyHost, proxyPort, proxyUsername, proxyPassword, proxyType);
+                        await session.ConnectAsync(proxyHost, proxyPort, proxyUsername, proxyPassword, proxyType, cts.Token);
                     }
                     catch
                     {
                         if (retryTimes >= 3)
                             break;
                         Console.WriteLine($"Retry {retryTimes + 1}...");
-                        Thread.Sleep(1000);
+                        await Task.Delay(1000);
                     }
                     retryTimes++;
                 }

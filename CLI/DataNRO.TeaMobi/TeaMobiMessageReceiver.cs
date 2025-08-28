@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Cryptography;
-using DataNRO.Interfaces;
-using static DataNRO.GameData;
+using EHVN.DataNRO.Interfaces;
+using static EHVN.DataNRO.GameData;
 
-namespace DataNRO.TeaMobi
+namespace EHVN.DataNRO.TeaMobi
 {
     public class TeaMobiMessageReceiver : IMessageReceiver
     {
-        static readonly string[] blankImageHashes = new string[]
-        {
+        static readonly string[] blankImageHashes =
+        [
             "110B964285DEB1A8D3D13562914E1E2B51F4799A85412884B481E0316358DF48",
             "A09E276301DE73E84A35169799AFEBC9B0DEE6EC73DB827BF97D604E76395433",
             "95DB5A048C9A4A9AB381FBD97CD7B724112FB11CDEC8E7A083AC2A366D2E9CF0"
-        };
+        ];
 
         TeaMobiSession session;
 
@@ -45,7 +45,7 @@ namespace DataNRO.TeaMobi
                     }
                     break;
                 case -29:
-                    if (message.ReadSByte() != 2)
+                    if (message.ReadByte() != 2)
                         break;
                     Console.WriteLine("IP address list received: " + message.ReadString());
                     break;
@@ -127,11 +127,12 @@ namespace DataNRO.TeaMobi
 
         void ReadSkillData(MessageReceive message)
         {
-            message.ReadByte();
+            byte vcSkill = message.ReadByte();
             int skillOptionTemplateLength = message.ReadByte();
             for (int i = 0; i < skillOptionTemplateLength; i++)
             {
                 string skillOptionTemplateName = message.ReadString();
+                //do something with skillOptionTemplateName if needed
             }
             session.Data.NClasses = new NClass[message.ReadByte()];
             for (int i = 0; i < session.Data.NClasses.Length; i++)
@@ -222,8 +223,8 @@ namespace DataNRO.TeaMobi
 
         void ReadMapTemplate(MessageReceive message)
         {
-            Map map = session.Data.MapToReceiveTemplate;
-            if (map == null)
+            Map? map = session.Data.MapToReceiveTemplate;
+            if (map is null)
                 return;
             map.mapTemplate = new MapTemplate();
             map.mapTemplate.width = message.ReadByte();
@@ -260,12 +261,12 @@ namespace DataNRO.TeaMobi
         void ReadCurrentMapInfo(MessageReceive message)
         {
             Player player = session.Player;
-            Location location = player.location = new Location();
+            Location location = player.Location = new Location();
             location.mapId = message.ReadByte();
             location.planetId = message.ReadSByte();
-            message.ReadSByte();
-            message.ReadSByte();
-            message.ReadSByte();
+            sbyte tileID = message.ReadSByte();
+            sbyte bgID = message.ReadSByte();
+            sbyte typeMap = message.ReadSByte();
             location.mapName = message.ReadString();
             location.zoneId = message.ReadSByte();
             //Who cares what the rest of the data is?
@@ -279,12 +280,9 @@ namespace DataNRO.TeaMobi
             byte[] data = message.ReadBytes();
             if (data.Length < 500)
             {
-                using (SHA256 sha256 = SHA256.Create())
-                {
-                    byte[] hash = sha256.ComputeHash(data);
-                    if (blankImageHashes.Contains(BitConverter.ToString(hash).Replace("-", "")))
-                        return;
-                }
+                byte[] hash = SHA256.HashData(data);
+                if (blankImageHashes.Contains(BitConverter.ToString(hash).Replace("-", "")))
+                    return;
             }
             session.FileWriter.WriteIcon(iconId, data);
         }
@@ -299,7 +297,7 @@ namespace DataNRO.TeaMobi
             byte[] nr_part = message.ReadBytes();
             byte[] nr_skill = message.ReadBytes();
 
-            using (MessageReceive partReader = new MessageReceive(0, nr_part))
+            using (DataReader partReader = new DataReader(nr_part))
             {
                 Part[] parts = new Part[partReader.ReadShort()];
                 for (int i = 0; i < parts.Length; i++)
@@ -316,8 +314,7 @@ namespace DataNRO.TeaMobi
                 }
                 session.Data.Parts = parts;
             }
-
-            using (MessageReceive imageReader = new MessageReceive(0, nr_image))
+            using (DataReader imageReader = new DataReader(nr_image))
             {
                 session.Data.SmallImg = new int[imageReader.ReadShort()][];
                 for (int i = 0; i < session.Data.SmallImg.Length; i++)
@@ -342,9 +339,11 @@ namespace DataNRO.TeaMobi
             {
                 case 0:
                     int resVersion = message.ReadInt();
+                    //Do something with resVersion if needed
                     break;
                 case 1:
                     short nBig = message.ReadShort();
+                    //Do something with nBig if needed
                     session.MessageWriter.GetResource(2);
                     break;
                 case 2:
@@ -363,7 +362,8 @@ namespace DataNRO.TeaMobi
                     }
                     break;
                 case 3:
-                    int resNewVersion = message.ReadInt();
+                    int newResVersion = message.ReadInt();
+                    // Do something with newResVersion if needed
                     session.Data.AllResourceLoaded = true;
                     break;
             }
@@ -385,7 +385,7 @@ namespace DataNRO.TeaMobi
 
         void ReadMobData(int templateID, byte[] data)
         {
-            MessageReceive reader = new MessageReceive(0, data);
+            using DataReader reader = new DataReader(data);
             int left = 0;
             int top = 0;
             int right = 0;
@@ -462,7 +462,7 @@ namespace DataNRO.TeaMobi
                     }
                     for (int i = 0; i < 16; i++)
                     {
-                        if (effectData.anim_data[i] == null)
+                        if (effectData.anim_data[i] is null)
                             effectData.anim_data[i] = effectData.anim_data[2];
                     }
                 }
@@ -478,7 +478,7 @@ namespace DataNRO.TeaMobi
 
         void ReadNewMobData(int templateID, byte[] data, byte typeRead)
         {
-            MessageReceive reader = new MessageReceive(0, data);
+            using DataReader reader = new DataReader(data);
             int left = 0;
             int top = 0;
             int right = 0;

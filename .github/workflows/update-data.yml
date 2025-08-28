@@ -103,7 +103,7 @@ jobs:
         if: github.event.inputs.skip-headless-client != 'true'
         run: |
           cd Output
-          .\DataNRO.CLI.exe
+          .\Release\net8.0\DataNRO.CLI.exe
         env:
           DATA: ${{ secrets.DATA_TEAMOBI }}
           PROXY: ${{ secrets.PROXY }}

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Starksoft.Net.Proxy;
+﻿using Starksoft.Net.Proxy;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace DataNRO.Interfaces
+namespace EHVN.DataNRO.Interfaces
 {
     /// <summary>
     /// Interface đại diện cho một phiên kết nối tới máy chủ.
@@ -35,25 +36,26 @@ namespace DataNRO.Interfaces
         bool IsConnected { get; }
 
         /// <summary>
-        /// Kết nối tới máy chủ
-        /// </summary>
-        void Connect();
-
-        /// <summary>
-        /// Kết nối tới máy chủ sử dụng proxy
+        /// Kết nối tới máy chủ, sử dụng proxy nếu có
         /// </summary>
         /// <param name="proxyHost">Địa chỉ proxy</param>
         /// <param name="proxyPort">Cổng proxy</param>
         /// <param name="proxyUsername">Tên đăng nhập proxy</param>
         /// <param name="proxyPassword">Mật khẩu proxy</param>
         /// <param name="proxyType">Loại proxy</param>
-        void Connect(string proxyHost, ushort proxyPort, string proxyUsername, string proxyPassword, ProxyType proxyType);
+        Task ConnectAsync(string? proxyHost = null, ushort proxyPort = 0, string? proxyUsername = null, string? proxyPassword = null, ProxyType proxyType = ProxyType.None, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Thêm gói tin vào hàng đợi gửi tới máy chủ
+        /// </summary>
+        /// <param name="message">Gói tin cần thêm vào hàng đợi</param>
+        void EnqueueMessage(MessageSend message);
+        
         /// <summary>
         /// Gửi gói tin tới máy chủ
         /// </summary>
         /// <param name="message">Gói tin cần gửi</param>
-        void SendMessage(MessageSend message);
+        Task SendMessageAsync(MessageSend message, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Ngắt kết nối khỏi máy chủ

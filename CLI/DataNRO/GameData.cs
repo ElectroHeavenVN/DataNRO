@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataNRO
+namespace EHVN.DataNRO
 {
     /// <summary>
     /// Class chứa dữ liệu của game.
@@ -12,8 +12,8 @@ namespace DataNRO
         public class NpcTemplate
         {
             public int npcTemplateId, headId, bodyId, legId;
-            public string name;
-            public string[][] menu;
+            public string name = "";
+            public string[][] menu = [];
         }
 
         public class ImageInfo
@@ -24,15 +24,16 @@ namespace DataNRO
         public class Frame
         {
             public int id;
-            public short[] dx, dy;
-            public sbyte[] idImg;
+            public short[] dx = [];
+            public short[] dy = [];
+            public sbyte[] idImg = [];
         }
 
         public class EffectData
         {
-            public ImageInfo[] imgInfo;
-            public Frame[] frame;
-            public short[] arrFrame;
+            public ImageInfo[] imgInfo = [];
+            public Frame[] frame = [];
+            public short[] arrFrame = [];
             public short[][] anim_data = new short[16][];
             public int id, typeData, width, height;
         }
@@ -41,48 +42,51 @@ namespace DataNRO
         {
             public int mobTemplateId, rangeMove, speed, type, dartType;
             public long hp;
-            public string name;
+            public string name = "";
         }
 
         public class ItemOptionTemplate
         {
             public int id, type;
-            public string name;
+            public string name = "";
         }
 
         public class ItemTemplate
         {
             public bool isUpToUp;
             public int id, type, gender, level, strRequire, icon, part;
-            public string name, description;
+            public string name = "";
+            public string description = "";
         }
 
         public class NClass
         {
             public int classId;
-            public string name;
-            public SkillTemplate[] skillTemplates;
+            public string name = "";
+            public SkillTemplate[] skillTemplates = [];
         }
 
         public class SkillTemplate
         {
             public int id, maxPoint, manaUseType, type, icon;
-            public string name, description, damInfo;
-            public Skill[] skills;
+            public string name = "";
+            public string description = "";
+            public string damInfo = "";
+            public Skill[] skills = [];
         }
 
         public class Skill
         {
             public int point, maxFight, manaUse, skillId, dx, dy, damage, price, coolDown;
             public long powRequire;
-            public string moreInfo;
+            public string moreInfo = "";
         }
 
         public class Map
         {
             public int id;
-            public string name;
-            public MapTemplate mapTemplate;
+            public string name = "";
+            public MapTemplate? mapTemplate;
         }
 
         public class MapTemplate
@@ -91,12 +95,12 @@ namespace DataNRO
             public int width;
             //tmh
             public int height;
-            public int[] maps;
-            public int[] types;
+            public int[] maps = [];
+            public int[] types = [];
 
-            public static int[][] tileType;
+            public static int[][] tileType = [];
 
-            public static int[][][] tileIndex;
+            public static int[][][] tileIndex = [];
 
             void SetTile(int index, int[] mapsArr, int type)
             {
@@ -109,7 +113,6 @@ namespace DataNRO
                 }
             }
 
-            //TODO: figure out tile ID of each map
             public void LoadMap(int tileId)
             {
                 int num = tileId - 1;
@@ -122,12 +125,10 @@ namespace DataNRO
 
             public int TileTypeAt(int x, int y)
             {
-                try
-                {
-                    return types[y * width + x];
-                }
-                catch { }
-                return 1000;
+                int index = y * width + x;
+                if (index < 0 || index >= types.Length)
+                    return 1000;
+                return types[index];
             }
         }
 
@@ -158,7 +159,7 @@ namespace DataNRO
         /// <summary>
         /// Đường dẫn lưu dữ liệu game
         /// </summary>
-        public string Path { get; set; }
+        public string Path { get; set; } = "";
 
         /// <summary>
         /// Trạng thái lưu icon
@@ -168,38 +169,38 @@ namespace DataNRO
         /// <summary>
         /// Danh sách ID icon ghi đè, [-1] là ghi đè tất cả
         /// </summary>
-        public int[] OverwriteIconIDs { get; set; } = new int[0];
+        public int[] OverwriteIconIDs { get; set; } = [];
 
-        public NpcTemplate[] NpcTemplates { get; set; }
-        public MobTemplate[] MobTemplates { get; set; }
-        public EffectData[] MobTemplateEffectData { get; set; }
-        public ItemOptionTemplate[] ItemOptionTemplates { get; set; }
-        public NClass[] NClasses { get; set; }
-        public List<Map> Maps { get; set; } = new List<Map>();
-        public Map MapToReceiveTemplate { get; set; }
-        public List<ItemTemplate> ItemTemplates { get; set; } = new List<ItemTemplate>();
-        public Part[] Parts { get; set; }
+        public NpcTemplate[] NpcTemplates { get; set; } = [];
+        public MobTemplate[] MobTemplates { get; set; } = [];
+        public EffectData[] MobTemplateEffectData { get; set; } = [];
+        public ItemOptionTemplate[] ItemOptionTemplates { get; set; } = [];
+        public NClass[] NClasses { get; set; } = [];
+        public List<Map> Maps { get; set; } = [];
+        public Map? MapToReceiveTemplate { get; set; }
+        public List<ItemTemplate> ItemTemplates { get; set; } = [];
+        public Part[] Parts { get; set; } = [];
         public bool AllResourceLoaded { get; set; }
         public int ZoomLevel { get; set; }
-        public int[][] SmallImg { get; set; }
+        public int[][] SmallImg { get; set; } = [];
 
         /// <summary>
         /// Thư viện chứa cặp ID map và ID tile tương ứng
         /// </summary>
-        public Dictionary<int, int> MapTileIDs { get; set; } = new Dictionary<int, int>();
+        public Dictionary<int, int> MapTileIDs { get; set; } = [];
 
         /// <summary>
         /// Đặt lại dữ liệu của game
         /// </summary>
         public void Reset()
         {
-            NpcTemplates = null;
-            MobTemplates = null;
-            ItemOptionTemplates = null;
-            NClasses = null;
-            Maps = new List<Map>();
-            ItemTemplates = new List<ItemTemplate>();
-            Parts = null;
+            NpcTemplates = [];
+            MobTemplates = [];
+            ItemOptionTemplates = [];
+            NClasses = [];
+            Maps = [];
+            ItemTemplates = [];
+            Parts = [];
         }
 
         /// <summary>
