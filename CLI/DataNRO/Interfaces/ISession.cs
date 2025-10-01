@@ -63,6 +63,11 @@ namespace EHVN.DataNRO.Interfaces
         void Disconnect();
 
         /// <summary>
+        /// Sự kiện được kích hoạt khi bị ngắt kết nối khỏi máy chủ
+        /// </summary>
+        event EventHandler? OnDisconnected;
+
+        /// <summary>
         /// Dữ liệu Game
         /// </summary>
         GameData Data { get; }

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using static System.Collections.Specialized.BitVector32;
 
 namespace EHVN.DataNRO.TeaMobi
 {
@@ -39,6 +38,7 @@ namespace EHVN.DataNRO.TeaMobi
         byte[]? key;
         byte curR, curW;
         CancellationTokenSource cts = new CancellationTokenSource();
+        public event EventHandler? OnDisconnected;
 
         public TeaMobiSession(string host, ushort port)
         {
@@ -72,6 +72,8 @@ namespace EHVN.DataNRO.TeaMobi
 
         public void EnqueueMessage(MessageSend message)
         {
+            if (!IsConnected)
+                throw new InvalidOperationException("Not connected to server.");
             sendMessages.Enqueue(message);
             sendSignal.Release();
         }
@@ -84,6 +86,7 @@ namespace EHVN.DataNRO.TeaMobi
             networkStream.Close();
             tcpClient.Close();
             key = null;
+            OnDisconnected?.Invoke(this, EventArgs.Empty);
         }
 
         async Task SendDataTask()
@@ -102,10 +105,10 @@ namespace EHVN.DataNRO.TeaMobi
                 {
                     if (ex is not OperationCanceledException)
                         Console.WriteLine($"[{Host}:{Port}] Exception:\r\n{ex}");
-                    if (ex is IOException && ex.InnerException is SocketException)
+                    if (ex is SocketException || ex is TimeoutException || ex is EndOfStreamException || (ex is IOException && ex.InnerException is SocketException))
                     {
                         Disconnect();
-                        throw;
+                        return;
                     }
                 }
             }
@@ -127,10 +130,10 @@ namespace EHVN.DataNRO.TeaMobi
                 {
                     if (ex is not OperationCanceledException)
                         Console.WriteLine($"[{Host}:{Port}] Exception:\r\n{ex}");
-                    if (ex is IOException && ex.InnerException is SocketException)
+                    if (ex is SocketException || ex is TimeoutException || ex is EndOfStreamException || (ex is IOException && ex.InnerException is SocketException))
                     {
                         Disconnect();
-                        throw;
+                        return;
                     }
                 }
             }
@@ -138,6 +141,8 @@ namespace EHVN.DataNRO.TeaMobi
 
         public async Task SendMessageAsync(MessageSend m, CancellationToken cancellationToken)
         {
+            if (!IsConnected)
+                throw new InvalidOperationException("Not connected to server.");
             await networkStream.WriteAsync([ApplyEncryption(m.Command, EncryptionType.Send)], 0, 1, cancellationToken);
             byte[] data = BitConverter.GetBytes((ushort)m.Buffer.Length);
             if (key is null)
@@ -153,6 +158,8 @@ namespace EHVN.DataNRO.TeaMobi
 
         async Task<MessageReceive> ReadMessageAsync(CancellationToken cancellationToken)
         {
+            if (!IsConnected)
+                throw new InvalidOperationException("Not connected to server.");
             byte[] buffer = new byte[1];
             await networkStream.ReadExactlyAsync(buffer, 0, 1, cancellationToken);
             sbyte b = ApplyEncryptionSigned(buffer[0], EncryptionType.Receive);
