@@ -124,7 +124,16 @@ namespace EHVN.DataNRO.TeaMobi
                     if (message.Command == -27)
                         LoadDecryptionKey(message);
                     else
-                        MessageReceiver.OnMessageReceived(message);
+                    {
+                        try
+                        {
+                            MessageReceiver.OnMessageReceived(message);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[{Host}:{Port}] OnMessageReceived Exception:\r\n{ex}");
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
