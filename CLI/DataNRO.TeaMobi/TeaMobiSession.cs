@@ -237,6 +237,7 @@ namespace EHVN.DataNRO.TeaMobi
             }
             catch { }
             Data.Reset();
+            disposed = true;
             GC.SuppressFinalize(this);
         }
 
