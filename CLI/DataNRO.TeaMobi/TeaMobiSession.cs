@@ -31,10 +31,10 @@ namespace EHVN.DataNRO.TeaMobi
         };
         public Player Player { get; } = new Player();
 
-        TcpClient tcpClient;
-        NetworkStream networkStream;
+        TcpClient? tcpClient;
+        NetworkStream? networkStream;
         ConcurrentQueue<MessageSend> sendMessages = [];
-        SemaphoreSlim sendSignal = new SemaphoreSlim(0, 1);
+        SemaphoreSlim sendSignal = new SemaphoreSlim(0);
         byte[]? key;
         byte curR, curW;
         CancellationTokenSource cts = new CancellationTokenSource();
@@ -64,10 +64,12 @@ namespace EHVN.DataNRO.TeaMobi
             }
             networkStream = tcpClient.GetStream();
             cts = new CancellationTokenSource();
-            sendSignal = new SemaphoreSlim(0, 1);
+            sendSignal = new SemaphoreSlim(0);
             _ = SendDataTask().ConfigureAwait(false);
             _ = ReceiveDataTask().ConfigureAwait(false);
             key = null;
+            curR = 0;
+            curW = 0;
             await SendMessageAsync(new MessageSend(-27), cancellationToken);
         }
 
@@ -81,18 +83,29 @@ namespace EHVN.DataNRO.TeaMobi
 
         public void Disconnect()
         {
-            cts.Cancel();
-            sendSignal.Dispose();
-            cts.Dispose();
-            networkStream.Close();
-            tcpClient.Close();
-            key = null;
-            OnDisconnected?.Invoke(this, EventArgs.Empty);
+            try
+            {
+                cts.Cancel();
+                sendSignal.Release(int.MaxValue);
+            }
+            catch { }
+            try
+            {
+                networkStream?.Close();
+                tcpClient?.Close();
+                key = null;
+            }
+            catch { }
+            try
+            {
+                OnDisconnected?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
         }
 
         async Task SendDataTask()
         {
-            while (tcpClient.Connected && !cts.IsCancellationRequested)
+            while (IsConnected && !cts.IsCancellationRequested)
             {
                 while (key is null)
                     await Task.Delay(100);
@@ -118,7 +131,7 @@ namespace EHVN.DataNRO.TeaMobi
 
         async Task ReceiveDataTask()
         {
-            while (tcpClient.Connected && !cts.IsCancellationRequested)
+            while (IsConnected && !cts.IsCancellationRequested)
             {
                 try
                 {
@@ -153,7 +166,7 @@ namespace EHVN.DataNRO.TeaMobi
 
         public async Task SendMessageAsync(MessageSend m, CancellationToken cancellationToken)
         {
-            if (!IsConnected)
+            if (!IsConnected || networkStream is null)
                 throw new InvalidOperationException("Not connected to server.");
             await networkStream.WriteAsync([ApplyEncryption(m.Command, EncryptionType.Send)], 0, 1, cancellationToken);
             byte[] data = BitConverter.GetBytes((ushort)m.Buffer.Length);
@@ -170,7 +183,7 @@ namespace EHVN.DataNRO.TeaMobi
 
         async Task<MessageReceive> ReadMessageAsync(CancellationToken cancellationToken)
         {
-            if (!IsConnected)
+            if (!IsConnected || networkStream is null)
                 throw new InvalidOperationException("Not connected to server.");
             byte[] buffer = new byte[1];
             await networkStream.ReadExactlyAsync(buffer, 0, 1, cancellationToken);
@@ -210,15 +223,21 @@ namespace EHVN.DataNRO.TeaMobi
             bool isConnect2 = message.ReadBool();
         }
 
+        bool disposed;
         public void Dispose()
         {
+            if (disposed)
+                return;
             try
             {
                 Disconnect();
-                tcpClient.Dispose();
+                cts.Dispose();
+                sendSignal.Dispose();
+                tcpClient?.Dispose();
             }
             catch { }
             Data.Reset();
+            GC.SuppressFinalize(this);
         }
 
         byte ApplyEncryption(sbyte b, EncryptionType type) => ApplyEncryption(unchecked((byte)b), type);
