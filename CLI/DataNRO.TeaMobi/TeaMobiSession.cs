@@ -112,6 +112,7 @@ namespace EHVN.DataNRO.TeaMobi
                     }
                 }
             }
+            Disconnect();
         }
 
         async Task ReceiveDataTask()
@@ -146,6 +147,7 @@ namespace EHVN.DataNRO.TeaMobi
                     }
                 }
             }
+            Disconnect();
         }
 
         public async Task SendMessageAsync(MessageSend m, CancellationToken cancellationToken)
