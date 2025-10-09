@@ -34,7 +34,7 @@ namespace EHVN.DataNRO.TeaMobi
         TcpClient tcpClient;
         NetworkStream networkStream;
         ConcurrentQueue<MessageSend> sendMessages = [];
-        SemaphoreSlim sendSignal = new SemaphoreSlim(0);
+        SemaphoreSlim sendSignal = new SemaphoreSlim(0, 1);
         byte[]? key;
         byte curR, curW;
         CancellationTokenSource cts = new CancellationTokenSource();
@@ -64,6 +64,7 @@ namespace EHVN.DataNRO.TeaMobi
             }
             networkStream = tcpClient.GetStream();
             cts = new CancellationTokenSource();
+            sendSignal = new SemaphoreSlim(0, 1);
             _ = SendDataTask().ConfigureAwait(false);
             _ = ReceiveDataTask().ConfigureAwait(false);
             key = null;
