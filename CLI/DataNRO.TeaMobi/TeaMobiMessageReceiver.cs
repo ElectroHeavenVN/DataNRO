@@ -61,6 +61,9 @@ namespace EHVN.DataNRO.TeaMobi
                 case -74:
                     ReadResource(message);
                     break;
+                case -77:
+                    session.Data.MaxSmall = message.ReadShort();
+                    break;
                 case 11:
                     ReadMobTemplate(message);
                     break;

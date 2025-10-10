@@ -183,6 +183,7 @@ namespace EHVN.DataNRO
         public bool AllResourceLoaded { get; set; }
         public int ZoomLevel { get; set; }
         public int[][] SmallImg { get; set; } = [];
+        public short MaxSmall { get; set; }
 
         /// <summary>
         /// Thư viện chứa cặp ID map và ID tile tương ứng
@@ -201,6 +202,8 @@ namespace EHVN.DataNRO
             Maps = [];
             ItemTemplates = [];
             Parts = [];
+            MaxSmall = 0;
+            AllResourceLoaded = false;
         }
 
         /// <summary>
