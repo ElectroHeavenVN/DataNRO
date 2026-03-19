@@ -62,13 +62,13 @@ jobs:
       - name: Setup NuGet
         if: github.event.inputs.skip-headless-client != 'true'
         uses: NuGet/setup-nuget@v2
-      - name: Restore DataNRO
+      - name: Restore solution
         if: github.event.inputs.skip-headless-client != 'true'
         run: msbuild $env:HeadlessClientSolutionPath /t:restore /p:Configuration=Release
       - name: Restore NuGet packages
         if: github.event.inputs.skip-headless-client != 'true'
         run: nuget restore $env:HeadlessClientSolutionPath
-      - name: Build DataNRO.CLI
+      - name: Build solution
         if: github.event.inputs.skip-headless-client != 'true'
         run: msbuild $env:HeadlessClientSolutionPath /t:rebuild /p:Configuration=Release
       - name: Upload build artifact
@@ -143,7 +143,7 @@ jobs:
         if: github.event.inputs.skip-headless-client != 'true'
         run: |
           cd Output
-          .\DataNRO.CLI.exe
+          .\EHVN.DataNRO.HeadlessClient.exe
         env:
           DATA: ${{ secrets[matrix.server.secret] }}
           PROXY: ${{ secrets.PROXY }}
