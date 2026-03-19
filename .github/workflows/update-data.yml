@@ -121,7 +121,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
-          workflow_conclusion: failure
+          workflow_conclusion: success
           if_no_artifact_found: warn
           allow_forks: false
           workflow: update-data.yml
@@ -212,15 +212,15 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           path: Page/dist
-      # - name: Configure GitHub Pages
-      #   uses: actions/configure-pages@v5
-      # - name: Deploy to GitHub Pages
-      #   id: deployment
-      #   uses: actions/deploy-pages@v4
-      # - name: Delete page artifact
-      #   uses: geekyeggo/delete-artifact@v6
-      #   with:
-      #     name: github-pages
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Delete page artifact
+        uses: geekyeggo/delete-artifact@v6
+        with:
+          name: github-pages
       - name: Delete output artifact
         uses: geekyeggo/delete-artifact@v6
         with:
