@@ -76,7 +76,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Output
-          path: Output/*
+          path: HeadlessClient/Output/*
 
   run-headless-client:
     name: Run headless client - ${{ matrix.server.name }}
