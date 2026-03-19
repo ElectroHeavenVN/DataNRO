@@ -30,6 +30,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           name: DataNRO-TeaMobi-.*
+          workflow: update-data.yml
           workflow_search: false
           workflow_conclusion: ""
           if_no_artifact_found: fail
