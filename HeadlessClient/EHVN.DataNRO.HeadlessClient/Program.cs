@@ -83,6 +83,19 @@ namespace EHVN.DataNRO.HeadlessClient
             string password = arr[5];
             bool requestAndSaveIcons = bool.Parse(arr[6]);
             string folderName = arr[7];
+            if (!requestAndSaveIcons)
+            {
+                if (Directory.Exists($"Data\\{type}"))
+                    Directory.Delete($"Data\\{type}", true);
+            }
+            else
+            {
+                foreach (DirectoryInfo directory in new DirectoryInfo($"Data\\{type}").GetDirectories())
+                {
+                    if (directory.Name != folderName && directory.Name.Any(char.IsDigit))
+                        directory.Delete(true);
+                }
+            }
             string dataPath = $"Data\\{type}\\{folderName}";
             if (!Directory.Exists(dataPath))
                 Directory.CreateDirectory(dataPath);
