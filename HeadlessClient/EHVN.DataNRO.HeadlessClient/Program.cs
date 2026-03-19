@@ -309,13 +309,11 @@ namespace EHVN.DataNRO.HeadlessClient
                     continue;
                 writer.RequestIcon(id);
                 requestedIcons.Add(id);
-                await Task.Delay(1000 + Random.Shared.Next(-200, 201));
+                await Task.Delay(500 + Random.Shared.Next(-100, 101));
                 if (requestedIcons.Count % 10 == 0)
                     Console.WriteLine($"Requested {requestedIcons.Count} icons");
             }
             Console.WriteLine($"Requested {requestedIcons.Count} icons.");
-            Console.WriteLine($"Wait 10s...");
-            await Task.Delay(10000);
             return true;
         }
 
@@ -326,7 +324,7 @@ namespace EHVN.DataNRO.HeadlessClient
             for (; templateID < mobTemplates.Length; templateID++)
             {
                 writer.RequestMobTemplate((short)templateID);
-                await Task.Delay(1000 + Random.Shared.Next(-200, 201));
+                await Task.Delay(500 + Random.Shared.Next(-100, 101));
                 if ((templateID + 1) % 10 == 0)
                     Console.WriteLine($"Requested {templateID + 1} mob templates");
             }
@@ -345,15 +343,16 @@ namespace EHVN.DataNRO.HeadlessClient
                 int count = 0;
                 do
                 {
-                    await Task.Delay(1000 + Random.Shared.Next(-200, 201));
+                    await Task.Delay(100);
                     count++;
-                    if (count >= 5)
+                    if (count >= 10)
                     {
                         Console.WriteLine($"Failed to get map template {map.id}!");
                         break;
                     }
                 }
                 while (session.Data.MapToReceiveTemplate is not null);
+                await Task.Delay((10 - count) * 50 + Random.Shared.Next(-50, 51));
                 if ((i + 1) % 10 == 0)
                     Console.WriteLine($"Requested {i + 1} map templates");
             }
