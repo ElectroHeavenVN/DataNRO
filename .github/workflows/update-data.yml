@@ -116,7 +116,7 @@ jobs:
           if_no_artifact_found: fail
           allow_forks: false
           path: Output/
-      - name: Download artifact DataNRO-TeaMobi
+      - name: Download artifact DataNRO-TeaMobi-${{ matrix.server.id }}
         uses: dawidd6/action-download-artifact@v19
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -125,7 +125,7 @@ jobs:
           if_no_artifact_found: warn
           allow_forks: false
           workflow: update-data.yml
-          name: DataNRO-TeaMobi
+          name: DataNRO-TeaMobi-${{ matrix.server.id }}
           # The artifact is a password-protected zip file inside a normal zip file so we need to unpack the outer zip first
           # skip_unpack: true
       - name: Decompress password-protected artifact (TeaMobi) 
@@ -133,8 +133,8 @@ jobs:
           if (!(Test-Path -Path Output\Data)) {
             mkdir -Path Output\Data
           }
-          if (Test-Path -Path DataNRO-TeaMobi.zip) {
-            7z x DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y 
+          if (Test-Path -Path DataNRO-TeaMobi-${{ matrix.server.id }}.zip) {
+            7z x DataNRO-TeaMobi-${{ matrix.server.id }}.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
           else {
             7z x SampleData\DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y 
@@ -146,7 +146,6 @@ jobs:
           .\EHVN.DataNRO.HeadlessClient.exe
         env:
           DATA: ${{ secrets[matrix.server.secret] }}
-          PROXY: ${{ secrets.PROXY }}
           OVERWRITE_ICONS: ${{ github.event.inputs.overwrite-icons }}
           MAX_RUN_SECONDS: ${{ github.event.inputs.max-run-seconds }}
       - name: Create password-protected zip file (${{ matrix.server.name }})
@@ -166,7 +165,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Download artifact DataNRO-TeaMobi
+      - name: Download artifact DataNRO-TeaMobi-*
         uses: dawidd6/action-download-artifact@v19
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -178,6 +177,7 @@ jobs:
           name_is_regexp: true
           # The artifact is a password-protected zip file inside a normal zip file so we need to unpack the outer zip first
           # skip_unpack: true
+      - run: tree -d
       - name: Decompress password-protected artifacts (TeaMobi)
         run: |
           for file in DataNRO-TeaMobi-*.zip; do

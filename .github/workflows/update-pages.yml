@@ -25,20 +25,23 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: main
-      - name: Download artifact DataNRO-TeaMobi
+      - name: Download artifact DataNRO-TeaMobi-*
         uses: dawidd6/action-download-artifact@v19
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow_search: true
-          workflow_conclusion: success
+          name: DataNRO-TeaMobi-.*
+          workflow_search: false
+          workflow_conclusion: ""
           if_no_artifact_found: fail
           allow_forks: false
-          workflow: update-data.yml
-          name: DataNRO-TeaMobi
+          name_is_regexp: true
           # The artifact is a password-protected zip file inside a normal zip file so we need to unpack the outer zip first
           # skip_unpack: true
-      - name: Decompress password-protected artifact (TeaMobi)
-        run: 7z x DataNRO-TeaMobi.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
+      - name: Decompress password-protected artifacts (TeaMobi)
+        run: |
+          for file in DataNRO-TeaMobi-*.zip; do
+            7z x "$file" -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
+          done
       - name: Decompress sample data (Private servers)
         run: |
           7z x SampleData/DataNRO-HSNR.zip -oPage/public -p${{ secrets.ZIP_PASSWORD }} -y
