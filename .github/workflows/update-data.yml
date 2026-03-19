@@ -175,15 +175,15 @@ jobs:
           if_no_artifact_found: fail
           allow_forks: false
           name_is_regexp: true
-          path: .\
           # The artifact is a password-protected zip file inside a normal zip file so we need to unpack the outer zip first
           # skip_unpack: true
-      - run: tree -d
       - run: tree -a
       - name: Decompress password-protected artifacts (TeaMobi)
         run: |
-          for file in DataNRO-TeaMobi-*.zip; do
-            7z x "$file" -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
+          for folder in DataNRO-TeaMobi-*; do
+            for file in DataNRO-TeaMobi-*.zip; do
+              7z x "$file" -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
+            done
           done
       - name: Decompress password-protected sample data (private servers)
         run: |
