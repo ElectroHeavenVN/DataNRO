@@ -121,7 +121,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
-          # workflow_conclusion: success
+          workflow_conclusion: failure
           if_no_artifact_found: warn
           allow_forks: false
           workflow: update-data.yml
@@ -179,6 +179,7 @@ jobs:
           # The artifact is a password-protected zip file inside a normal zip file so we need to unpack the outer zip first
           # skip_unpack: true
       - run: tree -d
+      - run: tree -a
       - name: Decompress password-protected artifacts (TeaMobi)
         run: |
           for file in DataNRO-TeaMobi-*.zip; do
