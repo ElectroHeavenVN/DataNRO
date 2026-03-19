@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <BaseOutputPath>$(SolutionDir)Output</BaseOutputPath>
+    <OutputPath>$(SolutionDir)Output</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <Platforms>x64</Platforms>
+    <Authors>ElectroHeavenVN</Authors>
+    <Description>Headless client for extracting data from the Dragon Boy Online game. Dynamically load message handler modules for different servers. Designed to run on GitHub Actions.</Description>
+    <Copyright>Copyright © ElectroHeavenVN 2024-2026</Copyright>
+    <PackageProjectUrl>https://electroheavenvn.github.io/DataNRO/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ElectroHeavenVN/DataNRO/</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Magick.NET-Q16-x64" Version="14.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EHVN.DragonBoyOnline.CustomMsgHandler\EHVN.DragonBoyOnline.CustomMsgHandler.csproj" />
+  </ItemGroup>
+
+</Project>

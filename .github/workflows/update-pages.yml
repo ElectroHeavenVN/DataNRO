@@ -22,11 +22,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
       - name: Download artifact DataNRO-TeaMobi
-        uses: dawidd6/action-download-artifact@v9
+        uses: dawidd6/action-download-artifact@v19
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
@@ -61,13 +61,8 @@ jobs:
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server Tôi yêu Ngọc Rồng/g' Page/dist/ILoveNRO/index.html
           cp Page/dist/index.html Page/dist/404.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Not found/g' Page/dist/404.html
-      # - name: Deploy pages
-      #   uses: peaceiris/actions-gh-pages@v4
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_dir: Page/dist
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: Page/dist
       - name: Configure GitHub Pages

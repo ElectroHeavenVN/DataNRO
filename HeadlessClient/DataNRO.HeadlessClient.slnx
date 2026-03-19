@@ -1,0 +1,14 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="EHVN.DataNRO.HeadlessClient/EHVN.DataNRO.HeadlessClient.csproj" Id="44227ff2-4be0-4242-8a22-d89ba5035d91">
+    <Platform Project="x64" />
+  </Project>
+  <Project Path="EHVN.DragonBoyOnline.CustomMsgHandler/EHVN.DragonBoyOnline.CustomMsgHandler.csproj" Id="c2569924-8611-4ecd-ab52-3534024d00c2">
+    <Platform Project="x64" />
+  </Project>
+  <Project Path="EHVN.DragonBoyOnline.TeaMobiMsgHandler/EHVN.DragonBoyOnline.TeaMobiMsgHandler.csproj" Id="08a3af04-d044-4c76-8477-b81166dc985b">
+    <Platform Project="x64" />
+  </Project>
+  </Solution>

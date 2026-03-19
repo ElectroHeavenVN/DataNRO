@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <BaseOutputPath>$(SolutionDir)Output</BaseOutputPath>
+    <OutputPath>$(SolutionDir)Output</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <Platforms>x64</Platforms>
+    <Authors>ElectroHeavenVN</Authors>
+    <Description>Library contains base classes and interfaces for implementing message handler modules for different Dragon Boy Online servers.</Description>
+    <Copyright>Copyright © ElectroHeavenVN 2024-2026</Copyright>
+    <PackageProjectUrl>https://electroheavenvn.github.io/DataNRO/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ElectroHeavenVN/DataNRO/</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>

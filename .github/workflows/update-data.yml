@@ -19,12 +19,7 @@ on:
         description: "Maximum run seconds"
         type: string
         required: false
-        default: "4500"
-      force-proxy:
-        description: "Force using proxy"
-        type: boolean
-        required: false
-        default: false
+        default: "3600"
       skip-headless-client:
         description: "Skip headless client"
         type: boolean
@@ -44,23 +39,23 @@ jobs:
     permissions:
       actions: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         if: github.event_name == 'schedule'
       - uses: liskin/gh-workflow-keepalive@v1
         if: github.event_name == 'schedule'
 
   # ----------------------------------------------------
 
-  update-data-TeaMobi:
-    name: Update data (TeaMobi)
+  build-headless-client:
+    name: Build headless client
     needs: cronjob-based-github-action
     if: github.event.inputs.use-sample-data != 'true'
     runs-on: windows-latest
     env:
-      CLISolutionPath: CLI\DataNRO.sln
+      HeadlessClientSolutionPath: HeadlessClient\DataNRO.HeadlessClient.slnx
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup MSBuild
         if: github.event.inputs.skip-headless-client != 'true'
         uses: microsoft/setup-msbuild@v2
@@ -69,15 +64,60 @@ jobs:
         uses: NuGet/setup-nuget@v2
       - name: Restore DataNRO
         if: github.event.inputs.skip-headless-client != 'true'
-        run: msbuild $env:CLISolutionPath /t:restore /p:Configuration=Release
+        run: msbuild $env:HeadlessClientSolutionPath /t:restore /p:Configuration=Release
       - name: Restore NuGet packages
         if: github.event.inputs.skip-headless-client != 'true'
-        run: nuget restore $env:CLISolutionPath
+        run: nuget restore $env:HeadlessClientSolutionPath
       - name: Build DataNRO.CLI
         if: github.event.inputs.skip-headless-client != 'true'
-        run: msbuild $env:CLISolutionPath /t:rebuild /p:Configuration=Release
+        run: msbuild $env:HeadlessClientSolutionPath /t:rebuild /p:Configuration=Release
+      - name: Upload build artifact
+        if: github.event.inputs.skip-headless-client != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Output
+          path: Output/*
+
+  run-headless-client:
+    name: Run headless client - ${{ matrix.server.name }}
+    needs: build-headless-client
+    if: github.event.inputs.use-sample-data != 'true'
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        server:
+          - {id: 'SV1', name: 'Server 1', secret: 'DATA_SV1'}
+          - {id: 'SV2', name: 'Server 2', secret: 'DATA_SV2'}
+          - {id: 'SV3', name: 'Server 3', secret: 'DATA_SV3'}
+          - {id: 'SV4', name: 'Server 4', secret: 'DATA_SV4'}
+          - {id: 'SV5', name: 'Server 5', secret: 'DATA_SV5'}
+          - {id: 'SV6', name: 'Server 6', secret: 'DATA_SV6'}
+          - {id: 'SV7', name: 'Server 7', secret: 'DATA_SV7'}
+          - {id: 'SV8910', name: 'Server 8, 9, 10', secret: 'DATA_SV8910'}
+          - {id: 'SV11', name: 'Server 11', secret: 'DATA_SV11'}
+          - {id: 'SV12', name: 'Server 12', secret: 'DATA_SV12'}
+          - {id: 'SV13', name: 'Server 13', secret: 'DATA_SV13'}
+          - {id: 'SV14', name: 'Server 14', secret: 'DATA_SV14'}
+          - {id: 'SP1', name: 'Super 1', secret: 'DATA_SP1'}
+          - {id: 'SP2', name: 'Super 2', secret: 'DATA_SP2'}
+          - {id: 'SP3', name: 'Super 3', secret: 'DATA_SP3'}
+          - {id: 'WORLD', name: 'Universe 1', secret: 'DATA_WORLD'}
+          - {id: 'INDO', name: 'Indonaga', secret: 'DATA_INDO'}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Download build artifact
+        if: github.event.inputs.skip-headless-client != 'true'
+        uses: dawidd6/action-download-artifact@v19
+        with:
+          name: Output
+          workflow_search: false
+          workflow_conclusion: ""
+          if_no_artifact_found: fail
+          allow_forks: false
+          path: Output/
       - name: Download artifact DataNRO-TeaMobi
-        uses: dawidd6/action-download-artifact@v9
+        uses: dawidd6/action-download-artifact@v19
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_search: true
@@ -88,7 +128,7 @@ jobs:
           name: DataNRO-TeaMobi
           # The artifact is a password-protected zip file inside a normal zip file so we need to unpack the outer zip first
           # skip_unpack: true
-      - name: Decompress password-protected artifact (TeaMobi)
+      - name: Decompress password-protected artifact (TeaMobi) 
         run: |
           if (!(Test-Path -Path Output\Data)) {
             mkdir -Path Output\Data
@@ -99,47 +139,50 @@ jobs:
           else {
             7z x SampleData\DataNRO-TeaMobi.zip -oOutput\Data\ -p${{ secrets.ZIP_PASSWORD }} -y 
           }
-      - name: Run headless client
+      - name: Run headless client for ${{ matrix.server.name }}
         if: github.event.inputs.skip-headless-client != 'true'
         run: |
           cd Output
-          .\Release\net8.0\DataNRO.CLI.exe
+          .\DataNRO.CLI.exe
         env:
-          DATA: ${{ secrets.DATA_TEAMOBI }}
+          DATA: ${{ secrets[matrix.server.secret] }}
           PROXY: ${{ secrets.PROXY }}
           OVERWRITE_ICONS: ${{ github.event.inputs.overwrite-icons }}
           MAX_RUN_SECONDS: ${{ github.event.inputs.max-run-seconds }}
-          FORCE_PROXY:  ${{ github.event.inputs.force-proxy }}
-      - name: Create password-protected zip file (TeaMobi)
+      - name: Create password-protected zip file (${{ matrix.server.name }})
         run: |
           cd Output\Data
-          7z a -p${{ secrets.ZIP_PASSWORD }} -mx=5 -y ..\..\DataNRO-TeaMobi.zip .\
-      - name: Upload password-protected artifact DataNRO-TeaMobi
+          7z a -p${{ secrets.ZIP_PASSWORD }} -mx=5 -y ..\..\DataNRO-TeaMobi-${{ matrix.server.id }}.zip .\
+      - name: Upload password-protected artifact ${{ matrix.server.name }}
         uses: actions/upload-artifact@v4
         with:
-          name: DataNRO-TeaMobi
-          path: DataNRO-TeaMobi.zip
+          name: DataNRO-TeaMobi-${{ matrix.server.id }}
+          path: DataNRO-TeaMobi-${{ matrix.server.id }}.zip
 
   build-and-deploy-pages:
     name: Build and deploy pages
-    needs: update-data-TeaMobi
+    needs: run-headless-client
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Download artifact DataNRO-TeaMobi
-        uses: dawidd6/action-download-artifact@v9
+        uses: dawidd6/action-download-artifact@v19
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          name: DataNRO-TeaMobi
+          name: DataNRO-TeaMobi-.*
           workflow_search: false
           workflow_conclusion: ""
           if_no_artifact_found: fail
           allow_forks: false
+          name_is_regexp: true
           # The artifact is a password-protected zip file inside a normal zip file so we need to unpack the outer zip first
           # skip_unpack: true
-      - name: Decompress password-protected artifact (TeaMobi)
-        run: 7z x DataNRO-TeaMobi.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
+      - name: Decompress password-protected artifacts (TeaMobi)
+        run: |
+          for file in DataNRO-TeaMobi-*.zip; do
+            7z x "$file" -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
+          done
       - name: Decompress password-protected sample data (private servers)
         run: |
           7z x SampleData/DataNRO-HSNR.zip -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
@@ -163,24 +206,23 @@ jobs:
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server Tôi yêu Ngọc Rồng/g' Page/dist/ILoveNRO/index.html
           cp Page/dist/index.html Page/dist/404.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Not found/g' Page/dist/404.html
-      # - name: Deploy pages
-      #   uses: peaceiris/actions-gh-pages@v4
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_dir: Page/dist
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: Page/dist
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-      - name: Delete page artifact
-        uses: geekyeggo/delete-artifact@v5
+      # - name: Configure GitHub Pages
+      #   uses: actions/configure-pages@v5
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
+      # - name: Delete page artifact
+      #   uses: geekyeggo/delete-artifact@v6
+      #   with:
+      #     name: github-pages
+      - name: Delete output artifact
+        uses: geekyeggo/delete-artifact@v6
         with:
-          name: github-pages
+          name: Output
 
   # ----------------------------------------------------
 
@@ -191,7 +233,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Decompress password-protected sample data (TeaMobi)
         run: 7z x SampleData/DataNRO-TeaMobi.zip -oOutput/Data/ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Upload password-protected artifact DataNRO-TeaMobi
@@ -223,13 +265,8 @@ jobs:
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Server Tôi yêu Ngọc Rồng/g' Page/dist/ILoveNRO/index.html
           cp Page/dist/index.html Page/dist/404.html
           sed -i 's/DataNRO by ElectroHeavenVN/DataNRO - Not found/g' Page/dist/404.html
-      # - name: Deploy pages
-      #   uses: peaceiris/actions-gh-pages@v4
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_dir: Page/dist
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: Page/dist
       - name: Configure GitHub Pages
@@ -238,6 +275,6 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4    
       - name: Delete page artifact
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@v6
         with:
           name: github-pages
