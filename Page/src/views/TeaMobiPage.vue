@@ -70,6 +70,10 @@ export default {
           name: "super2"
         },
         {
+          id: "Super3",
+          name: "super3"
+        },
+        {
           id: "Universe1",
           name: "universe1"
         },
