@@ -39,8 +39,10 @@ jobs:
           # skip_unpack: true
       - name: Decompress password-protected artifacts (TeaMobi)
         run: |
-          for file in DataNRO-TeaMobi-*.zip; do
-            7z x "$file" -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
+          for folder in DataNRO-TeaMobi-*; do
+            for file in "$folder"/*.zip; do
+              7z x "$file" -oPage/public/ -p${{ secrets.ZIP_PASSWORD }} -y
+            done
           done
       - name: Decompress sample data (Private servers)
         run: |
