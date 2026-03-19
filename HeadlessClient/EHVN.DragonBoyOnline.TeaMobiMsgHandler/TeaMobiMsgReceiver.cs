@@ -326,7 +326,7 @@ namespace EHVN.DragonBoyOnline.TeaMobiMsgHandler
             if (data.Length < 500)
             {
                 byte[] hash = SHA256.HashData(data);
-                if (blankImageHashes.Contains(BitConverter.ToString(hash).Replace("-", "")))
+                if (blankImageHashes.Contains(Convert.ToHexString(hash)))
                     return;
             }
             session.FileWriter.WriteIcon(iconId, data);
