@@ -140,7 +140,7 @@ const { t } = useI18n();
     </div>
   </div>
   <footer>
-    <p>Copyright &copy; 2025 ElectroHeavenVN. All rights reserved.</p>
+    <p>Copyright &copy; 2026 ElectroHeavenVN. All rights reserved.</p>
   </footer>
 </template>
 

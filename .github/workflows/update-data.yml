@@ -73,7 +73,7 @@ jobs:
         run: msbuild $env:HeadlessClientSolutionPath /t:rebuild /p:Configuration=Release
       - name: Upload build artifact
         if: github.event.inputs.skip-headless-client != 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Output
           path: HeadlessClient/Output/*
@@ -153,7 +153,7 @@ jobs:
           cd Output\Data
           7z a -p${{ secrets.ZIP_PASSWORD }} -mx=5 -y ..\..\DataNRO-TeaMobi-${{ matrix.server.id }}.zip .\
       - name: Upload password-protected artifact ${{ matrix.server.name }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: DataNRO-TeaMobi-${{ matrix.server.id }}
           path: DataNRO-TeaMobi-${{ matrix.server.id }}.zip
@@ -239,7 +239,7 @@ jobs:
       - name: Decompress password-protected sample data (TeaMobi)
         run: 7z x SampleData/DataNRO-TeaMobi.zip -oOutput/Data/ -p${{ secrets.ZIP_PASSWORD }} -y
       - name: Upload password-protected artifact DataNRO-TeaMobi
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: DataNRO-TeaMobi
           path: SampleData/DataNRO-TeaMobi.zip
