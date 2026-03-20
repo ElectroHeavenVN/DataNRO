@@ -352,7 +352,7 @@ namespace EHVN.DataNRO.HeadlessClient
                     }
                 }
                 while (session.Data.MapToReceiveTemplate is not null);
-                await Task.Delay((10 - count) * 50 + Random.Shared.Next(-50, 51));
+                await Task.Delay((11 - count) * 50 + Random.Shared.Next(-49, 51));
                 if ((i + 1) % 10 == 0)
                     Console.WriteLine($"Requested {i + 1} map templates");
             }
