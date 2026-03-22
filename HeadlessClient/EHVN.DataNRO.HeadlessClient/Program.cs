@@ -474,29 +474,36 @@ namespace EHVN.DataNRO.HeadlessClient
                 if (effectData.frame.Length == 0)
                     continue;
                 Frame frame = effectData.frame[0];
-                using MagickImage mobImg = new MagickImage($"{Path.GetDirectoryName(session.Data.Path)}\\MobImg\\{templateId}.png");
-                using (MagickImage monster = new MagickImage(MagickColors.Transparent, mobImg.Width * 3, mobImg.Height * 3))
+                try
                 {
-                    int x = (int)(monster.Width / 2f / session.Data.ZoomLevel);
-                    int y = (int)(monster.Height / 2f / session.Data.ZoomLevel);
-                    for (int i = 0; i < frame.dx.Length; i++)
+                    using MagickImage mobImg = new MagickImage($"{Path.GetDirectoryName(session.Data.Path)}\\MobImg\\{templateId}.png");
+                    using (MagickImage monster = new MagickImage(MagickColors.Transparent, mobImg.Width * 3, mobImg.Height * 3))
                     {
-                        ImageInfo? imageInfo = effectData.imgInfo.FirstOrDefault(img => img.id == frame.idImg[i]);
-                        if (imageInfo is null)
-                            continue;
-                        try
+                        int x = (int)(monster.Width / 2f / session.Data.ZoomLevel);
+                        int y = (int)(monster.Height / 2f / session.Data.ZoomLevel);
+                        for (int i = 0; i < frame.dx.Length; i++)
                         {
-                            using var cropped = mobImg.CloneArea(imageInfo.x0 * session.Data.ZoomLevel, imageInfo.y0 * session.Data.ZoomLevel, (uint)(imageInfo.w * session.Data.ZoomLevel), (uint)(imageInfo.h * session.Data.ZoomLevel));
-                            monster.Composite(cropped, (x + frame.dx[i]) * session.Data.ZoomLevel, (y + frame.dy[i]) * session.Data.ZoomLevel, CompositeOperator.Over);
+                            ImageInfo? imageInfo = effectData.imgInfo.FirstOrDefault(img => img.id == frame.idImg[i]);
+                            if (imageInfo is null)
+                                continue;
+                            try
+                            {
+                                using var cropped = mobImg.CloneArea(imageInfo.x0 * session.Data.ZoomLevel, imageInfo.y0 * session.Data.ZoomLevel, (uint)(imageInfo.w * session.Data.ZoomLevel), (uint)(imageInfo.h * session.Data.ZoomLevel));
+                                monster.Composite(cropped, (x + frame.dx[i]) * session.Data.ZoomLevel, (y + frame.dy[i]) * session.Data.ZoomLevel, CompositeOperator.Over);
+                            }
+                            catch { }
                         }
-                        catch { }
+                        string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Monsters";
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+                        using var croppedImg = CropToContent(monster);
+                        AddWatermark(croppedImg, 0, 30, 15);
+                        croppedImg.Write($"{path}\\{templateId}.png");
                     }
-                    string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Monsters";
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-                    using var croppedImg = CropToContent(monster);
-                    AddWatermark(croppedImg, 0, 30, 15);
-                    croppedImg.Write($"{path}\\{templateId}.png");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to combine monster image for template ID {templateId}!\r\n{ex}");
                 }
             }
         }
