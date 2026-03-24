@@ -343,7 +343,7 @@ namespace EHVN.DataNRO.HeadlessClient
                 int count = 0;
                 do
                 {
-                    await Task.Delay(100);
+                    await Task.Delay(1000);
                     count++;
                     if (count >= 10)
                     {
