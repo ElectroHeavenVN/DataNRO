@@ -12,7 +12,7 @@ const { t } = useI18n();
     <select @change="changeSort" :aria-label="t('selectServer')">
       <option value="id" selected="">ID</option>
       <option value="name">{{ t('name') }}</option>
-      <option value="icon">Icon</option>
+      <option value="icon" v-if="includeIcon">Icon</option>
     </select>
   </div>
 </template>
@@ -27,6 +27,10 @@ export default {
     inverse: {
       type: Boolean,
       default: false,
+    },
+    includeIcon: {
+      type: Boolean,
+      default: true,
     },
   },
   methods: {
@@ -88,6 +92,10 @@ select {
   cursor: pointer;
   user-select: none;
   max-width: 50px;
+  border-radius: 10px;
+  border: 2px solid var(--component-border);
+  background-color: var(--component-bg);
+  padding: 5px; 
 }
 
 @media screen and (max-width: 700px) {

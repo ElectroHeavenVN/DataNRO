@@ -23,8 +23,8 @@ const { t } = useI18n();
     </div>
     <div class="searchBar">
       <SearchBar :placeholder="placeholder" :defaultValue="getQueryFromUrl()" @inputText="inputText" @search="search" />
-      <Sort :defaultValue="getSortFromUrl()" :inverse="getSortInverseFromUrl()" @change-sort="changeSort"
-        @inverse-sort="inverseSort" />
+      <Sort :defaultValue="getSortFromUrl()" :inverse="getSortInverseFromUrl()" :includeIcon="includeIcon"
+        @change-sort="changeSort" @inverse-sort="inverseSort" />
     </div>
   </div>
 </template>
@@ -60,6 +60,10 @@ export default {
     lastUpdated: {
       type: String,
       default: '',
+    },
+    includeIcon: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {

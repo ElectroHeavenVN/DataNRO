@@ -20,7 +20,7 @@ const { t } = useI18n();
     <span class="hoverable" @click="setPage('npcs')">{{ t("npcs") }}</span>
     <span class="hoverable" @click="setPage('skills')">{{ t("skills") }}</span>
     <span class="hoverable" @click="setPage('mobs')">{{ t("mobs") }}</span>
-    <!-- <span class="hoverable" @click="setPage('itemOptions')">{{ t("itemOptions") }}</span> -->
+    <span class="hoverable" @click="setPage('itemOptions')">{{ t("itemOptions") }}</span>
     <span class="hoverable" @click="setPage('maps')">{{ t("maps") }}</span>
     <!-- <span class="hoverable" @click="setPage('parts')">{{ t("parts") }}</span> -->
   </div>
@@ -180,7 +180,7 @@ export default {
         return "";
     },
     openNav() {
-      document.getElementById("mySidenav").style.width = "150px";
+      document.getElementById("mySidenav").style.width = "200px";
     },
     closeNav() {
       document.getElementById("mySidenav").style.width = "0";
