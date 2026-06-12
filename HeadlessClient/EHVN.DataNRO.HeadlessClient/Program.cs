@@ -533,23 +533,25 @@ namespace EHVN.DataNRO.HeadlessClient
             string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Maps";
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
-            for (int i = 0; i < session.Data.Maps.Count; i++)
+            for (int i = session.Data.Maps.Count - 1; i >= 0; i--)
             {
                 Map map = session.Data.Maps[i];
                 if (!session.Data.MapTileIDs.ContainsKey(map.id) || session.Data.MapTileIDs[map.id] == -1)
                 {
                     //Combine maps with all tileIDs then manually check them later
-                    //for (int tileID = 1; tileID <= 42; tileID++)
-                    //{
-                    //    try
-                    //    {
-                    //        CombineMapImages(session, map, tileID, true); 
-                    //    }
-                    //    catch (Exception ex)
-                    //    {
-                    //        Console.WriteLine(ex);
-                    //    }
-                    //}
+#if DEBUG
+                    for (int tileID = 42; tileID >= 1; tileID--)
+                    {
+                        try
+                        {
+                            CombineMapImages(session, map, tileID, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                        }
+                    }
+#endif
                     continue;
                 }
                 try
