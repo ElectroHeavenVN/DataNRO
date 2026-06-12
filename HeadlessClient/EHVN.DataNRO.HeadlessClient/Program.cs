@@ -90,6 +90,8 @@ namespace EHVN.DataNRO.HeadlessClient
             }
             else
             {
+                if (!Directory.Exists($"Data\\{type}"))
+                    Directory.CreateDirectory($"Data\\{type}");
                 foreach (DirectoryInfo directory in new DirectoryInfo($"Data\\{type}").GetDirectories())
                 {
                     if (directory.Name != folderName && directory.Name.Any(char.IsDigit))
@@ -188,9 +190,26 @@ namespace EHVN.DataNRO.HeadlessClient
             await Task.Delay(1000);
             if (session.Data.SaveIcon)
             {
+                string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Resources";
+                if (Directory.Exists(path)) 
+                    Directory.Delete(path, true);
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                DirectoryInfo directoryInfo = new DirectoryInfo(path);
                 Console.WriteLine($"Downloading data...");
                 sender.GetResource(1);
-                do await Task.Delay(1000); while (!session.Data.AllResourceLoaded);
+                int count = 0;
+                do
+                {
+                    await Task.Delay(1000);
+                    count++;
+                    if (count >= 30)
+                    {
+                        Console.WriteLine($"Downloaded {directoryInfo.GetFiles().Length} files");
+                        count = 0;
+                    }
+                } while (!session.Data.AllResourceLoaded);
+                Console.WriteLine($"Downloaded {directoryInfo.GetFiles().Length} files.");
             }
             if (!await LoginAsync(sender, account, password, unregisteredUser))
                 return false;

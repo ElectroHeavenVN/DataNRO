@@ -5,7 +5,7 @@ namespace EHVN.DragonBoyOnline.TeaMobiMsgHandler
     public partial class TeaMobiMsgSender : MessageSenderBase
     {
         const string TEAMOBI_PLATFORM = "Pc platform xxx";
-        const string TEAMOBI_VERSION = "2.4.9";
+        const string TEAMOBI_VERSION = "2.5.0";
 
         static readonly byte[] INFO =
         [
