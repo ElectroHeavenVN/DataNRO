@@ -130,6 +130,7 @@ namespace EHVN.DataNRO.HeadlessClient
                     Console.WriteLine($"Failed to get data from {host}:{port} after 3 attempts!");
                     return false;
                 }
+                break;
             }
             Console.WriteLine($"Disconnect from {session.Host}:{session.Port} in 20s...");
             await Task.Delay(20000);
