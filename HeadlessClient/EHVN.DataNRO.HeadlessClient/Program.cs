@@ -112,10 +112,25 @@ namespace EHVN.DataNRO.HeadlessClient
                 if (File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{iconId}.png"))
                     File.Delete($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{iconId}.png");
             }
-            if (!await ConnectAsync(session, host, port))
-                return false;
-            if (!await GetDataAsync(session, account, password, unregisteredUser))
-                return false;
+            for (int count = 0; count < 3; count++)
+            {
+                session.Disconnect();
+                if (!await ConnectAsync(session, host, port))
+                {
+                    Console.WriteLine($"Failed to connect to {host}:{port} (attempt {count + 1}/3)!");
+                    continue;
+                }
+                if (!await GetDataAsync(session, account, password, unregisteredUser))
+                {
+                    Console.WriteLine($"Failed to get data from {host}:{port} (attempt {count + 1}/3)!");
+                    continue;
+                }
+                if (count == 2)
+                {
+                    Console.WriteLine($"Failed to get data from {host}:{port} after 3 attempts!");
+                    return false;
+                }
+            }
             Console.WriteLine($"Disconnect from {session.Host}:{session.Port} in 20s...");
             await Task.Delay(20000);
             session.Disconnect();
@@ -140,7 +155,7 @@ namespace EHVN.DataNRO.HeadlessClient
             if (session.Data.NClasses.Length > 0)
                 File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NClasses)}.json", JsonSerializer.Serialize(session.Data.NClasses, options));
             if (session.Data.ItemTemplates.Count > 0)
-                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonSerializer.Serialize(session.Data.ItemTemplates, options));;
+                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonSerializer.Serialize(session.Data.ItemTemplates, options)); ;
             if (session.Data.Parts.Length > 0)
                 File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Parts)}.json", JsonSerializer.Serialize(session.Data.Parts, options));
             //if (session.Data.SaveIcon)
@@ -182,7 +197,7 @@ namespace EHVN.DataNRO.HeadlessClient
 
         static async Task<bool> GetDataAsync(IGameSession session, string account, string password, string unregisteredUser)
         {
-            MessageSenderBase sender = session.GetType().GetProperty("Sender")?.GetValue(session) as MessageSenderBase ?? throw new Exception("Failed to get MessageSender from session!");
+            MessageSenderBase sender = session.Sender;
             sender.SetClientType(Config.clientType, Config.zoomLevel, Config.screenWidth / Config.zoomLevel, Config.screenHeight / Config.zoomLevel);
             session.Data.ZoomLevel = Config.zoomLevel;
             await Task.Delay(2000);
@@ -191,7 +206,7 @@ namespace EHVN.DataNRO.HeadlessClient
             if (session.Data.SaveIcon)
             {
                 string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Resources";
-                if (Directory.Exists(path)) 
+                if (Directory.Exists(path))
                     Directory.Delete(path, true);
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);

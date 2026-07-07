@@ -10,6 +10,8 @@ public interface IGameSession : IDisposable
     ushort Port { get; }
     GameData Data { get; }
     FileWriter FileWriter { get; }
+    MessageSenderBase Sender { get; }
+    MessageReceiverBase Receiver { get; }
     Task<bool> ConnectAsync(string host, ushort port, CancellationToken cancellationToken = default);
     void Disconnect();
     Task UpdateTask(CancellationToken cancellationToken);
@@ -49,6 +51,8 @@ public class GameSession<TSender, TReceiver> : IGameSession
     public ushort Port => port;
     public TSender Sender => messageSender;
     public TReceiver Receiver => messageReceiver;
+    MessageSenderBase IGameSession.Sender => messageSender;
+    MessageReceiverBase IGameSession.Receiver => messageReceiver;
 
     public GameSession(TSender sender, TReceiver receiver)
     {
