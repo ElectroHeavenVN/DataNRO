@@ -112,7 +112,8 @@ namespace EHVN.DataNRO.HeadlessClient
                 if (File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{iconId}.png"))
                     File.Delete($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{iconId}.png");
             }
-            for (int count = 0; count < 3; count++)
+            int count = 0;
+            for (; count < 3; count++)
             {
                 session.Disconnect();
                 if (!await ConnectAsync(session, host, port))
@@ -125,12 +126,12 @@ namespace EHVN.DataNRO.HeadlessClient
                     Console.WriteLine($"Failed to get data from {host}:{port} (attempt {count + 1}/3)!");
                     continue;
                 }
-                if (count == 2)
-                {
-                    Console.WriteLine($"Failed to get data from {host}:{port} after 3 attempts!");
-                    return false;
-                }
                 break;
+            }
+            if (count == 3)
+            {
+                Console.WriteLine($"Failed to get data from {host}:{port} after 3 attempts!");
+                return false;
             }
             Console.WriteLine($"Disconnect from {session.Host}:{session.Port} in 20s...");
             await Task.Delay(20000);
