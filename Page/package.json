@@ -17,7 +17,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "moment": "^2.31.0",
     "vue": "^3.5.13",
-    "vue-i18n": "^11.1.10"
+    "vue-i18n": "^11.4.16"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.7",
