@@ -16,6 +16,7 @@ namespace EHVN.DataNRO.HeadlessClient
         static int maxRunSeconds = 3600;
         static int[] overwriteIconIDs = [];
         static bool loggedIn = false;
+        static bool saveIconFailed = false;
 
         static async Task FailoverTask()
         {
@@ -123,7 +124,13 @@ namespace EHVN.DataNRO.HeadlessClient
                 }
                 if (!await GetDataAsync(session, account, password, unregisteredUser))
                 {
-                    Console.WriteLine($"Failed to get data from {host}:{port} (attempt {count + 1}/3)!");
+                    if (saveIconFailed)
+                    {
+                        Console.WriteLine($"Failed to get data from {host}:{port} (timed out)! Retrying without download...");
+                        count--;
+                    }
+                    else 
+                        Console.WriteLine($"Failed to get data from {host}:{port} (attempt {count + 1}/3)!");
                     continue;
                 }
                 break;
@@ -157,7 +164,8 @@ namespace EHVN.DataNRO.HeadlessClient
             if (session.Data.NClasses.Length > 0)
                 File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.NClasses)}.json", JsonSerializer.Serialize(session.Data.NClasses, options));
             if (session.Data.ItemTemplates.Count > 0)
-                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonSerializer.Serialize(session.Data.ItemTemplates, options)); ;
+                File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.ItemTemplates)}.json", JsonSerializer.Serialize(session.Data.ItemTemplates, options));
+            ;
             if (session.Data.Parts.Length > 0)
                 File.WriteAllText($"{session.Data.Path}\\{nameof(GameData.Parts)}.json", JsonSerializer.Serialize(session.Data.Parts, options));
             //if (session.Data.SaveIcon)
@@ -205,7 +213,7 @@ namespace EHVN.DataNRO.HeadlessClient
             await Task.Delay(2000);
             sender.ImageSource();
             await Task.Delay(1000);
-            if (session.Data.SaveIcon)
+            if (session.Data.SaveIcon && !saveIconFailed)
             {
                 string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Resources";
                 if (Directory.Exists(path))
@@ -216,13 +224,30 @@ namespace EHVN.DataNRO.HeadlessClient
                 Console.WriteLine($"Downloading data...");
                 sender.GetResource(1);
                 int count = 0;
+                int countDiff = 0;
+                int lastDownloadedFilesCount = 0;
                 do
                 {
                     await Task.Delay(1000);
                     count++;
                     if (count >= 30)
                     {
-                        Console.WriteLine($"Downloaded {directoryInfo.GetFiles().Length} files");
+                        int downloadedFilesCount = directoryInfo.GetFiles().Length;
+                        Console.WriteLine($"Downloaded {downloadedFilesCount} files");
+                        if (downloadedFilesCount == lastDownloadedFilesCount)
+                        {
+                            countDiff++;
+                            if (countDiff >= 10) // stuck for 5 minutes
+                            {
+                                // skip the rest of the download and continue to login without redownload
+                                session.Disconnect();
+                                saveIconFailed = true;
+                                return false;
+                            }
+                        }
+                        else
+                            countDiff = 0;
+                        lastDownloadedFilesCount = downloadedFilesCount;
                         count = 0;
                     }
                 } while (!session.Data.AllResourceLoaded);
