@@ -435,12 +435,27 @@ namespace EHVN.DataNRO.HeadlessClient
         static async Task SplitBigImgsAsync(IGameSession session)
         {
             Console.WriteLine($"Splitting images...");
-            List<MagickImage> smallImages = [];
-            for (int i = 0; File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\BigIcons\\Big{i}.png"); i++)
-                smallImages.Add(new MagickImage($"{Path.GetDirectoryName(session.Data.Path)}\\BigIcons\\Big{i}.png"));
+            List<MagickImage?> smallImages = [];
+            for (int i = 0; i < 20; i++)
+            {
+                string path = $"{Path.GetDirectoryName(session.Data.Path)}\\BigIcons\\Big{i}.png";
+                if (!File.Exists(path))
+                    continue;
+                try
+                {
+                    smallImages.Add(new MagickImage(path));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to load image {path}!\r\n{ex}");
+                    smallImages.Add(null);
+                }
+            }
+
             for (int id = 0; id < session.Data.SmallImg.Length; id++)
             {
-                if (!session.Data.CanOverwriteIcon(id) && File.Exists($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png"))
+                string path = $"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png";
+                if (!session.Data.CanOverwriteIcon(id) && File.Exists(path))
                     continue;
                 int[] smallImg = session.Data.SmallImg[id];
                 int imgBigIndex = smallImg[0];
@@ -452,8 +467,11 @@ namespace EHVN.DataNRO.HeadlessClient
                 int y = smallImg[2] * session.Data.ZoomLevel;
                 uint width = (uint)(smallImg[3] * session.Data.ZoomLevel);
                 uint height = (uint)(smallImg[4] * session.Data.ZoomLevel);
-                using var icon = smallImages[imgBigIndex].CloneArea(new MagickGeometry(x, y, width, height));
-                await icon.WriteAsync($"{Path.GetDirectoryName(session.Data.Path)}\\Icons\\{id}.png");
+                MagickImage? imgBig = smallImages[imgBigIndex];
+                if (imgBig is null)
+                    continue;
+                using var icon = imgBig.CloneArea(new MagickGeometry(x, y, width, height));
+                await icon.WriteAsync(path);
             }
         }
 
