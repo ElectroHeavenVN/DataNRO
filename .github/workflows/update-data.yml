@@ -25,6 +25,7 @@ on:
         required: false
         default: false
 permissions:
+  actions: write
   pages: write
   id-token: write
 concurrency:
@@ -45,9 +46,46 @@ jobs:
 
   # ----------------------------------------------------
 
+  cleanup-workflow-runs:
+    name: Keep only the 5 latest successful workflow runs
+    needs: cronjob-based-github-action
+    if: github.event.inputs.use-sample-data != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete older workflow runs
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const runs = await github.paginate(
+              github.rest.actions.listWorkflowRuns,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-data.yml',
+                per_page: 100
+              }
+            );
+            const successfulRuns = runs
+              .filter(run => run.conclusion === 'success' && run.id !== context.runId)
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            const runsToKeep = new Set([
+              context.runId,
+              ...successfulRuns.slice(0, 4).map(run => run.id)
+            ]);
+
+            for (const run of runs) {
+              if (!runsToKeep.has(run.id)) {
+                await github.rest.actions.deleteWorkflowRun({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: run.id
+                });
+              }
+            }
+
   build-headless-client:
     name: Build headless client
-    needs: cronjob-based-github-action
+    needs: cleanup-workflow-runs
     if: github.event.inputs.use-sample-data != 'true'
     runs-on: windows-latest
     env:
